@@ -47,11 +47,13 @@ public class ProdutoListController implements Initializable {
 	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
+
+
+
 		tbcId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		//tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<String, Fornecedor>("nome"));
+		//tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		
 		Stage stage = (Stage) Main.getScene().getWindow();
 		tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
@@ -66,6 +68,8 @@ public class ProdutoListController implements Initializable {
 		List<Produto> list = servico.findAll();
 		obsList = FXCollections.observableArrayList(list);
 		tbvListaProduto.setItems(obsList);
+
+
 		
 	}
 }
