@@ -20,56 +20,58 @@ import model.entities.Produto;
 import model.services.ProdutoServico;
 
 public class ProdutoListController implements Initializable {
-	
-	private ProdutoServico servico;
 
-	@FXML private Button btnNovo;
-	
-	@FXML private Button btnEditar;
-	
-	@FXML private Button btnApagar;
-	
-	@FXML private TableView<Produto> tbvListaProduto;
-	
-	@FXML private TableColumn<Integer, Produto> tbcId;
-	
-	@FXML private TableColumn<String, Produto> tbcNome;
-	
-	@FXML private TableColumn<String, Fornecedor> tbcFornecedorNome;
-	
-	@FXML private TableColumn<String, Categoria> tbcCategoriaNome;
-	
-	ObservableList<Produto> obsList;
-	
-	public void setProdutoServico(ProdutoServico servico) {
-		this.servico = servico;
-	}
-	
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
+    private ProdutoServico servico;
 
+    @FXML
+    private Button btnNovo;
 
+    @FXML
+    private Button btnEditar;
 
-		tbcId.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		//tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<String, Fornecedor>("nome"));
-		//tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		
-		Stage stage = (Stage) Main.getScene().getWindow();
-		tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
-	}
-	
-	public void updateTableView() {
-		
-		if (servico == null) {
-			throw new IllegalStateException("Servico esta nullo, nao implementado");
-		}
-		
-		List<Produto> list = servico.findAll();
-		obsList = FXCollections.observableArrayList(list);
-		tbvListaProduto.setItems(obsList);
+    @FXML
+    private Button btnApagar;
 
+    @FXML
+    private TableView<Produto> tbvListaProduto;
 
-		
-	}
+    @FXML
+    private TableColumn<Integer, Produto> tbcId;
+
+    @FXML
+    private TableColumn<String, Produto> tbcNome;
+
+    @FXML
+    private TableColumn<String, Produto> tbcFornecedorNome;
+
+    @FXML
+    private TableColumn<String, Produto> tbcCategoriaNome;
+
+    ObservableList<Produto> obsList;
+
+    public void setProdutoServico(ProdutoServico servico) {
+        this.servico = servico;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        tbcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<>("fornecedorNome"));
+        tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("categoriaNome"));
+
+        Stage stage = (Stage) Main.getScene().getWindow();
+        tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
+    }
+
+    public void updateTableView() {
+        if (servico == null) {
+            throw new IllegalStateException("Servico esta nullo, nao implementado");
+        }
+
+        List<Produto> list = servico.findAll();
+        obsList = FXCollections.observableArrayList(list);
+        tbvListaProduto.setItems(obsList);
+    }
 }

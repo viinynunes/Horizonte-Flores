@@ -11,21 +11,21 @@ import model.entities.Produto;
 
 public class ProdutoServico {
 
-public List<Produto> findAll(){
-		
-		List<Produto> list = new ArrayList<>();
+    public List<Produto> findAll() {
 
-		Produto produto = new Produto();
-		produto.setNome("Buxinho p/24");
-		produto.setId(1);
-		Fornecedor fornecedor = new Fornecedor();
+        List<Produto> list = new ArrayList<>();
 
-		fornecedor.setNome("Planta de Vaso");
+        Produto produto = new Produto();
+        produto.setNome("Buxinho p/24");
+        produto.setId(1);
+        Fornecedor fornecedor = new Fornecedor();
+        Categoria categoria = new Categoria("Vaso", "vs");
+        fornecedor.setNome("Planta de Vaso");
+        produto.setFornecedorNome(fornecedor.getNome());
+        produto.setCategoriaNome(categoria.getNome());
 
-		produto.setFornecedor(fornecedor);
-		list.add(produto);
-		
-		
-		return list;
-	}
+        list.add(produto);
+
+        return list;
+    }
 }

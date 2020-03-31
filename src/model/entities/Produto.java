@@ -4,80 +4,98 @@ import java.io.Serializable;
 
 public class Produto implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private Integer id;
-	private String nome;
-	private Categoria categoria;
-	private Fornecedor fornecedor;
+    private Integer id;
+    private String nome;
+    private Categoria categoria;
+    private Fornecedor fornecedor;
+    private String fornecedorNome;
+    private String categoriaNome;
 
-	public Produto() {
+    public String getCategoriaNome() {
+        return categoriaNome;
+    }
 
-	}
+    public void setCategoriaNome(String categoriaNome) {
+        this.categoriaNome = categoriaNome;
+    }
 
-	public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor) {
-		this.id = id;
-		this.nome = nome;
-		this.categoria = categoria;
-		this.fornecedor = fornecedor;
-	}
+    public String getFornecedorNome() {
+        return fornecedorNome;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setFornecedorNome(String fornecedorNome) {
+        this.fornecedorNome = fornecedorNome;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Produto() {
 
-	public String getNome() {
-		return nome;
-	}
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor) {
+        this.id = id;
+        this.nome = nome;
+        this.categoria = categoria;
+        this.fornecedor = fornecedor;
+    }
 
-	public Categoria getCategoria() {
-		return categoria;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		return result;
-	}
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Produto other = (Produto) obj;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		return true;
-	}
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 
-	
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Produto other = (Produto) obj;
+        if (nome == null) {
+            if (other.nome != null)
+                return false;
+        } else if (!nome.equals(other.nome))
+            return false;
+        return true;
+    }
+
+
 }
