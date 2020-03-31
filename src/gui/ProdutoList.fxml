@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -32,6 +33,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
+            <TextField prefHeight="30.4" prefWidth="555.0" promptText="Pesquisar Produto" />
         </items>
       </ToolBar>
       <TableView fx:id="tbvListaProduto" prefHeight="382.0" prefWidth="835.0">
