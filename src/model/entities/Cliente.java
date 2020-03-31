@@ -19,7 +19,8 @@ public class Cliente implements Serializable {
 
 	}
 
-	public Cliente(String nome) {
+	public Cliente(Integer id, String nome) {
+		this.id = id;
 		this.nome = nome;
 	}
 
@@ -105,11 +106,8 @@ public class Cliente implements Serializable {
 			return false;
 		Cliente other = (Cliente) obj;
 		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		return true;
+			return other.nome == null;
+		} else return nome.equals(other.nome);
 	}
 
 }

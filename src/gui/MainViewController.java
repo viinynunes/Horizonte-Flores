@@ -16,6 +16,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
+import model.entities.Cliente;
+import model.services.ClienteServico;
 import model.services.ProdutoServico;
 
 public class MainViewController implements Initializable{
@@ -54,31 +56,31 @@ public class MainViewController implements Initializable{
 	@FXML
 	public void onMiCadClienteAction() {
 		System.out.println("Cadastro Cliente");
-		carregaView("/gui/ClienteCadastro.fxml");
+		carregaView3("/gui/ClienteList.fxml");
 	}
 
 	@FXML
 	public void onMiRelPedidosAction() {
-		System.out.println("Relatório Pedidos");
+		System.out.println("Relatï¿½rio Pedidos");
 	}
 	@FXML
 	public void onMiRelCaixariaAction() {
-		System.out.println("Relatório Caixaria");
+		System.out.println("Relatï¿½rio Caixaria");
 	}
 	
 	@FXML
 	public void onMiRelVeilingAction() {
-		System.out.println("Relatório Veiling");
+		System.out.println("Relatï¿½rio Veiling");
 	}
 	
 	@FXML
 	public void onMiRelCeaflorAction() {
-		System.out.println("Relatório Ceaflor");
+		System.out.println("Relatï¿½rio Ceaflor");
 	}
 	
 	@FXML
 	public void onMiRelGeralAction() {
-		System.out.println("Relatório Geral");
+		System.out.println("Relatï¿½rio Geral");
 	}
 	
 	@Override
@@ -103,7 +105,7 @@ public class MainViewController implements Initializable{
 			mainVBox.getChildren().addAll(novoVBox.getChildren());
 			
 			
-		}catch (Exception e) {
+		}catch (IOException e) {
 				
 		}
 	}
@@ -132,6 +134,33 @@ public synchronized void carregaView2(String caminho) {
 		}catch (IOException e) {
 				Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
 				System.out.println(e.getMessage());
+		}
+	}
+
+	public synchronized void carregaView3(String caminho) {
+
+		try {
+			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
+			VBox novoVBox = load.load();
+
+			Scene mainScene = Main.getScene();
+
+			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
+
+			Node mainMenu = mainVBox.getChildren().get(0);
+
+			mainVBox.getChildren().clear();
+			mainVBox.getChildren().add(mainMenu);
+			mainVBox.getChildren().addAll(novoVBox.getChildren());
+
+
+			ClienteListController controller = load.getController();
+			controller.setClienteServico(new ClienteServico());
+			controller.updateTableView();
+
+		}catch (IOException e) {
+			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
+			System.out.println(e.getMessage());
 		}
 	}
 
