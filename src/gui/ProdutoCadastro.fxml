@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProdutoCadastroController">
+   <children>
+      <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Produto" textAlignment="CENTER">
+        <content>
+          <AnchorPane prefHeight="1511.0" prefWidth="803.0">
+               <children>
+                  <GridPane alignment="CENTER_LEFT" layoutX="62.0" layoutY="148.0" prefHeight="302.0" prefWidth="688.0" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="115.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.39996337890625" minWidth="10.0" prefWidth="164.99998474121094" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.2000274658203" minWidth="10.0" prefWidth="437.00001525878906" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="70.79999389648438" minHeight="10.0" prefHeight="60.80000610351563" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="Nome:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" />
+                        <Label text="Categoria:" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <ComboBox editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Categoria">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Hyperlink>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <Label text="Fornecedor:" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <ComboBox editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Fornecedor">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Hyperlink>
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </HBox>
+                        <Label text="Estabelecimento:" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox editable="true" prefHeight="38.0" prefWidth="455.0" visibleRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+                  <HBox alignment="CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </TitledPane>
+   </children>
+</VBox>

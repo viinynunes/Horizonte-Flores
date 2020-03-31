@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="524.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProdutoListController">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" text="Produto">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button fx:id="btnNovo" mnemonicParsing="false" text="Novo [F2]">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnEditar" mnemonicParsing="false" text="Editar [F3]">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnApagar" mnemonicParsing="false" text="Apagar [F4]">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+        </items>
+      </ToolBar>
+      <TableView fx:id="tbvListaProduto" prefHeight="382.0" prefWidth="835.0">
+        <columns>
+          <TableColumn fx:id="tbcId" prefWidth="128.00000607967377" text="ID" />
+          <TableColumn fx:id="tbcNome" prefWidth="249.5999755859375" text="Nome" />
+            <TableColumn fx:id="tbcFornecedorNome" prefWidth="247.19998168945312" text="Fornecedor" />
+            <TableColumn fx:id="tbcCategoriaNome" prefWidth="207.0" text="Categoria" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>
