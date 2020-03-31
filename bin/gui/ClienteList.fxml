@@ -6,16 +6,21 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="524.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteListController">
+<VBox prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ClienteListController">
 	<children>
-		<Label alignment="CENTER" contentDisplay="CENTER" text="Cliente">
-			<font>
-				<Font size="24.0" />
-			</font>
-		</Label>
+      <AnchorPane prefHeight="14.0" prefWidth="900.0">
+         <children>
+      		<Label alignment="CENTER" contentDisplay="CENTER" layoutX="407.0" prefHeight="35.2" prefWidth="86.4" text="Cliente" textAlignment="CENTER">
+      			<font>
+      				<Font size="24.0" />
+      			</font>
+      		</Label>
+         </children>
+      </AnchorPane>
 		<ToolBar prefHeight="40.0" prefWidth="200.0">
 			<items>
 				<Button fx:id="btnNovo" mnemonicParsing="false" text="Novo [F2]">
@@ -33,7 +38,7 @@
 						<Font size="14.0" />
 					</font>
 				</Button>
-            <TextField prefHeight="30.4" prefWidth="555.0" promptText="Pesquisar Cliente" />
+            <TextField prefHeight="30.4" prefWidth="618.0" promptText="Pesquisar Cliente" />
 			</items>
 		</ToolBar>
 		<TableView fx:id="tbvListar" prefHeight="382.0" prefWidth="835.0">
