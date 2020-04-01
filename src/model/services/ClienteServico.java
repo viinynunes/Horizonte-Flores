@@ -11,10 +11,15 @@ public class ClienteServico {
         List<Cliente> list = new ArrayList<>();
 
         Cliente cliente = new Cliente();
+        Cliente cliente1 = new Cliente();
         cliente.setId(1);
         cliente.setNome("Vinicius");
 
+        cliente1.setId(2);
+        cliente1.setNome("Maria");
+
         list.add(cliente);
+        list.add(cliente1);
 
         return list;
     }

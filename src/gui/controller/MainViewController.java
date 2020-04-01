@@ -3,6 +3,7 @@ package gui.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import gui.controller.ClienteListController;
@@ -50,13 +51,19 @@ public class MainViewController implements Initializable{
 	@FXML
 	public void onMiCadProdutoAction() {
 		System.out.println("Produto");
-		carregaView2("/gui/ProdutoList.fxml");
+		carregaView("/gui/ProdutoList.fxml", (ProdutoListController controller) -> {
+			controller.setProdutoServico(new ProdutoServico());
+			controller.updateTableView();
+		});
 	}
 	
 	@FXML
 	public void onMiCadClienteAction() {
 		System.out.println("Cadastro Cliente");
-		carregaView3("/gui/ClienteList.fxml");
+		carregaView("/gui/ClienteList.fxml", (ClienteListController controller) -> {
+			controller.setClienteServico(new ClienteServico());
+			controller.updateTableView();
+		});
 	}
 
 	@FXML
@@ -88,56 +95,7 @@ public class MainViewController implements Initializable{
 		
 	}
 	
-	public synchronized void carregaView(String caminho) {
-		
-		try {
-			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
-			VBox novoVBox = load.load();
-			
-			Scene mainScene = Main.getScene();
-			
-			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);
-			
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(novoVBox.getChildren());
-			
-			
-		}catch (IOException e) {
-				
-		}
-	}
-	
-public synchronized void carregaView2(String caminho) {
-		
-		try {
-			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
-			VBox novoVBox = load.load();
-			
-			Scene mainScene = Main.getScene();
-			
-			VBox mainVBox = (VBox) ((ScrollPane) mainScene.getRoot()).getContent();
-			
-			Node mainMenu = mainVBox.getChildren().get(0);
-			
-			mainVBox.getChildren().clear();
-			mainVBox.getChildren().add(mainMenu);
-			mainVBox.getChildren().addAll(novoVBox.getChildren());
-			
-			ProdutoListController controller = load.getController();
-			controller.setProdutoServico(new ProdutoServico());
-			controller.updateTableView();
-			
-			
-		}catch (IOException e) {
-				Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
-				System.out.println(e.getMessage());
-		}
-	}
-
-	public synchronized void carregaView3(String caminho) {
+	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {
 
 		try {
 			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
@@ -153,16 +111,12 @@ public synchronized void carregaView2(String caminho) {
 			mainVBox.getChildren().add(mainMenu);
 			mainVBox.getChildren().addAll(novoVBox.getChildren());
 
+			T controller = load.getController();
+			initializingAction.accept(controller);
 
-			ClienteListController controller = load.getController();
-			controller.setClienteServico(new ClienteServico());
-			controller.updateTableView();
 
-		}catch (IOException e) {
-			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
-			System.out.println(e.getMessage());
+		} catch (IOException e) {
+
 		}
 	}
-
-	
 }
