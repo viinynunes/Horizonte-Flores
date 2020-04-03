@@ -75,4 +75,8 @@ public class Fornecedor implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return nome;
+	}
 }

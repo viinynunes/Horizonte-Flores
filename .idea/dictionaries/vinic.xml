@@ -2,6 +2,8 @@
   <dictionary name="vinic">
     <words>
       <w>cnpj</w>
+      <w>endereco</w>
+      <w>logadouro</w>
       <w>telefone</w>
     </words>
   </dictionary>

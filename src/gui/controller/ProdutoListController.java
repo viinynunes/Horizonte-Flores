@@ -5,13 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import model.entities.Categoria;
+import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.ProdutoServico;
 
@@ -42,14 +43,25 @@ public class ProdutoListController implements Initializable {
     private TableColumn<String, Produto> tbcNome;
 
     @FXML
-    private TableColumn<String, Produto> tbcFornecedorNome;
+    private TableColumn<Produto, Fornecedor> tbcFornecedorNome;
 
     @FXML
-    private TableColumn<String, Produto> tbcCategoriaNome;
+    private TableColumn<Produto, Categoria> tbcCategoriaNome;
 
-    @FXML private AnchorPane acpTitulo;
+   /* @FXML
+    private TextField txtProcura;
 
-    @FXML private ToolBar tbMenuButton;
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private AnchorPane acpTitulo;
+
+    @FXML
+    private Label lblTitulo;
+
+
+    */
 
     ObservableList<Produto> obsList;
 
@@ -62,14 +74,17 @@ public class ProdutoListController implements Initializable {
 
         tbcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tbcNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<>("fornecedorNome"));
-        tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("categoriaNome"));
+        tbcFornecedorNome.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
+        tbcCategoriaNome.setCellValueFactory(new PropertyValueFactory<>("categoria"));
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
-        acpTitulo.prefWidthProperty().bind(stage.widthProperty());
-        tbMenuButton.prefWidthProperty().bind(stage.widthProperty());
+        //acpTitulo.prefWidthProperty().bind(stage.widthProperty());
+        //lblTitulo.prefWidthProperty().bind(stage.widthProperty());
 
+        // anchorPane.prefWidthProperty().bind(stage.widthProperty());
+
+        //txtProcura.prefWidthProperty().bind(anchorPane.widthProperty());
     }
 
     public void updateTableView() {

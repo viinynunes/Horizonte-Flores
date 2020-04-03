@@ -1,6 +1,8 @@
 package gui.controller;
 
 import application.Main;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +12,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.entities.Cliente;
+import model.entities.Endereco;
 import model.services.ClienteServico;
 
 import java.net.URL;
@@ -44,7 +48,7 @@ public class ClienteListController implements Initializable {
     @FXML
     private TableColumn<String, Cliente> tbcCNPJ;
     @FXML
-    private TableColumn<String, Cliente> tbcEndereco;
+    private TableColumn<Cliente, Endereco> tbcEndereco;
 
     ObservableList<Cliente> obsList;
 
@@ -78,5 +82,4 @@ public class ClienteListController implements Initializable {
         obsList = FXCollections.observableArrayList(list);
         tbvListar.setItems(obsList);
     }
-
 }

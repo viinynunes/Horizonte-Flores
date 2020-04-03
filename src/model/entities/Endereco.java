@@ -149,4 +149,36 @@ public class Endereco implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+
+		if (numero == null){
+			numero = " ";
+		}
+		if (bairro == null){
+			bairro = " ";
+		}
+		if (referencia == null){
+			referencia = " ";
+		}
+		if (cidade == null){
+			cidade = " ";
+		}
+		if (estado == null){
+			estado = " ";
+		}
+		if (pais == null){
+			pais = " ";
+		}
+
+
+		return  logadouro + " " +
+				numero + " " +
+				bairro + " " +
+				referencia + " " +
+				cidade + " " +
+				estado + " " +
+				pais;
+	}
 }

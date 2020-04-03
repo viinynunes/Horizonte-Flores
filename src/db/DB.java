@@ -10,7 +10,7 @@ public class DB {
 
         try {
 
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/coursejdbc", "Dev", "nunes123");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hfp", "Dev", "nunes123");
 
             return conn;
         } catch (SQLException e) {

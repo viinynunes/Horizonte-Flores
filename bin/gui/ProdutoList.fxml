@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -21,26 +21,40 @@
             </Label>
          </children>
       </AnchorPane>
-      <ToolBar fx:id="tbMenuButton" prefHeight="40.0" prefWidth="200.0">
-        <items>
-          <Button fx:id="btnNovo" mnemonicParsing="false" text="Novo [F2]">
+      <AnchorPane fx:id="anchorPane" prefHeight="64.0" prefWidth="890.0">
+         <children>
+          <Button fx:id="btnNovo" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Novo [F2]">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnEditar" mnemonicParsing="false" text="Editar [F3]">
+            <Button fx:id="btnEditar" layoutX="176.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="150.0" text="Editar [F3]">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="btnApagar" mnemonicParsing="false" text="Apagar [F4]">
+            <Button fx:id="btnApagar" layoutX="337.0" layoutY="14.0" mnemonicParsing="false" prefHeight="31.2" prefWidth="150.0" text="Apagar [F4]">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <TextField prefHeight="30.4" prefWidth="618.0" promptText="Pesquisar Produto" />
-        </items>
-      </ToolBar>
+            <AnchorPane layoutX="481.0" layoutY="12.0" prefHeight="31.0" prefWidth="359.0">
+               <children>
+                  <TextField fx:id="txtProcura" layoutX="14.0" layoutY="3.0" prefHeight="31.0" prefWidth="374.0" promptText="    Pesquisar Produto">
+                     <padding>
+                        <Insets right="100.0" />
+                     </padding>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </AnchorPane>
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" left="5.0" right="5.0" />
+         </VBox.margin>
+      </AnchorPane>
       <TableView fx:id="tbvListaProduto" prefHeight="382.0" prefWidth="835.0">
         <columns>
           <TableColumn fx:id="tbcId" prefWidth="128.00000607967377" text="ID" />

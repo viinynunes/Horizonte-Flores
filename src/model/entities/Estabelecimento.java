@@ -76,4 +76,8 @@ public class Estabelecimento implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return nome;
+	}
 }

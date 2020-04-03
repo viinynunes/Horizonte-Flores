@@ -10,34 +10,19 @@ public class Produto implements Serializable {
     private String nome;
     private Categoria categoria;
     private Fornecedor fornecedor;
-    private String fornecedorNome;
-    private String categoriaNome;
+    private Estabelecimento estabelecimento;
 
-    public String getCategoriaNome() {
-        return categoriaNome;
-    }
-
-    public void setCategoriaNome(String categoriaNome) {
-        this.categoriaNome = categoriaNome;
-    }
-
-    public String getFornecedorNome() {
-        return fornecedorNome;
-    }
-
-    public void setFornecedorNome(String fornecedorNome) {
-        this.fornecedorNome = fornecedorNome;
-    }
 
     public Produto() {
 
     }
 
-    public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor) {
+    public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor, Estabelecimento estabelecimento) {
         this.id = id;
         this.nome = nome;
         this.categoria = categoria;
         this.fornecedor = fornecedor;
+        this.estabelecimento = estabelecimento;
     }
 
     public Integer getId() {
@@ -70,6 +55,14 @@ public class Produto implements Serializable {
 
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
+    }
+
+    public Estabelecimento getEstabelecimento() {
+        return estabelecimento;
+    }
+
+    public void setEstabelecimento(Estabelecimento estabelecimento) {
+        this.estabelecimento = estabelecimento;
     }
 
     @Override
