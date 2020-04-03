@@ -3,11 +3,15 @@ package gui.controller;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -16,6 +20,7 @@ import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.ProdutoServico;
 
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -48,7 +53,7 @@ public class ProdutoListController implements Initializable {
     @FXML
     private TableColumn<Produto, Categoria> tbcCategoriaNome;
 
-   /* @FXML
+
     private TextField txtProcura;
 
     @FXML
@@ -61,9 +66,19 @@ public class ProdutoListController implements Initializable {
     private Label lblTitulo;
 
 
-    */
-
     ObservableList<Produto> obsList;
+
+    public void onBtnNovoAction(){
+        System.out.println("Novo Produto");
+    }
+
+    public void onBtnEditarAction(){
+        System.out.println("Editar Produto");
+    }
+
+    public void onBtnApagarAction(){
+        System.out.println("Apagar Produto");
+    }
 
     public void setProdutoServico(ProdutoServico servico) {
         this.servico = servico;
@@ -79,12 +94,25 @@ public class ProdutoListController implements Initializable {
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
-        //acpTitulo.prefWidthProperty().bind(stage.widthProperty());
-        //lblTitulo.prefWidthProperty().bind(stage.widthProperty());
 
-        // anchorPane.prefWidthProperty().bind(stage.widthProperty());
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
 
-        //txtProcura.prefWidthProperty().bind(anchorPane.widthProperty());
+                if (ke.getCode() == KeyCode.F2){
+                    System.out.println("F2");
+                    onBtnNovoAction();
+                }
+                if (ke.getCode() == KeyCode.F3){
+                    System.out.println("F3");
+                    onBtnEditarAction();
+                }
+                if (ke.getCode() == KeyCode.F4){
+                    System.out.println("F4");
+                    onBtnApagarAction();
+                }
+            }
+        });
     }
 
     public void updateTableView() {

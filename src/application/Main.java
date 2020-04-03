@@ -27,7 +27,7 @@ public class Main extends Application {
 
 			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.jpg"));
 			stage.getIcons().add(icon);
-
+			stage.setMaximized(true);
 			stage.show();
 
 		} catch (Exception e) {

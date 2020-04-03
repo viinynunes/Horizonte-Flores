@@ -6,56 +6,75 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ClienteListController">
-	<children>
-      <AnchorPane prefHeight="14.0" prefWidth="900.0">
-         <children>
-      		<Label alignment="CENTER" contentDisplay="CENTER" layoutX="407.0" prefHeight="35.2" prefWidth="86.4" text="Cliente" textAlignment="CENTER">
-      			<font>
-      				<Font size="24.0" />
-      			</font>
-      		</Label>
-         </children>
-      </AnchorPane>
-		<ToolBar prefHeight="40.0" prefWidth="200.0">
-			<items>
-				<Button fx:id="btnNovo" mnemonicParsing="false" text="Novo [F2]">
-					<font>
-						<Font size="14.0" />
-					</font>
-				</Button>
-				<Button fx:id="btnEditar" mnemonicParsing="false" text="Editar [F3]">
-					<font>
-						<Font size="14.0" />
-					</font>
-				</Button>
-				<Button fx:id="btnApagar" mnemonicParsing="false" text="Apagar [F4]">
-					<font>
-						<Font size="14.0" />
-					</font>
-				</Button>
-            <TextField prefHeight="30.4" prefWidth="618.0" promptText="Pesquisar Cliente" />
-			</items>
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin>
-		</ToolBar>
-		<TableView fx:id="tbvListar" prefHeight="382.0" prefWidth="835.0">
-			<columns>
-				<TableColumn fx:id="tbcId" prefWidth="63.999998450279236" text="ID" />
-				<TableColumn fx:id="tbcNome" prefWidth="172.79999542236328" text="Nome" />
-				<TableColumn fx:id="tbcTelefone" prefWidth="140.0" text="Telefone" />
-				<TableColumn fx:id="tbcTelefone2" prefWidth="120.0" text="Telefone Secundário" />
-            <TableColumn fx:id="tbcEmail" prefWidth="108.00003051757812" text="Email" />
-            <TableColumn fx:id="tbcCPF" prefWidth="85.59991455078125" text="CPF" />
-            <TableColumn fx:id="tbcCNPJ" prefWidth="57.60003662109375" text="CNPJ" />
-            <TableColumn fx:id="tbcEndereco" prefWidth="139.2000732421875" text="Endereço" />
-			</columns>
-		</TableView>
-	</children>
+<VBox prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ClienteListController">
+    <children>
+        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
+            <top>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Cliente" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </top>
+            <right>
+                <AnchorPane prefHeight="61.0" prefWidth="784.0" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets bottom="11.0" top="11.0" />
+                    </BorderPane.margin>
+                    <children>
+                        <TextField fx:id="txtProcura" layoutX="-86.0" layoutY="16.0" prefHeight="33.0" prefWidth="855.0" promptText="    Pesquisar Cliente">
+                            <padding>
+                                <Insets right="100.0" />
+                            </padding>
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </AnchorPane>
+            </right>
+            <left>
+                <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="62.0" prefWidth="702.0" spacing="30.0" BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                        <Insets left="5.0" />
+                    </BorderPane.margin>
+                    <children>
+                        <Button fx:id="btnNovo" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Novo [F2]">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Editar [F3]">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="btnApagar" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Apagar [F4]">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </left>
+        </BorderPane>
+        <TableView fx:id="tbvListar" prefHeight="382.0" prefWidth="835.0">
+            <columns>
+                <TableColumn fx:id="tbcId" prefWidth="62.39999467134476" text="ID" />
+                <TableColumn fx:id="tbcNome" prefWidth="194.39997482299805" text="Nome" />
+                <TableColumn fx:id="tbcTelefone" prefWidth="89.5999755859375" text="Telefone" />
+                <TableColumn fx:id="tbcTelefone2" prefWidth="148.0" text="Telefone Secundario" />
+            <TableColumn fx:id="tbcEmail" prefWidth="199.199951171875" text="E-mail" />
+            <TableColumn fx:id="tbcCPF" prefWidth="100.79998779296875" text="CPF" />
+            <TableColumn fx:id="tbcCNPJ" prefWidth="118.4000244140625" text="CNPJ" />
+            <TableColumn fx:id="tbcEndereco" prefWidth="637.5999145507812" text="Endereco" />
+            </columns>
+        </TableView>
+    </children>
 </VBox>

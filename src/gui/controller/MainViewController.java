@@ -116,7 +116,7 @@ public class MainViewController implements Initializable{
 
 
 		} catch (IOException e) {
-
+			e.printStackTrace();
 		}
 	}
 }
