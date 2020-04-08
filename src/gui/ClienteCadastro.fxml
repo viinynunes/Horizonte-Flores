@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ClienteCadastroController">
+<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteCadastroController">
    <children>
       <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Cliente" textAlignment="CENTER">
         <content>
@@ -25,6 +25,7 @@
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.2000274658203" minWidth="10.0" prefWidth="437.00001525878906" />
                     </columnConstraints>
                     <rowConstraints>
+                        <RowConstraints maxHeight="70.79999389648438" minHeight="10.0" prefHeight="60.80000610351563" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="70.79999389648438" minHeight="10.0" prefHeight="60.80000610351563" vgrow="SOMETIMES" />
                       <RowConstraints maxHeight="71.19999389648437" minHeight="10.0" prefHeight="71.19999389648437" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -34,57 +35,67 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Nome:">
+                        <Label text="Nome:" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" />
-                        <Label text="E-mail:" GridPane.rowIndex="1">
+                        <TextField fx:id="txtNome" prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="E-mail:" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Telefone:" GridPane.rowIndex="2">
+                        <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Telefone:" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="34.0" prefWidth="659.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Telefone Adicional:" GridPane.rowIndex="3">
+                        <TextField fx:id="txtTelefone" prefHeight="34.0" prefWidth="659.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Telefone Adicional:" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="CPF:" GridPane.rowIndex="4">
+                        <TextField fx:id="txtTelefone2" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="CPF:" GridPane.rowIndex="5">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label text="CNPJ:" GridPane.rowIndex="5">
+                        <TextField fx:id="txtCPF" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="CNPJ:" GridPane.rowIndex="6">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label text="Endereço:" GridPane.rowIndex="6">
+                        <TextField fx:id="txtCNPJ" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label text="Endereço:" GridPane.rowIndex="7">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Hyperlink prefHeight="27.0" prefWidth="275.0" text="Adicionar Endereço" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <Hyperlink fx:id="hyperlinkEndereco" onAction="#onHyperlinkEnderecoAction" prefHeight="27.0" prefWidth="275.0" text="Adicionar Endereço" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Hyperlink>
+                        <Label text="ID">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblId" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </GridPane>
                   <HBox alignment="TOP_CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.bottomAnchor="540.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
+                        <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -94,7 +105,7 @@
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
+                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
                            <font>
                               <Font size="18.0" />
                            </font>

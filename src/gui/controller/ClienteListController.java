@@ -1,23 +1,26 @@
 package gui.controller;
 
 import application.Main;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import gui.ClienteCadastroController;
+import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.entities.Cliente;
 import model.entities.Endereco;
 import model.services.ClienteServico;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,6 +28,8 @@ import java.util.ResourceBundle;
 public class ClienteListController implements Initializable {
 
     private ClienteServico servico;
+
+    private Cliente cliente;
 
     @FXML
     private Button btnNovo;
@@ -55,8 +60,22 @@ public class ClienteListController implements Initializable {
 
     ObservableList<Cliente> obsList;
 
+    public void onBtnNovoAction(ActionEvent event) {
+
+        Stage parentStage = Utils.atualStage(event);
+
+        Cliente cliente = new Cliente();
+
+        criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+
+    }
+
     public void setClienteServico(ClienteServico servico) {
         this.servico = servico;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     @Override
@@ -84,5 +103,30 @@ public class ClienteListController implements Initializable {
         List<Cliente> list = servico.findAll();
         obsList = FXCollections.observableArrayList(list);
         tbvListar.setItems(obsList);
+    }
+
+    public void criarTelaDialog(Cliente cliente, String caminho, Stage parentStage) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            Pane pane = loader.load();
+
+            Stage dialog = new Stage();
+
+            ClienteCadastroController controller = loader.getController();
+            controller.setCliente(cliente);
+            controller.setServico(new ClienteServico());
+            controller.updateFormData();
+
+            dialog.setTitle("Cadastro de Cliente");
+            dialog.setScene(new Scene(pane));
+            dialog.setResizable(false);
+            dialog.initOwner(parentStage);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.showAndWait();
+
+        } catch (IOException e) {
+            Alerts.showAlert("Erro ao carregar tela", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }

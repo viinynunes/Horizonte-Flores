@@ -18,4 +18,12 @@ public class ClienteServico {
 
         return list;
     }
+
+    public void saveOrUpdate(Cliente cliente){
+        if (cliente.getId() == null){
+            dao.insert(cliente);
+        }else{
+            dao.update(cliente);
+        }
+    }
 }

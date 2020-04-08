@@ -45,7 +45,7 @@
                         <Insets left="5.0" />
                     </BorderPane.margin>
                     <children>
-                        <Button fx:id="btnNovo" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Novo [F2]">
+                        <Button fx:id="btnNovo" mnemonicParsing="false" onAction="#onBtnNovoAction" prefHeight="47.0" prefWidth="170.0" text="Novo [F2]">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>

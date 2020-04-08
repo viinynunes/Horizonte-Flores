@@ -36,14 +36,17 @@ public class ClienteDaoJDBC implements ClienteDao {
             st.setString(4, cliente.getEmail());
             st.setString(5, cliente.getCpf());
             st.setString(6, cliente.getCnpj());
-            st.setInt(7, cliente.getEndereco().getId());
+
+
+            st.setInt(7, 1);
+
 
             int rows = st.executeUpdate();
 
             if (rows > 0) {
                 rs = st.getGeneratedKeys();
                 if (rs.next()) {
-                    int id = rs.getInt("id");
+                    int id = rs.getInt("cliente.id");
                     cliente.setId(id);
                 }
             } else
@@ -108,7 +111,7 @@ public class ClienteDaoJDBC implements ClienteDao {
 
             rs = st.executeQuery();
 
-            if (rs.next()){
+            if (rs.next()) {
                 Endereco endereco = createEndereco(rs);
 
                 return createCliente(rs, endereco);
@@ -140,10 +143,10 @@ public class ClienteDaoJDBC implements ClienteDao {
 
             Map<Integer, Endereco> map = new HashMap<>();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Endereco endereco = map.get(rs.getInt("endereco_id"));
 
-                if (endereco == null){
+                if (endereco == null) {
                     endereco = createEndereco(rs);
                     map.put(rs.getInt("endereco_id"), endereco);
                 }
@@ -153,7 +156,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                 return list;
             }
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
 
@@ -165,32 +168,102 @@ public class ClienteDaoJDBC implements ClienteDao {
 
         List<Cliente> list = new ArrayList<>();
         PreparedStatement st = null;
+        PreparedStatement st1 = null;
         ResultSet rs = null;
+        ResultSet rs1 = null;
+        Cliente cliente = null;
+        Endereco endereco = null;
+
+            /*
+            st = conn.prepareStatement("Select * from cliente");
+            st1 = conn.prepareStatement("Select * from cliente inner join endereco on " +
+                    "cliente.endereco_id = endereco.id");
+
+            rs = st.executeQuery();
+            rs1 = st1.executeQuery();
+
+            Map<Integer, Cliente> mapCliente = new HashMap<>();
+            Map<Integer, Endereco> map = new HashMap<>();
+
+            while (rs1.next()) {
+
+                Cliente cliente1 = mapCliente.get(rs.getInt("id"));
+                Endereco endereco1 = map.get(rs.getInt("ENDERECO_ID"));
+
+                if (endereco1 == null){
+                    endereco1 = createEndereco(rs);
+                    map.put(rs.getInt("cliente.endereco_id"), endereco1);
+                }
+
+                if (cliente1 == null){
+                    cliente1 = createCliente(rs, endereco1);
+                    mapCliente.put(rs.getInt("cliente.id"), cliente1);
+                }
+
+                list.add(cliente1);
+            }
+
+
+            while (rs.next()){
+
+                cliente = mapCliente.get(rs.getInt("id"));
+
+                if (cliente == null){
+
+                    cliente = createClienteSemEndereco(rs);
+                    mapCliente.put(rs.getInt("id"), cliente);
+                }
+
+                list.add(cliente);
+            }
+
+             */
 
         try {
-            st = conn.prepareStatement("Select * from cliente inner join endereco " +
-                    "on cliente.endereco_id = endereco.id");
+            st = conn.prepareStatement("select * from cliente inner join endereco on cliente.endereco_id = endereco.id");
 
             rs = st.executeQuery();
 
-            Map<Integer, Endereco> map = new HashMap<>();
+            Map<Integer, Cliente> clienteMap = new HashMap<>();
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
 
             while (rs.next()) {
-                Endereco endereco = map.get(rs.getInt("endereco_id"));
+
+                cliente = clienteMap.get(rs.getInt("id"));
+                endereco = enderecoMap.get(rs.getInt("endereco_id"));
 
                 if (endereco == null) {
                     endereco = createEndereco(rs);
-                    map.put(rs.getInt("endereco_id"), endereco);
+                    enderecoMap.put(rs.getInt("endereco_id"), endereco);
                 }
-
-                Cliente cliente = createCliente(rs, endereco);
+                if (cliente == null) {
+                    cliente = createCliente(rs, endereco);
+                    clienteMap.put(rs.getInt("id"), cliente);
+                }
                 list.add(cliente);
+            }
 
+            st1 = conn.prepareStatement("select * from cliente");
+
+            rs1 = st1.executeQuery();
+
+            while (rs1.next()) {
+                cliente = clienteMap.get(rs1.getInt("id"));
+
+                if (cliente == null) {
+                    cliente = createCliente(rs1);
+                    list.add(cliente);
+                }
             }
 
             return list;
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeResultSet(rs1);
+            DB.closeStatement(st);
+            DB.closeStatement(st1);
         }
     }
 
@@ -219,6 +292,20 @@ public class ClienteDaoJDBC implements ClienteDao {
         cliente.setCpf(rs.getString("cpf"));
         cliente.setCnpj(rs.getString("cnpj"));
         cliente.setEndereco(endereco);
+
+        return cliente;
+    }
+
+    private Cliente createCliente(ResultSet rs) throws SQLException {
+        Cliente cliente = new Cliente();
+
+        cliente.setId(rs.getInt("id"));
+        cliente.setNome(rs.getString("nome"));
+        cliente.setTelefone(rs.getString("telefone"));
+        cliente.setTelefone2(rs.getString("telefone2"));
+        cliente.setEmail(rs.getString("email"));
+        cliente.setCpf(rs.getString("cpf"));
+        cliente.setCnpj(rs.getString("cnpj"));
 
         return cliente;
     }
