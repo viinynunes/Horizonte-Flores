@@ -78,13 +78,13 @@ public class ClienteCadastroController implements Initializable {
     }
 
     @FXML
-    public void onBtnCancelarAction() {
-        System.out.println("BTN Cancelar");
+    public void onBtnCancelarAction(ActionEvent event) {
+        Utils.atualStage(event).close();
     }
 
     @FXML
     public void onBtnLimparAction() {
-
+        limpaForm();
     }
 
     @FXML
@@ -130,5 +130,14 @@ public class ClienteCadastroController implements Initializable {
         cliente.setEndereco(endereco);
 
         return cliente;
+    }
+
+    private void limpaForm(){
+        txtNome.clear();
+        txtEmail.clear();
+        txtTelefone.clear();
+        txtTelefone2.clear();
+        txtCPF.clear();
+        txtCNPJ.clear();
     }
 }

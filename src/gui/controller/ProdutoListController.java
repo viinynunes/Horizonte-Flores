@@ -53,7 +53,6 @@ public class ProdutoListController implements Initializable {
     @FXML
     private TableColumn<Produto, Categoria> tbcCategoriaNome;
 
-
     private TextField txtProcura;
 
     @FXML

@@ -7,12 +7,15 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -67,8 +70,9 @@ public class ClienteListController implements Initializable {
         Cliente cliente = new Cliente();
 
         criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
-
     }
+
+
 
     public void setClienteServico(ClienteServico servico) {
         this.servico = servico;
@@ -92,6 +96,18 @@ public class ClienteListController implements Initializable {
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListar.prefHeightProperty().bind(stage.heightProperty());
+
+
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<javafx.scene.input.KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+
+                if (ke.getCode() == KeyCode.F2){
+                    System.out.println("F2");
+                }
+
+            }
+        });
     }
 
     public void updateTableView() {

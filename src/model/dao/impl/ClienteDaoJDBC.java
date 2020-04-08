@@ -27,30 +27,33 @@ public class ClienteDaoJDBC implements ClienteDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("insert into cliente (nome, telefone, telefone2, email, cpf, cnpj, endereco_id) " +
-                    "values (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
-            st.setString(1, cliente.getNome());
-            st.setString(2, cliente.getTelefone());
-            st.setString(3, cliente.getTelefone2());
-            st.setString(4, cliente.getEmail());
-            st.setString(5, cliente.getCpf());
-            st.setString(6, cliente.getCnpj());
+            if (cliente.getEndereco() == null) {
+                st = conn.prepareStatement("insert into cliente (nome, telefone, telefone2, email, cpf, cnpj, endereco_id) " +
+                        "values (?, ?, ?, ?, ?, ?, null)", Statement.RETURN_GENERATED_KEYS);
 
+                st.setString(1, cliente.getNome());
+                st.setString(2, cliente.getTelefone());
+                st.setString(3, cliente.getTelefone2());
+                st.setString(4, cliente.getEmail());
+                st.setString(5, cliente.getCpf());
+                st.setString(6, cliente.getCnpj());
 
-            st.setInt(7, 1);
+            } else {
+                st = conn.prepareStatement("insert into cliente (nome, telefone, telefone2, email, cpf, cnpj, endereco_id) " +
+                        "values (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
+                st.setString(1, cliente.getNome());
+                st.setString(2, cliente.getTelefone());
+                st.setString(3, cliente.getTelefone2());
+                st.setString(4, cliente.getEmail());
+                st.setString(5, cliente.getCpf());
+                st.setString(6, cliente.getCnpj());
+                st.setInt(7, cliente.getEndereco().getId());
+            }
 
             int rows = st.executeUpdate();
 
-            if (rows > 0) {
-                rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt("cliente.id");
-                    cliente.setId(id);
-                }
-            } else
-                System.out.println("Nenhuma linha afetada");
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -173,51 +176,6 @@ public class ClienteDaoJDBC implements ClienteDao {
         ResultSet rs1 = null;
         Cliente cliente = null;
         Endereco endereco = null;
-
-            /*
-            st = conn.prepareStatement("Select * from cliente");
-            st1 = conn.prepareStatement("Select * from cliente inner join endereco on " +
-                    "cliente.endereco_id = endereco.id");
-
-            rs = st.executeQuery();
-            rs1 = st1.executeQuery();
-
-            Map<Integer, Cliente> mapCliente = new HashMap<>();
-            Map<Integer, Endereco> map = new HashMap<>();
-
-            while (rs1.next()) {
-
-                Cliente cliente1 = mapCliente.get(rs.getInt("id"));
-                Endereco endereco1 = map.get(rs.getInt("ENDERECO_ID"));
-
-                if (endereco1 == null){
-                    endereco1 = createEndereco(rs);
-                    map.put(rs.getInt("cliente.endereco_id"), endereco1);
-                }
-
-                if (cliente1 == null){
-                    cliente1 = createCliente(rs, endereco1);
-                    mapCliente.put(rs.getInt("cliente.id"), cliente1);
-                }
-
-                list.add(cliente1);
-            }
-
-
-            while (rs.next()){
-
-                cliente = mapCliente.get(rs.getInt("id"));
-
-                if (cliente == null){
-
-                    cliente = createClienteSemEndereco(rs);
-                    mapCliente.put(rs.getInt("id"), cliente);
-                }
-
-                list.add(cliente);
-            }
-
-             */
 
         try {
             st = conn.prepareStatement("select * from cliente inner join endereco on cliente.endereco_id = endereco.id");
