@@ -45,17 +45,17 @@
                   <Insets left="5.0" />
                </BorderPane.margin>
                <children>
-                <Button fx:id="btnNovo" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Novo [F2]">
+                <Button fx:id="btnNovo" mnemonicParsing="false" onAction="#onBtnNovoAction" prefHeight="47.0" prefWidth="170.0" text="Novo [F2]">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnEditar" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Editar [F3]">
+                  <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onBtnEditarAction" prefHeight="47.0" prefWidth="170.0" text="Editar [F3]">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnApagar" mnemonicParsing="false" prefHeight="47.0" prefWidth="170.0" text="Apagar [F4]">
+                  <Button fx:id="btnApagar" mnemonicParsing="false" onAction="#onBtnApagarAction" prefHeight="47.0" prefWidth="170.0" text="Apagar [F4]">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

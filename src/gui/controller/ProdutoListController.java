@@ -1,26 +1,32 @@
 package gui.controller;
 
 import application.Main;
+import gui.ProdutoCadastroController;
+import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
 import model.entities.Fornecedor;
 import model.entities.Produto;
+import model.services.CategoriaServico;
 import model.services.ProdutoServico;
 
-import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,8 +73,13 @@ public class ProdutoListController implements Initializable {
 
     ObservableList<Produto> obsList;
 
-    public void onBtnNovoAction(){
-        System.out.println("Novo Produto");
+    @FXML
+    public void onBtnNovoAction(ActionEvent event){
+
+        Stage parentStage = Utils.atualStage(event);
+        Produto produto = new Produto();
+        carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+
     }
 
     public void onBtnEditarAction(){
@@ -100,7 +111,7 @@ public class ProdutoListController implements Initializable {
 
                 if (ke.getCode() == KeyCode.F2){
                     System.out.println("F2");
-                    onBtnNovoAction();
+
                 }
                 if (ke.getCode() == KeyCode.F3){
                     System.out.println("F3");
@@ -122,5 +133,31 @@ public class ProdutoListController implements Initializable {
         List<Produto> list = servico.findAll();
         obsList = FXCollections.observableArrayList(list);
         tbvListaProduto.setItems(obsList);
+    }
+
+    public void carregaDialog(Produto produto, String caminho, Stage parentStage){
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            Pane pane = loader.load();
+
+            Stage dialog = new Stage();
+
+            ProdutoCadastroController controller = loader.getController();
+            controller.setProduto(produto);
+            controller.setProdutoServico(new ProdutoServico());
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.updateFormData();
+
+            dialog.setTitle("Cadastro de Produto");
+            dialog.setResizable(false);
+            dialog.setScene(new Scene(pane));
+            dialog.initOwner(parentStage);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.showAndWait();
+
+        } catch (IOException e){
+            Alerts.showAlert("Erro ao carregar a tela", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }

@@ -1,6 +1,5 @@
 package gui;
 
-import application.Main;
 import db.DBException;
 import gui.util.Alerts;
 import gui.util.Constraints;
@@ -9,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import model.entities.Cliente;
 import model.entities.Endereco;
 import model.services.ClienteServico;
@@ -72,7 +70,7 @@ public class ClienteCadastroController implements Initializable {
             servico.saveOrUpdate(cliente);
             Alerts.showAlert("Cliente cadastrado com sucesso", null, "Cliente " + cliente.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
             Utils.atualStage(event).close();
-        }catch (DBException e){
+        } catch (DBException e) {
             Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -117,7 +115,7 @@ public class ClienteCadastroController implements Initializable {
         //hyperlinkEndereco.setText(cliente.getEndereco().getLogadouro());
     }
 
-    private Cliente getFormData(){
+    private Cliente getFormData() {
         Cliente cliente = new Cliente();
 
         cliente.setId(Utils.converterInteiro(lblId.getText()));
@@ -132,7 +130,7 @@ public class ClienteCadastroController implements Initializable {
         return cliente;
     }
 
-    private void limpaForm(){
+    private void limpaForm() {
         txtNome.clear();
         txtEmail.clear();
         txtTelefone.clear();

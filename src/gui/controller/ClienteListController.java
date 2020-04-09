@@ -98,15 +98,12 @@ public class ClienteListController implements Initializable {
         tbvListar.prefHeightProperty().bind(stage.heightProperty());
 
 
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<javafx.scene.input.KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
 
-                if (ke.getCode() == KeyCode.F2){
-                    System.out.println("F2");
-                }
-
+            if (ke.getCode() == KeyCode.F2){
+                System.out.println("F2");
             }
+
         });
     }
 

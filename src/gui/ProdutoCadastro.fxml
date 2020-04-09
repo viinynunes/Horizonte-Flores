@@ -15,38 +15,39 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ProdutoCadastroController">
+<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProdutoCadastroController">
    <children>
       <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Produto" textAlignment="CENTER">
         <content>
           <AnchorPane prefHeight="1511.0" prefWidth="803.0">
                <children>
-                  <GridPane alignment="CENTER_LEFT" layoutX="62.0" layoutY="148.0" prefHeight="302.0" prefWidth="688.0" AnchorPane.bottomAnchor="170.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="115.0">
+                  <GridPane alignment="CENTER_LEFT" layoutX="48.0" layoutY="163.0" prefHeight="356.0" prefWidth="735.0" AnchorPane.bottomAnchor="129.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="139.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.39996337890625" minWidth="10.0" prefWidth="164.99998474121094" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.2000274658203" minWidth="10.0" prefWidth="437.00001525878906" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="70.79999389648438" minHeight="10.0" prefHeight="60.80000610351563" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="83.60001220703126" minHeight="10.0" prefHeight="45.20003356933594" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="139.19997863769532" minHeight="10.0" prefHeight="54.000012207031254" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="117.59998779296876" minHeight="10.0" prefHeight="61.599999999999994" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="94.4" minHeight="10.0" prefHeight="68.79996337890626" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="76.39999999999998" minHeight="10.0" prefHeight="66.40003662109373" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Nome:">
+                        <Label text="Nome" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" />
-                        <Label text="Categoria:" GridPane.rowIndex="1">
+                        <TextField fx:id="txtNome" prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Categoria" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <ComboBox editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <ComboBox fx:id="cbbCategoria" editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
                               <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Categoria">
                                  <font>
                                     <Font size="18.0" />
@@ -57,14 +58,14 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Label text="Fornecedor:" GridPane.rowIndex="2">
+                        <Label text="Fornecedor" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <ComboBox editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <ComboBox fx:id="cbbFornecedor" editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
                               <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Fornecedor">
                                  <font>
                                     <Font size="18.0" />
@@ -75,27 +76,37 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Label text="Estabelecimento:" GridPane.rowIndex="3">
+                        <Label text="Estabelecimento" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox editable="true" prefHeight="38.0" prefWidth="455.0" visibleRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="cbbEstabelecimento" editable="true" prefHeight="38.0" prefWidth="455.0" visibleRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="ID">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblId" text="ID" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </GridPane>
                   <HBox alignment="CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
+                        <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]">
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onBtnCancelarAction" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
+                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
                            <font>
                               <Font size="18.0" />
                            </font>
