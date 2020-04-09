@@ -24,6 +24,8 @@ import model.entities.Categoria;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.CategoriaServico;
+import model.services.EstabelecimentoServico;
+import model.services.FornecedorServico;
 import model.services.ProdutoServico;
 
 import java.io.IOException;
@@ -147,6 +149,8 @@ public class ProdutoListController implements Initializable {
             controller.setProduto(produto);
             controller.setProdutoServico(new ProdutoServico());
             controller.setCategoriaServico(new CategoriaServico());
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.updateFormData();
 
             dialog.setTitle("Cadastro de Produto");

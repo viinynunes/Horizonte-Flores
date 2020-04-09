@@ -5,6 +5,7 @@ import db.DBException;
 import model.dao.ClienteDao;
 import model.entities.Cliente;
 import model.entities.Endereco;
+import model.util.Utils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class ClienteDaoJDBC implements ClienteDao {
             rs = st.executeQuery();
 
             if (rs.next()) {
-                Endereco endereco = createEndereco(rs);
+                Endereco endereco = Utils.createEndereco(rs);
 
                 return createCliente(rs, endereco);
             }
@@ -150,7 +151,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                 Endereco endereco = map.get(rs.getInt("endereco_id"));
 
                 if (endereco == null) {
-                    endereco = createEndereco(rs);
+                    endereco = Utils.createEndereco(rs);
                     map.put(rs.getInt("endereco_id"), endereco);
                 }
 
@@ -191,7 +192,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                 endereco = enderecoMap.get(rs.getInt("endereco_id"));
 
                 if (endereco == null) {
-                    endereco = createEndereco(rs);
+                    endereco = Utils.createEndereco(rs);
                     enderecoMap.put(rs.getInt("endereco_id"), endereco);
                 }
                 if (cliente == null) {
@@ -223,20 +224,6 @@ public class ClienteDaoJDBC implements ClienteDao {
             DB.closeStatement(st);
             DB.closeStatement(st1);
         }
-    }
-
-    private Endereco createEndereco(ResultSet rs) throws SQLException {
-        Endereco endereco = new Endereco();
-        endereco.setId(rs.getInt("endereco_id"));
-        endereco.setLogadouro(rs.getString("endereco.logadouro"));
-        endereco.setNumero(rs.getString("endereco.numero"));
-        endereco.setBairro(rs.getString("endereco.bairro"));
-        endereco.setReferencia(rs.getString("endereco.referencia"));
-        endereco.setCidade(rs.getString("endereco.cidade"));
-        endereco.setEstado(rs.getString("estado"));
-        endereco.setPais(rs.getString("pais"));
-
-        return endereco;
     }
 
     private Cliente createCliente(ResultSet rs, Endereco endereco) throws SQLException {

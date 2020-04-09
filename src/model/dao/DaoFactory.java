@@ -1,9 +1,7 @@
 package model.dao;
 
 import db.DB;
-import model.dao.impl.CategoriaDaoJDBC;
-import model.dao.impl.ClienteDaoJDBC;
-import model.dao.impl.ProdutoDaoJDBC;
+import model.dao.impl.*;
 
 public class DaoFactory {
 
@@ -18,4 +16,8 @@ public class DaoFactory {
     public static CategoriaDao createCategoriaDao() {
         return new CategoriaDaoJDBC(DB.getConnection());
     }
+
+    public static EstabelecimentoDao createEstabelecimentoDao() { return new EstabelecimentoDaoJDBC(DB.getConnection()); }
+
+    public static FornecedorDao createFornecedorDao() { return new FornecedorDaoJDBC(DB.getConnection()); }
 }

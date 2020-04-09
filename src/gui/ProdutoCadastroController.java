@@ -14,6 +14,8 @@ import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.CategoriaServico;
+import model.services.EstabelecimentoServico;
+import model.services.FornecedorServico;
 import model.services.ProdutoServico;
 
 import java.net.URL;
@@ -26,6 +28,8 @@ public class ProdutoCadastroController implements Initializable {
     private Produto produto;
     private ProdutoServico produtoServico;
     private CategoriaServico categoriaServico;
+    private FornecedorServico fornecedorServico;
+    private EstabelecimentoServico estabelecimentoServico;
 
     @FXML
     private Button btnCadastrar;
@@ -39,13 +43,15 @@ public class ProdutoCadastroController implements Initializable {
     private TextField txtNome;
     @FXML
     private ComboBox<Categoria> cbbCategoria;
-
     private ObservableList<Categoria> obbListCategoria;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
+    private ObservableList<Fornecedor> obbFornecedor;
+
     @FXML
     private ComboBox<Estabelecimento> cbbEstabelecimento;
+    private ObservableList<Estabelecimento> obbEstabelecimento;
 
     @FXML
     public void onBtnCadastrarAction() {
@@ -74,11 +80,14 @@ public class ProdutoCadastroController implements Initializable {
         this.categoriaServico = categoriaServico;
     }
 
+    public void setFornecedorServico(FornecedorServico fornecedorServico){ this.fornecedorServico = fornecedorServico;}
+
+    public void setEstabelecimentoServico(EstabelecimentoServico estabelecimentoServico){
+        this.estabelecimentoServico = estabelecimentoServico;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-
         //initializeNodes();
     }
 
@@ -95,9 +104,17 @@ public class ProdutoCadastroController implements Initializable {
         lblId.setText(String.valueOf(produto.getId()));
         txtNome.setText(produto.getNome());
 
-        List<Categoria> list = categoriaServico.findAll();
+        List<Categoria> categoriaList = categoriaServico.findAll();
 
-        obbListCategoria = FXCollections.observableArrayList(list);
+        obbListCategoria = FXCollections.observableArrayList(categoriaList);
         cbbCategoria.setItems(obbListCategoria);
+
+        List<Fornecedor> fornecedorList = fornecedorServico.findAll();
+        obbFornecedor = FXCollections.observableArrayList(fornecedorList);
+        cbbFornecedor.setItems(obbFornecedor);
+
+        List<Estabelecimento> estabelecimentoList = estabelecimentoServico.findAll();
+        obbEstabelecimento = FXCollections.observableArrayList(estabelecimentoList);
+        cbbEstabelecimento.setItems(obbEstabelecimento);
     }
 }
