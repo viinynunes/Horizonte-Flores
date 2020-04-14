@@ -1,4 +1,4 @@
-package gui;
+package gui.controller;
 
 import db.DBException;
 import gui.util.Alerts;

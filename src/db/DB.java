@@ -12,6 +12,7 @@ public class DB {
 
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hfp", "Dev", "nunes123");
 
+
             return conn;
         } catch (SQLException e) {
             throw new DBException(e.getMessage());

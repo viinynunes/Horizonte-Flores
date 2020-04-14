@@ -17,11 +17,21 @@
                     <MenuItem fx:id="miFechar" mnemonicParsing="false" onAction="#onMiFecharAction" text="Fechar" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Cadastro">
-                  <items>
+                  <Menu mnemonicParsing="false" text="Abas">
+                    <items>
                     <MenuItem fx:id="miCadProduto" mnemonicParsing="false" onAction="#onMiCadProdutoAction" text="Produto" />
                         <MenuItem fx:id="miCadCliente" mnemonicParsing="false" onAction="#onMiCadClienteAction" text="Cliente" />
-                  </items>
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Cadastro">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Categoria" />
+                        <MenuItem mnemonicParsing="false" text="Cliente" />
+                        <MenuItem mnemonicParsing="false" text="Endereço" />
+                        <MenuItem mnemonicParsing="false" text="Estabelecimento" />
+                        <MenuItem mnemonicParsing="false" text="Fornecedor" />
+                        <MenuItem mnemonicParsing="false" text="Produto" />
+                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Relatório">
                   <items>

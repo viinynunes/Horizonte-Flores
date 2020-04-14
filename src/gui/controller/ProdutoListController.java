@@ -1,21 +1,17 @@
 package gui.controller;
 
 import application.Main;
-import gui.ProdutoCadastroController;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -106,25 +102,6 @@ public class ProdutoListController implements Initializable {
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
-
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
-
-                if (ke.getCode() == KeyCode.F2){
-                    System.out.println("F2");
-
-                }
-                if (ke.getCode() == KeyCode.F3){
-                    System.out.println("F3");
-                    onBtnEditarAction();
-                }
-                if (ke.getCode() == KeyCode.F4){
-                    System.out.println("F4");
-                    onBtnApagarAction();
-                }
-            }
-        });
     }
 
     public void updateTableView() {

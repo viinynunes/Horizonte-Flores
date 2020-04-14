@@ -1,4 +1,4 @@
-package gui;
+package gui.controller;
 
 import gui.util.Constraints;
 import javafx.collections.FXCollections;
