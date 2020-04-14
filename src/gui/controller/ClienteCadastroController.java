@@ -92,10 +92,12 @@ public class ClienteCadastroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         initializaNodes();
     }
 
     private void initializaNodes() {
+
         Constraints.setLabeldInteger(lblId);
     }
 

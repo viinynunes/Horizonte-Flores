@@ -1,4 +1,4 @@
-package gui;
+package gui.controller;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,12 +6,6 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import application.Main;
-import gui.controller.CategoriaCadastroController;
-import gui.controller.ClienteListController;
-import gui.controller.ProdutoListController;
-import gui.util.Alerts;
-import gui.util.Utils;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,12 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import model.services.CategoriaServico;
 import model.services.ClienteServico;
 import model.services.ProdutoServico;
 

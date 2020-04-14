@@ -88,11 +88,12 @@ public class ProdutoCadastroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //initializeNodes();
+        initializeNodes();
     }
 
     private void initializeNodes() {
-        Constraints.setLabeldInteger(lblId);
+
+        lblId.setText(" ");
     }
 
     public void updateFormData() {
@@ -101,7 +102,12 @@ public class ProdutoCadastroController implements Initializable {
             throw new IllegalStateException("Produto estava vazio");
         }
 
-        lblId.setText(String.valueOf(produto.getId()));
+        if (produto.getId() == null){
+            lblId.setText("");
+        } else {
+            lblId.setText(String.valueOf(produto.getId()));
+        }
+
         txtNome.setText(produto.getNome());
 
         List<Categoria> categoriaList = categoriaServico.findAll();
