@@ -1,4 +1,4 @@
-package gui.controller;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,9 +6,12 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import application.Main;
+import gui.controller.CategoriaCadastroController;
 import gui.controller.ClienteListController;
 import gui.controller.ProdutoListController;
 import gui.util.Alerts;
+import gui.util.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +20,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import model.services.CategoriaServico;
 import model.services.ClienteServico;
 import model.services.ProdutoServico;
 
@@ -28,9 +35,9 @@ public class MainViewController implements Initializable{
 	private MenuItem miFechar;
 	@FXML
 	
-	private MenuItem miCadProduto;
+	private MenuItem miAbasProduto;
 	@FXML
-	private MenuItem miCadCliente;
+	private MenuItem miAbasCliente;
 	@FXML
 	private MenuItem miRelPedido;
 	@FXML
@@ -39,17 +46,19 @@ public class MainViewController implements Initializable{
 	private MenuItem miRelVeiling;
 	@FXML
 	private MenuItem miRelCeaflor;
-	
 	@FXML
 	private MenuItem miRelGeral;
-	
+	@FXML
+	private MenuItem miTransacoes;
+
+
 	@FXML
 	public void onMiFecharAction() {
 		System.exit(0);
 	}
 	
 	@FXML
-	public void onMiCadProdutoAction() {
+	public void onMiAbasProdutoAction() {
 		System.out.println("Produto");
 		carregaView("/gui/ProdutoList.fxml", (ProdutoListController controller) -> {
 			controller.setProdutoServico(new ProdutoServico());
@@ -58,12 +67,18 @@ public class MainViewController implements Initializable{
 	}
 	
 	@FXML
-	public void onMiCadClienteAction() {
+	public void onMiAbasClienteAction() {
 		System.out.println("Cadastro Cliente");
 		carregaView("/gui/ClienteList.fxml", (ClienteListController controller) -> {
 			controller.setClienteServico(new ClienteServico());
 			controller.updateTableView();
 		});
+	}
+
+	@FXML
+	public void onMenuCadastroAction(){
+		System.out.println("Cadastro");
+		carregaView("/gui/Cadastro.fxml", (CadastroController controller)->{});
 	}
 
 	@FXML
@@ -89,7 +104,12 @@ public class MainViewController implements Initializable{
 	public void onMiRelGeralAction() {
 		System.out.println("Relat�rio Geral");
 	}
-	
+
+	@FXML
+	public void onMiTransacoes(){
+		System.out.println("Tela transações");
+	}
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		

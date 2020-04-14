@@ -17,5 +17,9 @@ public class CategoriaServico {
         return list;
     }
 
+    public void Insert (Categoria categoria){
+        dao.insert(categoria);
+    }
+
 
 }
