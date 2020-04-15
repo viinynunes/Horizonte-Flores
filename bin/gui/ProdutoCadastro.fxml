@@ -81,13 +81,17 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbbEstabelecimento" prefHeight="38.0" prefWidth="455.0" visibleRowCount="5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="ID">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                         <Label fx:id="lblId" text="ID" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblId1" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>

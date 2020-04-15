@@ -35,7 +35,7 @@ public class FornecedorDaoJDBC implements FornecedorDao {
             st.setString(1, fornecedor.getNome());
             st.setInt(2, fornecedor.getEstabelecimento().getId());
 
-            st.executeQuery();
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -55,7 +55,7 @@ public class FornecedorDaoJDBC implements FornecedorDao {
             st.setInt(2, fornecedor.getEstabelecimento().getId());
             st.setInt(3, fornecedor.getId());
 
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {

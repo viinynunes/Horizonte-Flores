@@ -13,9 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.entities.Categoria;
-import model.entities.Cliente;
-import model.entities.Produto;
+import model.entities.*;
 import model.services.*;
 
 import java.io.IOException;
@@ -25,6 +23,12 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 public class CadastroController implements Initializable {
+
+    Estabelecimento estabelecimento = new Estabelecimento();
+    Categoria categoria = new Categoria();
+    Fornecedor fornecedor = new Fornecedor();
+    Cliente cliente = new Cliente();
+    Produto produto = new Produto();
 
     @FXML
     private Button btnCategoria;
@@ -49,7 +53,6 @@ public class CadastroController implements Initializable {
 
     public void onBtnClienteAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        Cliente cliente = new Cliente();
         carregaDialogVBox(parentStage, "/gui/ClienteCadastro.fxml", (ClienteCadastroController controller) ->{
             controller.setServico(new ClienteServico());
             controller.setCliente(cliente);
@@ -65,23 +68,31 @@ public class CadastroController implements Initializable {
     public void onBtnEstabelecimentoAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
         carregaDialogVBox(parentStage, "/gui/EstabelecimentoCadastro.fxml", (EstabelecimentoCadastroController controller) ->{
+
+            controller.setServico(new EstabelecimentoServico());
+
         });
     }
 
     public void onBtnFornecedorAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialog(parentStage, "/gui/FornecedorCadastro.fxml", (FornecedorCadastroController controller) ->{});
+        carregaDialog(parentStage, "/gui/FornecedorCadastro.fxml", (FornecedorCadastroController controller) ->{
+            controller.setServico(new FornecedorServico());
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.setFornecedor(fornecedor);
+            controller.updateFormData();
+        });
     }
 
     public void onBtnProdutoActio(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        Produto produto = new Produto();
         carregaDialogVBox(parentStage, "/gui/ProdutoCadastro.fxml", (ProdutoCadastroController controller)->{
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.setCategoriaServico(new CategoriaServico());
             controller.setFornecedorServico(new FornecedorServico());
-            controller.setProduto(produto);
             controller.setProdutoServico(new ProdutoServico());
+            controller.setProduto(produto);
+
             controller.updateFormData();
         });
     }

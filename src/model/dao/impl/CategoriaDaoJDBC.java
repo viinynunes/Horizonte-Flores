@@ -32,7 +32,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
             st.setString(1, categoria.getNome());
             st.setString(2, categoria.getAbreviacao());
 
-            st.executeQuery();
+            st.executeUpdate();
 
 
         } catch (SQLException e) {

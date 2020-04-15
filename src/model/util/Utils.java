@@ -28,7 +28,12 @@ public class Utils {
 
         estabelecimento.setId(rs.getInt("id"));
         estabelecimento.setNome(rs.getString("nome"));
-        estabelecimento.setEndereco(endereco);
+
+        if (endereco == null){
+
+        } else {
+            estabelecimento.setEndereco(endereco);
+        }
 
         return estabelecimento;
     }

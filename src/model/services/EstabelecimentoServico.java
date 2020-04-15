@@ -13,4 +13,12 @@ public class EstabelecimentoServico {
     public List<Estabelecimento> findAll(){
         return dao.findAll();
     }
+
+    public void saveOrUpdate(Estabelecimento estabelecimento){
+        if (estabelecimento.getId() == null){
+            dao.insert(estabelecimento);
+        } else {
+            dao.update(estabelecimento);
+        }
+    }
 }

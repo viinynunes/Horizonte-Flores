@@ -22,4 +22,12 @@ public class ProdutoServico {
 
         return list;
     }
+
+    public void saveOrUpdate(Produto produto){
+        if (produto.getId() == null){
+            dao.insert(produto);
+        } else {
+            dao.update(produto);
+        }
+    }
 }

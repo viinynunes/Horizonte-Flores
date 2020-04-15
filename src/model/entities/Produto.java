@@ -10,19 +10,16 @@ public class Produto implements Serializable {
     private String nome;
     private Categoria categoria;
     private Fornecedor fornecedor;
-    private Estabelecimento estabelecimento;
-
 
     public Produto() {
 
     }
 
-    public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor, Estabelecimento estabelecimento) {
+    public Produto(Integer id, String nome, Categoria categoria, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.categoria = categoria;
         this.fornecedor = fornecedor;
-        this.estabelecimento = estabelecimento;
     }
 
     public Integer getId() {
@@ -55,14 +52,6 @@ public class Produto implements Serializable {
 
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
-    }
-
-    public Estabelecimento getEstabelecimento() {
-        return estabelecimento;
-    }
-
-    public void setEstabelecimento(Estabelecimento estabelecimento) {
-        this.estabelecimento = estabelecimento;
     }
 
     @Override

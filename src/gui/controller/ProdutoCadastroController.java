@@ -1,14 +1,15 @@
 package gui.controller;
 
+import db.DBException;
+import gui.util.Alerts;
 import gui.util.Constraints;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import model.entities.Categoria;
 import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
@@ -40,6 +41,8 @@ public class ProdutoCadastroController implements Initializable {
     @FXML
     private Label lblId;
     @FXML
+    private Label lblEstabelecimentoFornecedor;
+    @FXML
     private TextField txtNome;
     @FXML
     private ComboBox<Categoria> cbbCategoria;
@@ -50,12 +53,17 @@ public class ProdutoCadastroController implements Initializable {
     private ObservableList<Fornecedor> obbFornecedor;
 
     @FXML
-    private ComboBox<Estabelecimento> cbbEstabelecimento;
-    private ObservableList<Estabelecimento> obbEstabelecimento;
+    public void onBtnCadastrarAction(ActionEvent event) {
+        try {
 
-    @FXML
-    public void onBtnCadastrarAction() {
+            Produto produto = getFormData();
+            produtoServico.saveOrUpdate(produto);
+            Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+            Utils.atualStage(event).close();
 
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -93,7 +101,6 @@ public class ProdutoCadastroController implements Initializable {
 
     private void initializeNodes() {
 
-        lblId.setText(" ");
     }
 
     public void updateFormData() {
@@ -119,8 +126,20 @@ public class ProdutoCadastroController implements Initializable {
         obbFornecedor = FXCollections.observableArrayList(fornecedorList);
         cbbFornecedor.setItems(obbFornecedor);
 
-        List<Estabelecimento> estabelecimentoList = estabelecimentoServico.findAll();
-        obbEstabelecimento = FXCollections.observableArrayList(estabelecimentoList);
-        cbbEstabelecimento.setItems(obbEstabelecimento);
+        //Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
+        //lblEstabelecimentoFornecedor.setText(fornecedor.getEstabelecimento().getNome());
+    }
+
+    private Produto getFormData(){
+
+        Produto produto = new Produto();
+
+        produto.setId(Utils.converterInteiro(lblId.getText()));
+        produto.setNome(txtNome.getText());
+        produto.setFornecedor(cbbFornecedor.getSelectionModel().getSelectedItem());
+        produto.setCategoria(cbbCategoria.getSelectionModel().getSelectedItem());
+
+
+        return produto;
     }
 }

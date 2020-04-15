@@ -30,11 +30,21 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
     public void insert(Estabelecimento estabelecimento) {
         try {
 
-            st = conn.prepareStatement("insert into estabelecimento (nome, endereco_id) values (?, ?)");
-            st.setString(1, estabelecimento.getNome());
-            st.setInt(2, estabelecimento.getEndereco().getId());
+            if (estabelecimento.getEndereco() == null){
+                st = conn.prepareStatement("insert into estabelecimento (nome, endereco_id) values (?, null)");
+                st.setString(1, estabelecimento.getNome());
 
-            st.executeQuery();
+                st.executeUpdate();
+            } else {
+
+                st = conn.prepareStatement("insert into estabelecimento (nome, endereco_id) values (?, ?)");
+                st.setString(1, estabelecimento.getNome());
+                st.setInt(2, estabelecimento.getEndereco().getId());
+
+                st.executeUpdate();
+            }
+
+
 
         } catch (SQLException e){
             throw new DBException(e.getMessage());
@@ -78,6 +88,8 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
 
     @Override
     public List<Estabelecimento> findAll() {
+        PreparedStatement st1 = null;
+        ResultSet rs1 = null;
         ResultSet rs = null;
         List<Estabelecimento> list = new ArrayList<>();
 
@@ -88,17 +100,41 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
             rs = st.executeQuery();
 
             Map<Integer, Endereco> map = new HashMap<>();
+            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
+
+            Estabelecimento estabelecimento;
+
 
             while (rs.next()){
 
                 Endereco endereco = map.get(rs.getInt("endereco_id"));
+                estabelecimento = estabelecimentoMap.get(rs.getInt("id"));
+
                 if (endereco == null){
                     endereco = Utils.createEndereco(rs);
                     map.put(rs.getInt("endereco_id"), endereco);
                 }
 
-                Estabelecimento estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                if (estabelecimento == null){
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    estabelecimentoMap.put(rs.getInt("id"), estabelecimento);
+                }
+
                 list.add(estabelecimento);
+            }
+
+            st1 = conn.prepareStatement("select * from estabelecimento");
+
+            rs1 = st1.executeQuery();
+
+            while (rs1.next()){
+                estabelecimento = estabelecimentoMap.get(rs1.getInt("id"));
+
+                if (estabelecimento == null){
+                    estabelecimento = Utils.createEstabelecimento(rs1, null);
+                    estabelecimentoMap.put(rs1.getInt("id"), estabelecimento);
+                    list.add(estabelecimento);
+                }
             }
 
             return list;
@@ -107,5 +143,6 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
             throw new DBException(e.getMessage());
         }
     }
+
 
 }

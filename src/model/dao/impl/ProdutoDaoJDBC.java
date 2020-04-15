@@ -26,13 +26,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("Insert into produto (nome, categoria_id, estabelecimento_id, fornecedor_id) " +
-                    "values (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            st = conn.prepareStatement("Insert into produto (nome, categoria_id, fornecedor_id) " +
+                    "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             st.setString(1, produto.getNome());
             st.setInt(2, produto.getCategoria().getId());
-            st.setInt(3, produto.getEstabelecimento().getId());
-            st.setInt(4, produto.getFornecedor().getId());
+            st.setInt(3, produto.getFornecedor().getId());
 
 
             int rows = st.executeUpdate();
@@ -61,11 +60,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         try {
             st = conn.prepareStatement("Update produto " +
-                    "set nome = ?, categoria_id = ?, estabelecimento_id, fornecedor_id = ?");
+                    "set nome = ?, categoria_id = ?, fornecedor_id = ?");
             st.setString(1, produto.getNome());
             st.setInt(2, produto.getCategoria().getId());
-            st.setInt(3, produto.getEstabelecimento().getId());
-            st.setInt(4, produto.getFornecedor().getId());
+            st.setInt(3, produto.getFornecedor().getId());
 
             st.executeQuery();
 
@@ -104,10 +102,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement("select * from hfp.produto inner join categoria " +
                     "on produto.CATEGORIA_ID = categoria.id " +
-                    "inner join estabelecimento " +
-                    "on produto.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join fornecedor " +
                     "on FORNECEDOR_ID = fornecedor.id " +
+                    "inner join estabelecimento " +
+                    "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "where produto.id = ?");
 
             st.setInt(1, id);
@@ -124,7 +122,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     Estabelecimento estabelecimento = createEstabelecimento(rs, endereco);
                     Fornecedor fornecedor = createFornecedor(rs, estabelecimento);
 
-                    return createProduto(rs, categoria, estabelecimento, fornecedor);
+                    return createProduto(rs, categoria, fornecedor);
                 }
             }
 
@@ -149,10 +147,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement("select * from hfp.produto inner join categoria " +
                     "on produto.CATEGORIA_ID = categoria.id " +
-                    "inner join estabelecimento " +
-                    "on produto.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join fornecedor " +
                     "on FORNECEDOR_ID = fornecedor.id " +
+                    "inner join estabelecimento " +
+                    "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join endereco " +
                     "on estabelecimento.ENDERECO_ID = endereco.id " +
                     "where produto.nome = ?");
@@ -190,7 +188,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
                 }
 
-                Produto produto = createProduto(rs, categoria, estabelecimento, fornecedor);
+                Produto produto = createProduto(rs, categoria, fornecedor);
                 list.add(produto);
                 return list;
             }
@@ -216,10 +214,10 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         try {
             st = conn.prepareStatement("select * from produto inner join categoria " +
                     "on produto.CATEGORIA_ID = categoria.id " +
-                    "inner join estabelecimento " +
-                    "on produto.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join fornecedor " +
                     "on produto.FORNECEDOR_ID = fornecedor.id " +
+                    "inner join estabelecimento " +
+                    "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join endereco " +
                     "on estabelecimento.ENDERECO_ID = endereco.id");
 
@@ -255,7 +253,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
                 }
 
-                Produto produto = createProduto(rs, categoria, estabelecimento, fornecedor);
+                Produto produto = createProduto(rs, categoria, fornecedor);
                 list.add(produto);
 
             }
@@ -317,13 +315,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         return endereco;
     }
 
-    private Produto createProduto(ResultSet rs, Categoria categoria, Estabelecimento estabelecimento, Fornecedor fornecedor) throws SQLException {
+    private Produto createProduto(ResultSet rs, Categoria categoria, Fornecedor fornecedor) throws SQLException {
 
         Produto produto = new Produto();
         produto.setId(rs.getInt("id"));
         produto.setNome(rs.getString("nome"));
         produto.setCategoria(categoria);
-        produto.setEstabelecimento(estabelecimento);
         produto.setFornecedor(fornecedor);
 
         return produto;

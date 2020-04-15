@@ -15,6 +15,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Cliente;
@@ -28,10 +29,14 @@ import java.util.ResourceBundle;
 
 public class ClienteListController implements Initializable {
 
+    Stage parentStage;
+
     private ClienteServico servico;
 
     private Cliente cliente;
 
+    @FXML
+    private VBox vBox;
     @FXML
     private Button btnNovo;
     @FXML
@@ -63,7 +68,7 @@ public class ClienteListController implements Initializable {
 
     public void onBtnNovoAction(ActionEvent event) {
 
-        Stage parentStage = Utils.atualStage(event);
+        parentStage = Utils.atualStage(event);
 
         Cliente cliente = new Cliente();
 
@@ -94,15 +99,16 @@ public class ClienteListController implements Initializable {
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListar.prefHeightProperty().bind(stage.heightProperty());
-
-
+/*
         stage.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
 
             if (ke.getCode() == KeyCode.F2){
-                System.out.println("F2");
+
             }
 
-        });
+        });e
+ */
+
     }
 
     public void updateTableView() {
@@ -140,4 +146,7 @@ public class ClienteListController implements Initializable {
             Alerts.showAlert("Erro ao carregar tela", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+
+
 }

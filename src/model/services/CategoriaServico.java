@@ -11,14 +11,15 @@ public class CategoriaServico {
     CategoriaDao dao = DaoFactory.createCategoriaDao();
 
     public List<Categoria> findAll (){
-
-        List<Categoria> list = dao.findAll();
-
-        return list;
+        return dao.findAll();
     }
 
-    public void Insert (Categoria categoria){
-        dao.insert(categoria);
+    public void saveOrUpdate(Categoria categoria){
+        if (categoria.getId() == null){
+            dao.insert(categoria);
+        } else {
+            dao.update(categoria);
+        }
     }
 
 
