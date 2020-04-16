@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,7 +20,7 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1511.0" prefWidth="803.0">
                <children>
-                  <GridPane fx:id="gpForm" alignment="CENTER_LEFT" layoutX="63.0" layoutY="148.0" prefHeight="456.0" prefWidth="738.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="115.0">
+                  <GridPane fx:id="gpForm" alignment="CENTER_LEFT" layoutX="48.0" layoutY="163.0" prefHeight="456.0" prefWidth="735.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="115.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.39996337890625" minWidth="10.0" prefWidth="164.99998474121094" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="448.2000274658203" minWidth="10.0" prefWidth="437.00001525878906" />
@@ -32,7 +33,8 @@
                         <RowConstraints maxHeight="152.99997558593748" minHeight="10.0" prefHeight="56.40001220703127" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="150.19998779296873" minHeight="10.0" prefHeight="53.19997558593752" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="152.39999999999998" minHeight="10.0" prefHeight="58.19999999999999" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="108.00006713867185" minHeight="10.0" prefHeight="60.00003662109373" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="108.00006713867185" minHeight="10.0" prefHeight="77.00001220703126" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="108.00006713867185" minHeight="10.0" prefHeight="38.59998779296876" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label text="Nome:" GridPane.rowIndex="1">
@@ -76,7 +78,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Hyperlink fx:id="hyperlinkEndereco" onAction="#onHyperlinkEnderecoAction" prefHeight="27.0" prefWidth="275.0" text="Adicionar Endereço" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <Hyperlink fx:id="hyperlinkCadEndereco" onAction="#onHyperlinkCadEnderecoAction" prefHeight="27.0" prefWidth="275.0" text="Adicionar Endereço" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -91,6 +93,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
+                        <TextArea fx:id="txaEndereco" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                      </children>
                   </GridPane>
                   <HBox alignment="TOP_CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.bottomAnchor="540.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">

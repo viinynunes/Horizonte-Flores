@@ -27,22 +27,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         try {
             st = conn.prepareStatement("Insert into produto (nome, categoria_id, fornecedor_id) " +
-                    "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                    "values (?, ?, ?)");
 
             st.setString(1, produto.getNome());
             st.setInt(2, produto.getCategoria().getId());
             st.setInt(3, produto.getFornecedor().getId());
 
 
-            int rows = st.executeUpdate();
-
-            if (rows > 0) {
-                rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt("id");
-                    produto.setId(id);
-                }
-            }
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());

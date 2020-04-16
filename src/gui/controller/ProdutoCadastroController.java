@@ -8,8 +8,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.entities.Categoria;
 import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
@@ -19,10 +23,12 @@ import model.services.EstabelecimentoServico;
 import model.services.FornecedorServico;
 import model.services.ProdutoServico;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class ProdutoCadastroController implements Initializable {
 
@@ -45,6 +51,11 @@ public class ProdutoCadastroController implements Initializable {
     @FXML
     private TextField txtNome;
     @FXML
+    private Hyperlink hyperlinkCadCategoria;
+    @FXML
+    private Hyperlink hyperlinkCadFornecedor;
+
+    @FXML
     private ComboBox<Categoria> cbbCategoria;
     private ObservableList<Categoria> obbListCategoria;
 
@@ -61,7 +72,7 @@ public class ProdutoCadastroController implements Initializable {
             Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
             Utils.atualStage(event).close();
 
-        } catch (DBException e){
+        } catch (DBException e) {
             Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -76,6 +87,29 @@ public class ProdutoCadastroController implements Initializable {
 
     }
 
+    @FXML
+    public void onHyperlinkCadCategoriaAction(ActionEvent event) {
+        Stage parentStage = Utils.atualStage(event);
+        Categoria categoria = new Categoria();
+        carregaDialog(parentStage, "/gui/CategoriaCadastro.fxml", (CategoriaCadastroController controller) -> {
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.setCategoria(categoria);
+            controller.updateTableView();
+        });
+    }
+
+    @FXML
+    public void onHyperlinkCadFornecedorAction(ActionEvent event) {
+        Stage parentStage = Utils.atualStage(event);
+        Fornecedor fornecedor = new Fornecedor();
+        carregaDialog(parentStage, "/gui/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
+            controller.setServico(new FornecedorServico());
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.setFornecedor(fornecedor);
+            controller.updateFormData();
+        });
+    }
+
     public void setProduto(Produto produto) {
         this.produto = produto;
     }
@@ -88,9 +122,11 @@ public class ProdutoCadastroController implements Initializable {
         this.categoriaServico = categoriaServico;
     }
 
-    public void setFornecedorServico(FornecedorServico fornecedorServico){ this.fornecedorServico = fornecedorServico;}
+    public void setFornecedorServico(FornecedorServico fornecedorServico) {
+        this.fornecedorServico = fornecedorServico;
+    }
 
-    public void setEstabelecimentoServico(EstabelecimentoServico estabelecimentoServico){
+    public void setEstabelecimentoServico(EstabelecimentoServico estabelecimentoServico) {
         this.estabelecimentoServico = estabelecimentoServico;
     }
 
@@ -109,7 +145,7 @@ public class ProdutoCadastroController implements Initializable {
             throw new IllegalStateException("Produto estava vazio");
         }
 
-        if (produto.getId() == null){
+        if (produto.getId() == null) {
             lblId.setText("");
         } else {
             lblId.setText(String.valueOf(produto.getId()));
@@ -130,7 +166,7 @@ public class ProdutoCadastroController implements Initializable {
         //lblEstabelecimentoFornecedor.setText(fornecedor.getEstabelecimento().getNome());
     }
 
-    private Produto getFormData(){
+    private Produto getFormData() {
 
         Produto produto = new Produto();
 
@@ -141,5 +177,27 @@ public class ProdutoCadastroController implements Initializable {
 
 
         return produto;
+    }
+
+
+    public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> init) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            TitledPane pane = loader.load();
+            Stage dialog = new Stage();
+
+            T controller = loader.getController();
+            init.accept(controller);
+
+            dialog.setTitle("Cadastro");
+            dialog.setScene(new Scene(pane));
+            dialog.setResizable(false);
+            dialog.initOwner(parentStage);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

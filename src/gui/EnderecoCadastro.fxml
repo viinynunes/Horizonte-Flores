@@ -101,7 +101,7 @@
                   <TextField fx:id="txtCEP" maxHeight="37.0" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <TextField fx:id="txtCidade" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <TextField fx:id="txtPais" maxWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                  <ComboBox fx:id="cbbEstado" minHeight="32.0" prefHeight="32.0" prefWidth="115.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <ComboBox fx:id="cbbEstado" minHeight="32.0" prefHeight="36.0" prefWidth="144.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                </children>
             </GridPane>
          </children></AnchorPane>

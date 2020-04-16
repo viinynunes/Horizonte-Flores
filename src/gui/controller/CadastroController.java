@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 
 public class CadastroController implements Initializable {
 
+    Endereco endereco = new Endereco();
     Estabelecimento estabelecimento = new Estabelecimento();
     Categoria categoria = new Categoria();
     Fornecedor fornecedor = new Fornecedor();
@@ -62,7 +63,11 @@ public class CadastroController implements Initializable {
 
     public void onBtnEnderecoAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialog(parentStage, "/gui/EnderecoCadastro.fxml", (EnderecoCadastroController controller)->{});
+        carregaDialog(parentStage, "/gui/EnderecoCadastro.fxml", (EnderecoCadastroController controller)->{
+            controller.setEndereco(endereco);
+            controller.setServico(new EnderecoServico());
+            controller.updateDataForm();
+        });
     }
 
     public void onBtnEstabelecimentoAction(ActionEvent event){

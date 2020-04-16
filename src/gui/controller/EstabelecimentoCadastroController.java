@@ -6,12 +6,18 @@ import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.entities.Endereco;
 import model.entities.Estabelecimento;
+import model.services.EnderecoServico;
 import model.services.EstabelecimentoServico;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,6 +39,8 @@ public class EstabelecimentoCadastroController implements Initializable {
     private TextField txtNome;
     @FXML
     private TextArea txaEndereco;
+    @FXML
+    private Hyperlink hyperlinkCadEndereco;
 
     public void onBtnCadastrarAction(ActionEvent event) {
         try {
@@ -59,6 +67,12 @@ public class EstabelecimentoCadastroController implements Initializable {
     public void onBtnLimparAction() {
         txtNome.clear();
         txaEndereco.clear();
+    }
+
+    public void onHyperlinkCadEnderecoAction(ActionEvent event){
+        Stage parentStage = Utils.atualStage(event);
+        Endereco endereco = new Endereco();
+        criarTelaDialog(endereco, "/gui/EnderecoCadastro.fxml", parentStage);
     }
 
     public void setEstabelecimento(Estabelecimento estabelecimento) {
@@ -101,5 +115,30 @@ public class EstabelecimentoCadastroController implements Initializable {
         estabelecimento.setEndereco(endereco);
 
         return estabelecimento;
+    }
+
+    public void criarTelaDialog(Endereco endereco, String caminho, Stage parentStage) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            TitledPane pane = loader.load();
+
+            Stage dialog = new Stage();
+
+            EnderecoCadastroController controller = loader.getController();
+            controller.setEndereco(endereco);
+            controller.setServico(new EnderecoServico());
+            controller.updateDataForm();
+
+            dialog.setTitle("Cadastro de Endereco");
+            dialog.setScene(new Scene(pane));
+            dialog.setResizable(false);
+            dialog.initOwner(parentStage);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.showAndWait();
+
+        } catch (IOException e) {
+            Alerts.showAlert("Erro ao carregar tela", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }

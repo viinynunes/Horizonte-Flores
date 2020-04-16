@@ -20,4 +20,6 @@ public class DaoFactory {
     public static EstabelecimentoDao createEstabelecimentoDao() { return new EstabelecimentoDaoJDBC(DB.getConnection()); }
 
     public static FornecedorDao createFornecedorDao() { return new FornecedorDaoJDBC(DB.getConnection()); }
+
+    public static EnderecoDao createEnderecoDao() {return new EnderecoDaoJDBC(DB.getConnection()); }
 }

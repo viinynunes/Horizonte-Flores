@@ -47,8 +47,8 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <ComboBox fx:id="cbbCategoria" editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
-                              <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Categoria">
+                              <ComboBox fx:id="cbbCategoria" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <Hyperlink fx:id="hyperlinkCadCategoria" onAction="#onHyperlinkCadCategoriaAction" prefHeight="30.0" prefWidth="193.0" text="Adicionar Categoria">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -65,8 +65,8 @@
                         </Label>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <ComboBox fx:id="cbbFornecedor" editable="true" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
-                              <Hyperlink prefHeight="30.0" prefWidth="193.0" text="Adicionar Fornecedor">
+                              <ComboBox fx:id="cbbFornecedor" prefHeight="38.0" prefWidth="254.0" visibleRowCount="5" />
+                              <Hyperlink fx:id="hyperlinkCadFornecedor" onAction="#onHyperlinkCadFornecedorAction" prefHeight="30.0" prefWidth="193.0" text="Adicionar Fornecedor">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

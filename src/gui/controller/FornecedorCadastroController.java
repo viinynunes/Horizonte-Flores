@@ -109,6 +109,8 @@ public class FornecedorCadastroController implements Initializable {
 
         Fornecedor fornecedor = new Fornecedor();
 
+        Estabelecimento est = cbbEstabelecimento.getSelectionModel().getSelectedItem();
+
         fornecedor.setId(Utils.converterInteiro(lblId.getText()));
         fornecedor.setNome(txtNome.getText());
         fornecedor.setEstabelecimento(cbbEstabelecimento.getSelectionModel().getSelectedItem());
