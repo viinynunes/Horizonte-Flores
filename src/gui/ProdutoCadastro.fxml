@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -17,9 +18,9 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ProdutoCadastroController">
    <children>
-      <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Produto" textAlignment="CENTER">
+      <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" style="-fx-background-color: #000000;" text="Cadastro de Produto" textAlignment="CENTER">
         <content>
-          <AnchorPane prefHeight="1511.0" prefWidth="803.0">
+          <AnchorPane prefHeight="1511.0" prefWidth="803.0" style="-fx-background-color: #555866;">
                <children>
                   <GridPane alignment="CENTER_LEFT" layoutX="48.0" layoutY="163.0" prefHeight="356.0" prefWidth="735.0" AnchorPane.bottomAnchor="129.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="139.0">
                     <columnConstraints>
@@ -34,13 +35,13 @@
                         <RowConstraints maxHeight="76.39999999999998" minHeight="10.0" prefHeight="66.40003662109373" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Nome" GridPane.rowIndex="1">
+                        <Label text="Nome" textFill="WHITE" GridPane.rowIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                         <TextField fx:id="txtNome" prefHeight="38.0" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Categoria" GridPane.rowIndex="2">
+                        <Label text="Categoria" textFill="WHITE" GridPane.rowIndex="2">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -58,7 +59,7 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Label text="Fornecedor" GridPane.rowIndex="3">
+                        <Label text="Fornecedor" textFill="WHITE" GridPane.rowIndex="3">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -76,17 +77,17 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Label text="Estabelecimento" GridPane.rowIndex="4">
+                        <Label text="Estabelecimento" textFill="WHITE" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label text="ID">
+                        <Label text="ID" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lblId" text="ID" GridPane.columnIndex="1">
+                        <Label fx:id="lblId" GridPane.columnIndex="1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -100,17 +101,17 @@
                   </GridPane>
                   <HBox alignment="CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">
                      <children>
-                        <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]">
+                        <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" style="-fx-background-color: #000000;" text="Cadastrar [F2]" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onBtnCancelarAction" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]">
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onBtnCancelarAction" prefHeight="39.0" prefWidth="269.0" style="-fx-background-color: #000000;" text="Cancelar [F3]" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Button>
-                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]">
+                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" style="-fx-background-color: #000000;" text="Limpar [F4]" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -123,6 +124,9 @@
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
+         <effect>
+            <ColorAdjust />
+         </effect>
       </TitledPane>
    </children>
 </VBox>
