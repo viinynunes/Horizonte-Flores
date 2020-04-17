@@ -1,6 +1,7 @@
 package gui.controller;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -27,7 +28,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteListController implements Initializable {
+public class ClienteListController implements Initializable, DataChangeListener {
 
     Stage parentStage;
 
@@ -133,6 +134,7 @@ public class ClienteListController implements Initializable {
             ClienteCadastroController controller = loader.getController();
             controller.setCliente(cliente);
             controller.setServico(new ClienteServico());
+            controller.subscribeDataChangeListener(this);
             controller.updateFormData();
 
             dialog.setTitle("Cadastro de Cliente");
@@ -148,5 +150,8 @@ public class ClienteListController implements Initializable {
     }
 
 
-
+    @Override
+    public void onDataChanged() {
+        updateTableView();
+    }
 }

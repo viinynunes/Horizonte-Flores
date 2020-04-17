@@ -1,6 +1,7 @@
 package gui.controller;
 
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -20,6 +21,8 @@ import model.services.EnderecoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ClienteCadastroController implements Initializable {
@@ -27,6 +30,7 @@ public class ClienteCadastroController implements Initializable {
     private Cliente cliente;
     private Endereco endereco;
     private ClienteServico servico;
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private Button btnCadastrar;
@@ -72,6 +76,10 @@ public class ClienteCadastroController implements Initializable {
         this.servico = servico;
     }
 
+    public void subscribeDataChangeListener(DataChangeListener listener){
+        dataChangeListeners.add(listener);
+    }
+
     @FXML
     public void onBtnCadastrarAction(ActionEvent event) {
 
@@ -79,9 +87,16 @@ public class ClienteCadastroController implements Initializable {
             cliente = getFormData();
             servico.saveOrUpdate(cliente);
             Alerts.showAlert("Cliente cadastrado com sucesso", null, "Cliente " + cliente.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+            notifyDataChanged();
             Utils.atualStage(event).close();
         } catch (DBException e) {
             Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void notifyDataChanged() {
+        for (DataChangeListener listener : dataChangeListeners){
+            listener.onDataChanged();
         }
     }
 

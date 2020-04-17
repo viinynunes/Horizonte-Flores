@@ -1,6 +1,7 @@
 package gui.controller;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -29,7 +30,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProdutoListController implements Initializable {
+public class ProdutoListController implements Initializable, DataChangeListener {
 
     private ProdutoServico servico;
 
@@ -128,6 +129,7 @@ public class ProdutoListController implements Initializable {
             controller.setCategoriaServico(new CategoriaServico());
             controller.setFornecedorServico(new FornecedorServico());
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.subscribeDataChangeListener(this);
             controller.updateFormData();
 
             dialog.setTitle("Cadastro de Produto");
@@ -140,5 +142,10 @@ public class ProdutoListController implements Initializable {
         } catch (IOException e){
             Alerts.showAlert("Erro ao carregar a tela", null, e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateTableView();
     }
 }
