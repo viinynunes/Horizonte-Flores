@@ -8,6 +8,7 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,7 +32,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class ProdutoCadastroController implements Initializable {
+public class ProdutoCadastroController implements Initializable, DataChangeListener {
 
     private Produto produto;
     private ProdutoServico produtoServico;
@@ -48,8 +49,6 @@ public class ProdutoCadastroController implements Initializable {
     private Button btnLimpar;
     @FXML
     private Label lblId;
-    @FXML
-    private Label lblEstabelecimentoFornecedor;
     @FXML
     private TextField txtNome;
     @FXML
@@ -87,8 +86,8 @@ public class ProdutoCadastroController implements Initializable {
     }
 
     @FXML
-    public void onBtnCancelarAction() {
-
+    public void onBtnCancelarAction(ActionEvent event) {
+        Utils.atualStage(event).close();
     }
 
     @FXML
@@ -103,6 +102,7 @@ public class ProdutoCadastroController implements Initializable {
         carregaDialog(parentStage, "/gui/CategoriaCadastro.fxml", (CategoriaCadastroController controller) -> {
             controller.setCategoriaServico(new CategoriaServico());
             controller.setCategoria(categoria);
+            controller.subscribeDataChangeListener(this);
             controller.updateTableView();
         });
     }
@@ -115,6 +115,7 @@ public class ProdutoCadastroController implements Initializable {
             controller.setServico(new FornecedorServico());
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.setFornecedor(fornecedor);
+            controller.subscribeDataChangeListener(this);
             controller.updateFormData();
         });
     }
@@ -149,7 +150,6 @@ public class ProdutoCadastroController implements Initializable {
     }
 
     private void initializeNodes() {
-
     }
 
     public void updateFormData() {
@@ -166,17 +166,22 @@ public class ProdutoCadastroController implements Initializable {
 
         txtNome.setText(produto.getNome());
 
+        updateCbbCategoria();
+
+        updateCbbFornecedor();
+    }
+
+    private void updateCbbCategoria(){
         List<Categoria> categoriaList = categoriaServico.findAll();
 
         obbListCategoria = FXCollections.observableArrayList(categoriaList);
         cbbCategoria.setItems(obbListCategoria);
+    }
 
+    private void updateCbbFornecedor(){
         List<Fornecedor> fornecedorList = fornecedorServico.findAll();
         obbFornecedor = FXCollections.observableArrayList(fornecedorList);
         cbbFornecedor.setItems(obbFornecedor);
-
-        //Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
-        //lblEstabelecimentoFornecedor.setText(fornecedor.getEstabelecimento().getNome());
     }
 
     private Produto getFormData() {
@@ -186,6 +191,7 @@ public class ProdutoCadastroController implements Initializable {
         produto.setId(Utils.converterInteiro(lblId.getText()));
         produto.setNome(txtNome.getText());
         produto.setFornecedor(cbbFornecedor.getSelectionModel().getSelectedItem());
+
         produto.setCategoria(cbbCategoria.getSelectionModel().getSelectedItem());
 
 
@@ -212,5 +218,11 @@ public class ProdutoCadastroController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateCbbCategoria();
+        updateCbbFornecedor();
     }
 }

@@ -77,22 +77,12 @@
                               <Insets />
                            </opaqueInsets>
                         </HBox>
-                        <Label text="Estabelecimento" textFill="WHITE" GridPane.rowIndex="4">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
                         <Label text="ID" textFill="WHITE">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
                         <Label fx:id="lblId" GridPane.columnIndex="1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lblId1" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font size="18.0" />
                            </font>

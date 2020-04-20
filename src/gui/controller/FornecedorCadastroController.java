@@ -1,6 +1,7 @@
 package gui.controller;
 
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -26,6 +27,7 @@ public class FornecedorCadastroController implements Initializable {
     private FornecedorServico servico;
     private EstabelecimentoServico estabelecimentoServico;
     private Estabelecimento estabelecimento;
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private Label lblId;
@@ -48,12 +50,19 @@ public class FornecedorCadastroController implements Initializable {
 
             servico.saveOrUpdate(fornecedor);
             Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor "+ fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+            notifyDataChanged();
             Utils.atualStage(event).close();
 
         } catch (DBException e){
             Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
         }
 
+    }
+
+    private void notifyDataChanged() {
+        for (DataChangeListener listener : dataChangeListeners){
+            listener.onDataChanged();
+        }
     }
 
 
@@ -79,6 +88,10 @@ public class FornecedorCadastroController implements Initializable {
 
     public void setEstabelecimento(Estabelecimento estabelecimento) {
         this.estabelecimento = estabelecimento;
+    }
+
+    public void subscribeDataChangeListener(DataChangeListener listener){
+        dataChangeListeners.add(listener);
     }
 
     @Override

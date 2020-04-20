@@ -2,7 +2,9 @@ package gui.controller;
 
 import db.DB;
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,12 +18,15 @@ import model.services.CategoriaServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class CategoriaCadastroController implements Initializable {
 
     private CategoriaServico servico;
     private Categoria categoria;
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private Label lblId;
@@ -42,9 +47,16 @@ public class CategoriaCadastroController implements Initializable {
             categoria = getFormData();
             servico.saveOrUpdate(categoria);
             Alerts.showAlert("Categoria Salva com sucesso !", null, "Categoria " + categoria.getNome()+ " salva com sucesso", Alert.AlertType.CONFIRMATION);
+            notifyDataChanged();
             Utils.atualStage(event).close();
         } catch (DBException e){
             Alerts.showAlert("Erro ao salvar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void notifyDataChanged() {
+        for (DataChangeListener listener : dataChangeListeners){
+            listener.onDataChanged();
         }
     }
 
@@ -59,7 +71,11 @@ public class CategoriaCadastroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeNodes();
+    }
 
+    private void initializeNodes() {
+        Constraints.setLabeldInteger(lblId);
     }
 
     public void setCategoriaServico(CategoriaServico servico) {
@@ -68,6 +84,10 @@ public class CategoriaCadastroController implements Initializable {
 
     public void setCategoria(Categoria categoria){
         this.categoria = categoria;
+    }
+
+    public void subscribeDataChangeListener(DataChangeListener listener){
+        dataChangeListeners.add(listener);
     }
 
     public void updateTableView() {
