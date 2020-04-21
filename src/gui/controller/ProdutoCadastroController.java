@@ -91,8 +91,8 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
     }
 
     @FXML
-    public void onBtnLimparAction() {
-
+    public void onBtnLimparAction(){
+        txtNome.clear();
     }
 
     @FXML
@@ -166,9 +166,11 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
 
         txtNome.setText(produto.getNome());
 
-        updateCbbCategoria();
 
+        updateCbbCategoria();
+        cbbCategoria.getSelectionModel().select(produto.getCategoria());
         updateCbbFornecedor();
+        cbbFornecedor.getSelectionModel().select(produto.getFornecedor());
     }
 
     private void updateCbbCategoria(){
@@ -224,5 +226,6 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
     public void onDataChanged() {
         updateCbbCategoria();
         updateCbbFornecedor();
+
     }
 }

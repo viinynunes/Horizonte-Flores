@@ -66,12 +66,12 @@ public class FornecedorCadastroController implements Initializable {
     }
 
 
-    public void onBtnCancelarAction(){
-
+    public void onBtnCancelarAction(ActionEvent event){
+        Utils.atualStage(event).close();
     }
 
     public void onBtnLimparAction(){
-
+        txtNome.clear();
     }
 
     public void setFornecedor(Fornecedor fornecedor) {

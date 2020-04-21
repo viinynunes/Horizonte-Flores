@@ -1,6 +1,8 @@
 package gui.controller;
 
 import application.Main;
+import com.mysql.jdbc.Util;
+import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -76,7 +78,26 @@ public class ClienteListController implements Initializable, DataChangeListener 
         criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
     }
 
+    public void onBtnEditarAction(ActionEvent event){
+        cliente = tbvListar.getSelectionModel().getSelectedItem();
 
+        parentStage = Utils.atualStage(event);
+
+        criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+
+    }
+
+    public void onBtnApagarAction(){
+        cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+        try {
+            servico.deleteById(cliente.getId());
+            updateTableView();
+            Alerts.showAlert("Cliente Apagado com sucesso", null, "cliente apagado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao apagar cliente", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 
     public void setClienteServico(ClienteServico servico) {
         this.servico = servico;
@@ -100,16 +121,6 @@ public class ClienteListController implements Initializable, DataChangeListener 
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListar.prefHeightProperty().bind(stage.heightProperty());
-/*
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
-
-            if (ke.getCode() == KeyCode.F2){
-
-            }
-
-        });e
- */
-
     }
 
     public void updateTableView() {
@@ -121,6 +132,7 @@ public class ClienteListController implements Initializable, DataChangeListener 
         List<Cliente> list = servico.findAll();
         obsList = FXCollections.observableArrayList(list);
         tbvListar.setItems(obsList);
+        tbvListar.refresh();
     }
 
     public void criarTelaDialog(Cliente cliente, String caminho, Stage parentStage) {

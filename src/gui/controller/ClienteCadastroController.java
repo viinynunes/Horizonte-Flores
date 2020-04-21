@@ -2,6 +2,7 @@ package gui.controller;
 
 import db.DBException;
 import gui.listeners.DataChangeListener;
+import gui.listeners.EnderecoChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -11,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Cliente;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteCadastroController implements Initializable {
+public class ClienteCadastroController implements Initializable, EnderecoChangeListener {
 
     private Cliente cliente;
     private Endereco endereco;
@@ -142,8 +142,14 @@ public class ClienteCadastroController implements Initializable {
         txtTelefone2.setText(cliente.getTelefone2());
         txtCPF.setText(cliente.getCpf());
         txtCNPJ.setText(cliente.getCnpj());
-      //  txaEndereco.setText(cliente.getEndereco().toString());
 
+
+    }
+
+    private void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+
+        txaEndereco.setText(endereco.toString());
     }
 
     private Cliente getFormData() {
@@ -181,6 +187,7 @@ public class ClienteCadastroController implements Initializable {
             EnderecoCadastroController controller = loader.getController();
             controller.setEndereco(endereco);
             controller.setServico(new EnderecoServico());
+            controller.subscribeEnderecoChangeListener(this);
             controller.updateDataForm();
 
             dialog.setTitle("Cadastro de Endereco");
@@ -193,5 +200,10 @@ public class ClienteCadastroController implements Initializable {
         } catch (IOException e) {
             Alerts.showAlert("Erro ao carregar tela", null, e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @Override
+    public void onEnderecoChanged(Endereco endereco) {
+        setEndereco(endereco);
     }
 }

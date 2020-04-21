@@ -53,7 +53,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                 st.setInt(7, cliente.getEndereco().getId());
             }
 
-            int rows = st.executeUpdate();
+            st.executeUpdate();
 
 
         } catch (SQLException e) {
@@ -71,10 +71,38 @@ public class ClienteDaoJDBC implements ClienteDao {
         PreparedStatement st = null;
 
         try {
-            st = conn.prepareStatement("UPDATE cliente " +
-                    "set nome = ?, telefone = ?, telefone2 = ?, email = ?, cpf = ?, cnpj = ?, endereco_id = ?");
+            if (cliente.getEndereco() == null) {
+                st = conn.prepareStatement("UPDATE cliente " +
+                        "set nome = ?, telefone = ?, telefone2 = ?, email = ?, cpf = ?, cnpj = ?, endereco_id = null " +
+                        "where id = ?");
 
-            st.executeQuery();
+                st.setString(1, cliente.getNome());
+                st.setString(2, cliente.getTelefone());
+                st.setString(3, cliente.getTelefone2());
+                st.setString(4, cliente.getEmail());
+                st.setString(5, cliente.getCpf());
+                st.setString(6, cliente.getCnpj());
+                st.setInt(7, cliente.getId());
+
+                st.executeUpdate();
+            } else {
+
+                st = conn.prepareStatement("UPDATE cliente " +
+                        "set nome = ?, telefone = ?, telefone2 = ?, email = ?, cpf = ?, cnpj = ?, endereco_id = ? " +
+                        "where id = ?");
+
+                st.setString(1, cliente.getNome());
+                st.setString(2, cliente.getTelefone());
+                st.setString(3, cliente.getTelefone2());
+                st.setString(4, cliente.getEmail());
+                st.setString(5, cliente.getCpf());
+                st.setString(6, cliente.getCnpj());
+                st.setInt(7, cliente.getEndereco().getId());
+                st.setInt(8, cliente.getId());
+
+                st.executeUpdate();
+            }
+
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
@@ -92,7 +120,7 @@ public class ClienteDaoJDBC implements ClienteDao {
             st = conn.prepareStatement("Delete from cliente where id = ?");
             st.setInt(1, id);
 
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {

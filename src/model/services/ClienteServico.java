@@ -26,4 +26,8 @@ public class ClienteServico {
             dao.update(cliente);
         }
     }
+
+    public void deleteById(Integer id){
+        dao.deleteById(id);
+    }
 }

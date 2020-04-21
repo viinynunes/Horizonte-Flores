@@ -1,6 +1,7 @@
 package gui.controller;
 
 import db.DBException;
+import gui.listeners.EnderecoChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -21,7 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EstabelecimentoCadastroController implements Initializable {
+public class EstabelecimentoCadastroController implements Initializable, EnderecoChangeListener {
 
     private Estabelecimento estabelecimento;
     private EstabelecimentoServico servico;
@@ -85,6 +86,7 @@ public class EstabelecimentoCadastroController implements Initializable {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+        txaEndereco.setText(endereco.toString());
     }
 
     @Override
@@ -103,7 +105,6 @@ public class EstabelecimentoCadastroController implements Initializable {
 
         lblId.setText(String.valueOf(estabelecimento.getId()));
         txtNome.setText(estabelecimento.getNome());
-        txaEndereco.setText(estabelecimento.getEndereco().getLogadouro());
 
     }
 
@@ -128,6 +129,7 @@ public class EstabelecimentoCadastroController implements Initializable {
             EnderecoCadastroController controller = loader.getController();
             controller.setEndereco(endereco);
             controller.setServico(new EnderecoServico());
+            controller.subscribeEnderecoChangeListener(this);
             controller.updateDataForm();
 
             dialog.setTitle("Cadastro de Endereco");
@@ -140,5 +142,10 @@ public class EstabelecimentoCadastroController implements Initializable {
         } catch (IOException e) {
             Alerts.showAlert("Erro ao carregar tela", null, e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    @Override
+    public void onEnderecoChanged(Endereco endereco) {
+        setEndereco(endereco);
     }
 }

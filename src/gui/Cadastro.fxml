@@ -9,7 +9,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
          <children>
-            <Button fx:id="btnCategoria" mnemonicParsing="false" onAction="#onBtnCategoriaAction" prefHeight="90.0" prefWidth="284.0" text="Categoria" />
+            <Button fx:id="btnCategoria5" mnemonicParsing="false" onAction="#onBtnProdutoActio" prefHeight="90.0" prefWidth="284.0" text="Produto" />
             <Button fx:id="btnCliente" mnemonicParsing="false" onAction="#onBtnClienteAction" prefHeight="90.0" prefWidth="284.0" text="Cliente" />
          </children>
          <VBox.margin>
@@ -18,8 +18,8 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
          <children>
-            <Button fx:id="btnCategoria2" mnemonicParsing="false" onAction="#onBtnEnderecoAction" prefHeight="90.0" prefWidth="284.0" text="Endereço" />
-            <Button fx:id="btnCategoria3" mnemonicParsing="false" onAction="#onBtnEstabelecimentoAction" prefHeight="90.0" prefWidth="284.0" text="Estabelecimento" />
+            <Button fx:id="btnCategoria4" mnemonicParsing="false" onAction="#onBtnFornecedorAction" prefHeight="90.0" prefWidth="284.0" text="Fornecedor" />
+            <Button fx:id="btnCategoria" mnemonicParsing="false" onAction="#onBtnCategoriaAction" prefHeight="90.0" prefWidth="284.0" text="Categoria" />
          </children>
          <VBox.margin>
             <Insets left="10.0" top="10.0" />
@@ -27,8 +27,8 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
          <children>
-            <Button fx:id="btnCategoria4" mnemonicParsing="false" onAction="#onBtnFornecedorAction" prefHeight="90.0" prefWidth="284.0" text="Fornecedor" />
-            <Button fx:id="btnCategoria5" mnemonicParsing="false" onAction="#onBtnProdutoActio" prefHeight="90.0" prefWidth="284.0" text="Produto" />
+            <Button fx:id="btnCategoria3" mnemonicParsing="false" onAction="#onBtnEstabelecimentoAction" prefHeight="90.0" prefWidth="284.0" text="Estabelecimento" />
+            <Button fx:id="btnCategoria2" mnemonicParsing="false" onAction="#onBtnEnderecoAction" prefHeight="90.0" prefWidth="284.0" text="Endereço" />
          </children>
          <VBox.margin>
             <Insets left="10.0" top="10.0" />

@@ -30,4 +30,8 @@ public class ProdutoServico {
             dao.update(produto);
         }
     }
+
+    public void deleteById(Integer id) {
+        dao.deleteById(id);
+    }
 }

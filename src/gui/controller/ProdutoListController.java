@@ -1,6 +1,7 @@
 package gui.controller;
 
 import application.Main;
+import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -33,6 +34,7 @@ import java.util.ResourceBundle;
 public class ProdutoListController implements Initializable, DataChangeListener {
 
     private ProdutoServico servico;
+    private Produto produto;
 
     @FXML
     private Button btnNovo;
@@ -81,12 +83,24 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
     }
 
-    public void onBtnEditarAction(){
-        System.out.println("Editar Produto");
+    public void onBtnEditarAction(ActionEvent event){
+        produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+        Stage parentStage = Utils.atualStage(event);
+
+        carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
     }
 
     public void onBtnApagarAction(){
-        System.out.println("Apagar Produto");
+        produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+        try {
+            servico.deleteById(produto.getId());
+            updateTableView();
+            Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     public void setProdutoServico(ProdutoServico servico) {
@@ -113,6 +127,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
         List<Produto> list = servico.findAll();
         obsList = FXCollections.observableArrayList(list);
         tbvListaProduto.setItems(obsList);
+        tbvListaProduto.refresh();
     }
 
     public void carregaDialog(Produto produto, String caminho, Stage parentStage){

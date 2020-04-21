@@ -52,12 +52,14 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
         try {
             st = conn.prepareStatement("Update produto " +
-                    "set nome = ?, categoria_id = ?, fornecedor_id = ?");
+                    "set nome = ?, categoria_id = ?, fornecedor_id = ? " +
+                    "where id = ?");
             st.setString(1, produto.getNome());
             st.setInt(2, produto.getCategoria().getId());
             st.setInt(3, produto.getFornecedor().getId());
+            st.setInt(4, produto.getId());
 
-            st.executeQuery();
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -76,7 +78,7 @@ public class ProdutoDaoJDBC implements ProdutoDao {
             st = conn.prepareStatement("Delete from produto where id = ?");
             st.setInt(1, id);
 
-            st.executeQuery();
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());

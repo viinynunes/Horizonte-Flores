@@ -2,6 +2,8 @@ package gui.controller;
 
 import com.sun.nio.sctp.IllegalReceiveException;
 import db.DBException;
+import gui.listeners.DataChangeListener;
+import gui.listeners.EnderecoChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -23,6 +25,7 @@ public class EnderecoCadastroController implements Initializable {
 
     private Endereco endereco;
     private EnderecoServico servico;
+    private List<EnderecoChangeListener> enderecoChangeListeners = new ArrayList<>();
 
     @FXML
     private Label lblId;
@@ -56,11 +59,19 @@ public class EnderecoCadastroController implements Initializable {
             endereco = getFormData();
             servico.saveOrUpdate(endereco);
             Alerts.showAlert("Endereço cadastrado com sucesso", null, "Endereco cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+            notifyEnderecoChanged(endereco);
             Utils.atualStage(event).close();
         } catch (DBException e){
             Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
+    private void notifyEnderecoChanged(Endereco endereco) {
+        for (EnderecoChangeListener listener : enderecoChangeListeners){
+            listener.onEnderecoChanged(endereco);
+        }
+    }
+
 
     public void onBtnCancelarAction(ActionEvent event){
         Utils.atualStage(event).close();
@@ -76,6 +87,10 @@ public class EnderecoCadastroController implements Initializable {
 
     public void setServico(EnderecoServico servico) {
         this.servico = servico;
+    }
+
+    public void subscribeEnderecoChangeListener(EnderecoChangeListener listener){
+        enderecoChangeListeners.add(listener);
     }
 
     @Override
