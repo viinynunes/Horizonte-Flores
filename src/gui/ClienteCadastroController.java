@@ -1,5 +1,6 @@
 package gui;
 
+import application.Main;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.listeners.EnderecoChangeListener;
@@ -7,11 +8,16 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Cliente;
@@ -22,6 +28,7 @@ import model.services.EnderecoServico;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -32,6 +39,8 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
     private ClienteServico servico;
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
+    @FXML
+    private VBox box;
     @FXML
     private Button btnCadastrar;
 
@@ -82,13 +91,17 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
 
     @FXML
     public void onBtnCadastrarAction(ActionEvent event) {
+       salvarCliente(event);
+        Utils.atualStage(event).close();
+    }
 
+    private void salvarCliente(EventObject event){
         try {
             cliente = getFormData();
             servico.saveOrUpdate(cliente);
-            Alerts.showAlert("Cliente cadastrado com sucesso", null, "Cliente " + cliente.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+            Alerts.showAlert("Cliente salvo com sucesso", null, "Cliente " + cliente.getNome() + " salvo com sucesso", Alert.AlertType.CONFIRMATION);
             notifyDataChanged();
-            Utils.atualStage(event).close();
+
         } catch (DBException e) {
             Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -99,6 +112,7 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
             listener.onDataChanged();
         }
     }
+
 
     @FXML
     public void onBtnCancelarAction(ActionEvent event) {
@@ -122,6 +136,16 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         initializaNodes();
+
+        box.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.F2){
+                    salvarCliente(event);
+                    Utils.atualStage(event).close();
+                }
+            }
+        });
     }
 
     private void initializaNodes() {
@@ -142,8 +166,6 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
         txtTelefone2.setText(cliente.getTelefone2());
         txtCPF.setText(cliente.getCpf());
         txtCNPJ.setText(cliente.getCnpj());
-
-
     }
 
     private void setEndereco(Endereco endereco) {

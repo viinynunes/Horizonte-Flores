@@ -9,12 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -121,6 +125,19 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
+
+        Node node = Main.getScene().getRoot();
+
+        node.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.F2){
+                    Stage parentStage = Utils.atualStage(event);
+                    Produto produto = new Produto();
+                    carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+                }
+            }
+        });
     }
 
     public void updateTableView() {
@@ -134,6 +151,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
         filteredProdutoList = filteredTableView(obsList);
         tbvListaProduto.setItems(filteredProdutoList);
         tbvListaProduto.refresh();
+        tbvListaProduto.getSelectionModel().selectFirst();
     }
 
     public void carregaDialog(Produto produto, String caminho, Stage parentStage){

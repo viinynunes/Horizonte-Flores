@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteCadastroController">
+<VBox fx:id="box" alignment="TOP_CENTER" prefHeight="690.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteCadastroController">
    <children>
       <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Cliente" textAlignment="CENTER">
         <content>

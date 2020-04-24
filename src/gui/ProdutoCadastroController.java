@@ -1,5 +1,6 @@
 package gui;
 
+import application.Main;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
@@ -7,11 +8,16 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
@@ -38,6 +44,8 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
     private EstabelecimentoServico estabelecimentoServico;
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
+    @FXML
+    private VBox box;
     @FXML
     private Button btnCadastrar;
     @FXML
@@ -77,7 +85,7 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
     }
 
     private void notifyDataChanged() {
-        for (DataChangeListener listener : dataChangeListeners){
+        for (DataChangeListener listener : dataChangeListeners) {
             listener.onDataChanged();
         }
     }
@@ -88,7 +96,7 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
     }
 
     @FXML
-    public void onBtnLimparAction(){
+    public void onBtnLimparAction() {
         txtNome.clear();
     }
 
@@ -137,13 +145,34 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
         this.estabelecimentoServico = estabelecimentoServico;
     }
 
-    public void subscribeDataChangeListener(DataChangeListener listener){
+    public void subscribeDataChangeListener(DataChangeListener listener) {
         dataChangeListeners.add(listener);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeNodes();
+
+        txtNome.requestFocus();
+
+        box.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.F2) {
+                    try {
+
+                        Produto produto = getFormData();
+                        produtoServico.saveOrUpdate(produto);
+                        Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                        notifyDataChanged();
+                        Utils.atualStage(event).close();
+
+                    } catch (DBException e) {
+                        Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
+            }
+        });
     }
 
     private void initializeNodes() {
@@ -170,14 +199,14 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
         cbbFornecedor.getSelectionModel().select(produto.getFornecedor());
     }
 
-    private void updateCbbCategoria(){
+    private void updateCbbCategoria() {
         List<Categoria> categoriaList = categoriaServico.findAll();
 
         obbListCategoria = FXCollections.observableArrayList(categoriaList);
         cbbCategoria.setItems(obbListCategoria);
     }
 
-    private void updateCbbFornecedor(){
+    private void updateCbbFornecedor() {
         List<Fornecedor> fornecedorList = fornecedorServico.findAll();
         obbFornecedor = FXCollections.observableArrayList(fornecedorList);
         cbbFornecedor.setItems(obbFornecedor);
