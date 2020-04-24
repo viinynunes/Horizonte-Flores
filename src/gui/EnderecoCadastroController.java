@@ -1,4 +1,4 @@
-package gui.controller;
+package gui;
 
 import com.sun.nio.sctp.IllegalReceiveException;
 import db.DBException;

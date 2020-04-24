@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ProdutoListController">
+<VBox prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProdutoListController">
    <children>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
          <top>

@@ -1,4 +1,4 @@
-package gui.controller;
+package gui;
 
 import application.Main;
 import db.DBException;
@@ -7,6 +7,7 @@ import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
+import model.entities.Cliente;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.CategoriaServico;
@@ -35,6 +37,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
     private ProdutoServico servico;
     private Produto produto;
+    private FilteredList<Produto> filteredProdutoList;
 
     @FXML
     private Button btnNovo;
@@ -60,6 +63,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
     @FXML
     private TableColumn<Produto, Categoria> tbcCategoriaNome;
 
+    @FXML
     private TextField txtProcura;
 
     @FXML
@@ -126,7 +130,9 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
         List<Produto> list = servico.findAll();
         obsList = FXCollections.observableArrayList(list);
-        tbvListaProduto.setItems(obsList);
+
+        filteredProdutoList = filteredTableView(obsList);
+        tbvListaProduto.setItems(filteredProdutoList);
         tbvListaProduto.refresh();
     }
 
@@ -157,6 +163,31 @@ public class ProdutoListController implements Initializable, DataChangeListener 
         } catch (IOException e){
             Alerts.showAlert("Erro ao carregar a tela", null, e.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList){
+        FilteredList<Produto> filteredClienteList = new FilteredList<>(obbProdutoList);
+
+        txtProcura.textProperty().addListener(((observable, oldValue, newValue) -> {
+
+            filteredProdutoList.setPredicate(produto -> {
+
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (produto.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        }));
+
+        return filteredClienteList;
     }
 
     @Override

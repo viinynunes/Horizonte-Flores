@@ -1,4 +1,4 @@
-package gui.controller;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,19 +6,25 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import application.Main;
+import gui.util.Utils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import model.entities.ItemPedido;
 import model.services.ClienteServico;
 import model.services.ProdutoServico;
 
 public class MainViewController implements Initializable{
-	
 	
 	@FXML
 	private MenuItem miFechar;
@@ -39,7 +45,15 @@ public class MainViewController implements Initializable{
 	private MenuItem miRelGeral;
 	@FXML
 	private MenuItem miTransacoes;
+	@FXML
+	private Button btnNovoPedido;
 
+	@FXML
+	public void onBtnNovoPedidoAction(ActionEvent event){
+		System.out.println("Novo pedido");
+		Stage parentStage = Utils.atualStage(event);
+		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {});
+	}
 
 	@FXML
 	public void onMiFecharAction() {
@@ -123,6 +137,31 @@ public class MainViewController implements Initializable{
 			T controller = load.getController();
 			initializingAction.accept(controller);
 
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized <T> void carregaViewPedido(Stage parentStage, String caminho, Consumer<T> initializingAction) {
+
+		try {
+			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
+			VBox novoVBox = load.load();
+
+			Stage dialog = new Stage();
+
+			dialog.setTitle("Pedido");
+			dialog.setResizable(false);
+			dialog.setScene(new Scene(novoVBox));
+			dialog.initStyle(StageStyle.UNDECORATED);
+			dialog.initOwner(parentStage);
+			dialog.initModality(Modality.WINDOW_MODAL);
+			dialog.setMaximized(true);
+			dialog.showAndWait();
+
+			T controller = load.getController();
+			initializingAction.accept(controller);
 
 		} catch (IOException e) {
 			e.printStackTrace();

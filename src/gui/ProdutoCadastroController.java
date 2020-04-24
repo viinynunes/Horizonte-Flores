@@ -1,14 +1,12 @@
-package gui.controller;
+package gui;
 
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
-import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,7 +15,6 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
-import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.services.CategoriaServico;

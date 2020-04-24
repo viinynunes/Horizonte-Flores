@@ -1,4 +1,4 @@
-package gui.controller;
+package gui;
 
 import db.DBException;
 import gui.listeners.EnderecoChangeListener;

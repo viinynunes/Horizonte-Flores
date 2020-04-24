@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -24,6 +25,7 @@ public class Main extends Application {
 			mainScene = new Scene(scrollPanel);
 			stage.setScene(mainScene);
 			stage.setTitle("Horizonte Flores e Plantas");
+			//stage.initStyle(StageStyle.UNDECORATED);
 
 			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.jpg"));
 			stage.getIcons().add(icon);

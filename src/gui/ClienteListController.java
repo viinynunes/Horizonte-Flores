@@ -1,13 +1,13 @@
-package gui.controller;
+package gui;
 
 import application.Main;
-import com.mysql.jdbc.Util;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +15,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -35,8 +33,9 @@ public class ClienteListController implements Initializable, DataChangeListener 
     Stage parentStage;
 
     private ClienteServico servico;
-
     private Cliente cliente;
+
+    FilteredList<Cliente> filteredClienteList;
 
     @FXML
     private VBox vBox;
@@ -130,8 +129,11 @@ public class ClienteListController implements Initializable, DataChangeListener 
         }
 
         List<Cliente> list = servico.findAll();
+
         obsList = FXCollections.observableArrayList(list);
-        tbvListar.setItems(obsList);
+
+        filteredClienteList = filteredTableView(obsList);
+        tbvListar.setItems(filteredClienteList);
         tbvListar.refresh();
     }
 
@@ -161,6 +163,30 @@ public class ClienteListController implements Initializable, DataChangeListener 
         }
     }
 
+    private FilteredList<Cliente> filteredTableView(ObservableList<Cliente> obbClienteList){
+        FilteredList<Cliente> filteredClienteList = new FilteredList<>(obbClienteList);
+
+        txtProcura.textProperty().addListener(((observable, oldValue, newValue) -> {
+
+            filteredClienteList.setPredicate(cliente -> {
+
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (cliente.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+        }));
+
+        return filteredClienteList;
+    }
 
     @Override
     public void onDataChanged() {

@@ -22,4 +22,6 @@ public class DaoFactory {
     public static FornecedorDao createFornecedorDao() { return new FornecedorDaoJDBC(DB.getConnection()); }
 
     public static EnderecoDao createEnderecoDao() {return new EnderecoDaoJDBC(DB.getConnection()); }
+
+    public static ItemPedidoDao createItemDao() {return  new ItemPedidoJDBC(DB.getConnection()); }
 }
