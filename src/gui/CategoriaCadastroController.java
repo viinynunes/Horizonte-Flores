@@ -9,10 +9,9 @@ import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.entities.Categoria;
 import model.services.CategoriaServico;
 
@@ -28,6 +27,8 @@ public class CategoriaCadastroController implements Initializable {
     private Categoria categoria;
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
+    @FXML
+    private TitledPane titledPane;
     @FXML
     private Label lblId;
     @FXML
@@ -72,6 +73,26 @@ public class CategoriaCadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeNodes();
+
+        titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2){
+                try {
+                    categoria = getFormData();
+                    servico.saveOrUpdate(categoria);
+                    Alerts.showAlert("Categoria Salva com sucesso !", null, "Categoria " + categoria.getNome()+ " salva com sucesso", Alert.AlertType.CONFIRMATION);
+                    notifyDataChanged();
+                    Utils.atualStage(event).close();
+                } catch (DBException e){
+                    Alerts.showAlert("Erro ao salvar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+            if (event.getCode() == KeyCode.F3){
+                Utils.atualStage(event).close();
+            }
+            if (event.getCode() == KeyCode.F4){
+                limpaForm();
+            }
+        });
     }
 
     private void initializeNodes() {

@@ -72,25 +72,23 @@ public class ClienteListDialogController implements Initializable {
         tbcClienteNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcClienteTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
 
-        tbvListaCliente.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER){
-                    setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
-                    notifyDataChanged();
-                    Utils.atualStage(event).close();
-                }
+        tbvListaCliente.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
+                notifyDataChanged();
+                Utils.atualStage(event).close();
+            }
+
+            if (event.getCode() == KeyCode.F2){
+                //carrega dialog cadastro de cliente
             }
         });
 
-        tbvListaCliente.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
-                    notifyDataChanged();
-                    Utils.atualStage(event).close();
-                }
+        tbvListaCliente.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
+                notifyDataChanged();
+                Utils.atualStage(event).close();
             }
         });
     }

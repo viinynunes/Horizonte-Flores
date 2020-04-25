@@ -92,15 +92,7 @@ public class ClienteListController implements Initializable, DataChangeListener 
     }
 
     public void onBtnApagarAction(){
-        cliente = tbvListar.getSelectionModel().getSelectedItem();
-
-        try {
-            servico.deleteById(cliente.getId());
-            updateTableView();
-            Alerts.showAlert("Cliente Apagado com sucesso", null, "cliente apagado com sucesso", Alert.AlertType.CONFIRMATION);
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao apagar cliente", null, e.getMessage(), Alert.AlertType.ERROR);
-        }
+        deleteCliente();
     }
 
     public void setClienteServico(ClienteServico servico) {
@@ -128,18 +120,54 @@ public class ClienteListController implements Initializable, DataChangeListener 
 
         Node node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.F2){
-                    parentStage = Utils.atualStage(event);
+        node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2) {
+                parentStage = Utils.atualStage(event);
 
-                    Cliente cliente = new Cliente();
+                Cliente cliente = new Cliente();
 
-                    criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
-                }
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F3){
+                cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+                parentStage = Utils.atualStage(event);
+
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F4){
+                deleteCliente();
             }
         });
+
+        tbvListar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+            if (event.getCode() == KeyCode.DELETE){
+                deleteCliente();
+            }
+
+            if (event.getCode() == KeyCode.ENTER){
+                cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+                parentStage = Utils.atualStage(event);
+
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+        });
+    }
+
+    private void deleteCliente() {
+        cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+        try {
+            servico.deleteById(cliente.getId());
+            updateTableView();
+            Alerts.showAlert("Cliente Apagado com sucesso", null, "cliente apagado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao apagar cliente", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     public void updateTableView() {

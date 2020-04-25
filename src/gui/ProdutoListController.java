@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,7 @@ import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.EventObject;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -100,15 +102,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
     }
 
     public void onBtnApagarAction(){
-        produto = tbvListaProduto.getSelectionModel().getSelectedItem();
-
-        try {
-            servico.deleteById(produto.getId());
-            updateTableView();
-            Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
-        }
+        deleteProduto();
     }
 
     public void setProdutoServico(ProdutoServico servico) {
@@ -136,8 +130,54 @@ public class ProdutoListController implements Initializable, DataChangeListener 
                     Produto produto = new Produto();
                     carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
                 }
+
+                if (event.getCode() == KeyCode.F3){
+                    produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                    Stage parentStage = Utils.atualStage(event);
+
+                    carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+                }
+
+                if (event.getCode() == KeyCode.F4){
+                    produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                    try {
+                        servico.deleteById(produto.getId());
+                        updateTableView();
+                        Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
+                    } catch (DBException e){
+                        Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
             }
         });
+
+        tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.DELETE){
+                deleteProduto();
+            }
+
+            if (event.getCode() == KeyCode.ENTER){
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                Stage parentStage = Utils.atualStage(event);
+
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
+        });
+    }
+
+    private void deleteProduto(){
+        produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+        try {
+            servico.deleteById(produto.getId());
+            updateTableView();
+            Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     public void updateTableView() {

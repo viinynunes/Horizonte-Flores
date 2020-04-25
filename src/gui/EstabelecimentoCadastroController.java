@@ -11,6 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Endereco;
@@ -28,6 +31,8 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
     private EstabelecimentoServico servico;
     private Endereco endereco;
 
+    @FXML
+    private VBox box;
     @FXML
     private Button btnCadastrar;
     @FXML
@@ -66,6 +71,10 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
     }
 
     public void onBtnLimparAction() {
+        limpaForm();
+    }
+
+    private void limpaForm(){
         txtNome.clear();
         txaEndereco.clear();
     }
@@ -92,6 +101,33 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         InitializeNodes();
+
+        box.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2){
+                try {
+                    if (servico == null){
+                        throw new IllegalStateException("Servico null");
+                    }
+
+                    estabelecimento = getFormData();
+
+                    servico.saveOrUpdate(estabelecimento);
+                    Alerts.showAlert("Estabelecimento cadastrado com sucesso", null, "Estabelecimento " + estabelecimento.getNome() +
+                            " cadastrado com sucesso !", Alert.AlertType.CONFIRMATION);
+                    Utils.atualStage(event).close();
+                } catch (DBException e){
+                    Alerts.showAlert("Erro ao cadastrar estabelecimento", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+
+            if (event.getCode() == KeyCode.F3){
+                Utils.atualStage(event).close();
+            }
+
+            if (event.getCode() == KeyCode.F4){
+                limpaForm();
+            }
+        });
     }
 
     private void InitializeNodes() {

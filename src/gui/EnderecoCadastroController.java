@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.entities.Endereco;
 import model.services.EnderecoServico;
 
@@ -27,6 +29,8 @@ public class EnderecoCadastroController implements Initializable {
     private EnderecoServico servico;
     private List<EnderecoChangeListener> enderecoChangeListeners = new ArrayList<>();
 
+    @FXML
+    private TitledPane titledPane;
     @FXML
     private Label lblId;
     @FXML
@@ -96,6 +100,28 @@ public class EnderecoCadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializaNodes();
+
+        titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2){
+                try {
+                    endereco = getFormData();
+                    servico.saveOrUpdate(endereco);
+                    Alerts.showAlert("Endereço cadastrado com sucesso", null, "Endereco cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                    notifyEnderecoChanged(endereco);
+                    Utils.atualStage(event).close();
+                } catch (DBException e){
+                    Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+
+            if (event.getCode() == KeyCode.F3){
+                Utils.atualStage(event).close();
+            }
+
+            if (event.getCode() == KeyCode.F4){
+                limpaForm();
+            }
+        });
     }
 
     private void initializaNodes(){

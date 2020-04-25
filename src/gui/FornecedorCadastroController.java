@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.services.EstabelecimentoServico;
@@ -29,6 +31,8 @@ public class FornecedorCadastroController implements Initializable {
     private Estabelecimento estabelecimento;
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
+    @FXML
+    private TitledPane titledPane;
     @FXML
     private Label lblId;
     @FXML
@@ -71,7 +75,12 @@ public class FornecedorCadastroController implements Initializable {
     }
 
     public void onBtnLimparAction(){
+        limpaForm();
+    }
+
+    private void limpaForm(){
         txtNome.clear();
+        cbbEstabelecimento.getSelectionModel().clearSelection();
     }
 
     public void setFornecedor(Fornecedor fornecedor) {
@@ -97,6 +106,28 @@ public class FornecedorCadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeNodes();
+
+        titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2){
+                try {
+                    fornecedor = getFormData();
+
+                    servico.saveOrUpdate(fornecedor);
+                    Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor "+ fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                    notifyDataChanged();
+                    Utils.atualStage(event).close();
+
+                } catch (DBException e){
+                    Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+            if (event.getCode() == KeyCode.F3){
+                Utils.atualStage(event).close();
+            }
+            if (event.getCode() == KeyCode.F4){
+                limpaForm();
+            }
+        });
     }
 
     private void initializeNodes(){

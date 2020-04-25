@@ -1,6 +1,5 @@
 package gui;
 
-import application.Main;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.listeners.EnderecoChangeListener;
@@ -8,11 +7,9 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -28,7 +25,6 @@ import model.services.EnderecoServico;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -91,11 +87,11 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
 
     @FXML
     public void onBtnCadastrarAction(ActionEvent event) {
-       salvarCliente(event);
+       salvarCliente();
         Utils.atualStage(event).close();
     }
 
-    private void salvarCliente(EventObject event){
+    private void salvarCliente(){
         try {
             cliente = getFormData();
             servico.saveOrUpdate(cliente);
@@ -137,13 +133,18 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
 
         initializaNodes();
 
-        box.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.F2){
-                    salvarCliente(event);
-                    Utils.atualStage(event).close();
-                }
+        box.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+            if (event.getCode() == KeyCode.F2) {
+                salvarCliente();
+                Utils.atualStage(event).close();
+            }
+            if (event.getCode() == KeyCode.F3){
+                Utils.atualStage(event).close();
+            }
+
+            if (event.getCode() == KeyCode.F4){
+                limpaForm();
             }
         });
     }
