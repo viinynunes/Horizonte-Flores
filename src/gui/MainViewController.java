@@ -17,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -32,7 +34,6 @@ public class MainViewController implements Initializable{
 	@FXML
 	private MenuItem miFechar;
 	@FXML
-	
 	private MenuItem miAbasProduto;
 	@FXML
 	private MenuItem miAbasCliente;
@@ -50,6 +51,8 @@ public class MainViewController implements Initializable{
 	private MenuItem miTransacoes;
 	@FXML
 	private Button btnNovoPedido;
+	@FXML
+	private ImageView imvLogo;
 
 	@FXML
 	public void onBtnNovoPedidoAction(ActionEvent event){
@@ -118,7 +121,7 @@ public class MainViewController implements Initializable{
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		
+
 	}
 	
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {

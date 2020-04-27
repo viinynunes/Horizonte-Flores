@@ -17,7 +17,7 @@
     <orderEntry type="library" name="JavaFX" level="project" />
     <orderEntry type="library" name="MySQLConnector" level="project" />
     <orderEntry type="library" name="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER" level="application" />
-    <orderEntry type="library" name="javafx-swt" level="project" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.48" level="project" />
+    <orderEntry type="library" exported="" name="javafx-swt" level="project" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-5.1.48" level="project" />
   </component>
 </module>

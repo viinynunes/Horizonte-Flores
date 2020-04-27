@@ -27,7 +27,7 @@ public class Main extends Application {
 			stage.setTitle("Horizonte Flores e Plantas");
 			//stage.initStyle(StageStyle.UNDECORATED);
 
-			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.jpg"));
+			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.png"));
 			stage.getIcons().add(icon);
 			stage.setMaximized(true);
 			stage.show();
