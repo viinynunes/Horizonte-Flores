@@ -5,6 +5,9 @@ import gui.listeners.ClienteChangeListener;
 import gui.listeners.DataChangeListener;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,25 +19,28 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.entities.Cliente;
 import model.entities.ItemPedido;
 import model.entities.Produto;
 import model.services.ClienteServico;
+import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
     private ItemPedido itemPedido;
+    private FilteredList<Produto> produtoFilteredList;
+    private ProdutoServico produtoServico;
+    private FilteredList<Produto> filteredList;
 
     @FXML
     private Button btnSalvar;
@@ -79,6 +85,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     public void setItemPedido(ItemPedido itemPedido){
         this.itemPedido = itemPedido;
     }
+    public void setProdutoServico(ProdutoServico produtoServico){
+        this.produtoServico = produtoServico;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -111,6 +120,59 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public synchronized <T> void carregaDialogBuscaPedido (Stage parentStage, String caminho){
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            AnchorPane anchorPane = loader.load();
+
+            Stage dialog = new Stage();
+
+            PedidoBuscaProdutoController controller = loader.getController();
+
+            List<Produto> list = produtoServico.findAll();
+            ObservableList<Produto> obbList = FXCollections.observableArrayList(list);
+            filteredList = filteredTableView(obbList);
+
+            controller.setProdutoServico(new ProdutoServico());
+            controller.updateFormData(filteredList);
+
+            dialog.setScene(new Scene(anchorPane));
+            dialog.initOwner(parentStage);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.setResizable(false);
+            dialog.initStyle(StageStyle.UNDECORATED);
+            dialog.showAndWait();
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList) {
+        FilteredList<Produto> filteredList = new FilteredList<>(obbProdutoList);
+
+        txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> {
+
+            this.filteredList.setPredicate(produto -> {
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (produto.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }));
+
+
+        return produtoFilteredList;
     }
 
     @Override

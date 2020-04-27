@@ -224,11 +224,11 @@ public class ProdutoListController implements Initializable, DataChangeListener 
     }
 
     private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList){
-        FilteredList<Produto> filteredClienteList = new FilteredList<>(obbProdutoList);
+        FilteredList<Produto> filteredProdutoList = new FilteredList<>(obbProdutoList);
 
         txtProcura.textProperty().addListener(((observable, oldValue, newValue) -> {
 
-            filteredProdutoList.setPredicate(produto -> {
+            this.filteredProdutoList.setPredicate(produto -> {
 
                 if (newValue == null || newValue.isEmpty()){
                     return true;
@@ -245,7 +245,7 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
         }));
 
-        return filteredClienteList;
+        return filteredProdutoList;
     }
 
     @Override

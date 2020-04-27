@@ -58,7 +58,9 @@ public class MainViewController implements Initializable{
 	public void onBtnNovoPedidoAction(ActionEvent event){
 		System.out.println("Novo pedido");
 		Stage parentStage = Utils.atualStage(event);
-		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {});
+		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
+			controller.setProdutoServico(new ProdutoServico());
+		});
 	}
 
 	@FXML
