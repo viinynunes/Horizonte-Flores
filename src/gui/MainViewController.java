@@ -161,6 +161,7 @@ public class MainViewController implements Initializable{
 			PedidoCadastroController controller = load.getController();
 			controller.setProdutoServico(new ProdutoServico());
 			controller.updateFormLocalizaProduto();
+			controller.updateFormProdutosPedido();
 
 			dialog.setTitle("Pedido");
 			dialog.setResizable(false);

@@ -3,6 +3,7 @@ package gui;
 import application.Main;
 import gui.listeners.ClienteChangeListener;
 import gui.listeners.DataChangeListener;
+import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.collections.FXCollections;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -32,6 +34,7 @@ import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -41,6 +44,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private ItemPedido itemPedido;
     private ProdutoServico produtoServico;
     private FilteredList<Produto> filteredList;
+    private List<Produto> listProdutosSelecionados = new ArrayList<>();
 
     @FXML
     private Button btnSalvar;
@@ -78,7 +82,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     }
 
     public void onBtnApagarItemAction(){
-
+        listProdutosSelecionados.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
+        updateFormProdutosPedido();
     }
 
     public void onHyperlinkSelecionarCliente(ActionEvent event){
@@ -104,6 +109,28 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcLocalizaProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcLocalizaProdutoFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
 
+        tbcProdutoId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+
+
+        tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+           if (event.getCode() == KeyCode.ENTER){
+               listProdutosSelecionados.add(tbvLocalizaProduto.getSelectionModel().getSelectedItem());
+               tbvLocalizaProduto.setVisible(false);
+               updateFormProdutosPedido();
+               txtLocalizaProduto.clear();
+
+           }
+        });
+
+        tbvLocalizaProduto.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                listProdutosSelecionados.add(tbvLocalizaProduto.getSelectionModel().getSelectedItem());
+                tbvLocalizaProduto.setVisible(false);
+                updateFormProdutosPedido();
+                txtLocalizaProduto.clear();
+            }
+        });
     }
 
     public void updateFormLocalizaProduto(){
@@ -116,7 +143,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         } else {
             tbvLocalizaProduto.setItems(filteredList);
         }
+    }
 
+    public void updateFormProdutosPedido(){
+        ObservableList<Produto> obbList = FXCollections.observableArrayList(listProdutosSelecionados);
+        tbvItemsPedidoPorduto.setItems(obbList);
+        tbvItemsPedidoPorduto.refresh();
     }
 
     public synchronized <T> void carregaDialog (Stage parentStage, String caminho){
