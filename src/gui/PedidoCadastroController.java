@@ -144,35 +144,6 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         }
     }
 
-    public synchronized <T> void carregaDialogBuscaPedido (Stage parentStage, String caminho){
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
-            AnchorPane anchorPane = loader.load();
-
-            Stage dialog = new Stage();
-
-            PedidoBuscaProdutoController controller = loader.getController();
-
-            List<Produto> list = produtoServico.findAll();
-            ObservableList<Produto> obbList = FXCollections.observableArrayList(list);
-            filteredList = filteredTableView(obbList);
-
-            controller.setProdutoServico(new ProdutoServico());
-            controller.updateFormData(filteredList);
-
-            dialog.setScene(new Scene(anchorPane));
-            dialog.initOwner(parentStage);
-            dialog.initModality(Modality.WINDOW_MODAL);
-            dialog.setResizable(false);
-            dialog.initStyle(StageStyle.UNDECORATED);
-            dialog.showAndWait();
-
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
     private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList) {
         FilteredList<Produto> filteredList = new FilteredList<>(obbProdutoList);
 
