@@ -24,6 +24,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.entities.Cliente;
+import model.entities.Fornecedor;
 import model.entities.ItemPedido;
 import model.entities.Produto;
 import model.services.ClienteServico;
@@ -38,7 +39,6 @@ import java.util.function.Consumer;
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
     private ItemPedido itemPedido;
-    private FilteredList<Produto> produtoFilteredList;
     private ProdutoServico produtoServico;
     private FilteredList<Produto> filteredList;
 
@@ -62,6 +62,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private TableColumn<String, Produto> tbcProdutoNome;
     @FXML
     private TableColumn<Double, ItemPedido> tbcTotalItem;
+    @FXML
+    private TableView<Produto> tbvLocalizaProduto;
+    @FXML
+    private TableColumn<String, Produto> tbcLocalizaProdutoNome;
+    @FXML
+    private TableColumn<Produto, Fornecedor> tbcLocalizaProdutoFornecedor;
 
     public void onBtnSalvarAction(ActionEvent event){
 
@@ -94,6 +100,22 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvItemsPedidoPorduto.prefHeightProperty().bind(stage.heightProperty());
+
+        tbcLocalizaProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        tbcLocalizaProdutoFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
+
+    }
+
+    public void updateFormLocalizaProduto(){
+        List<Produto> list = produtoServico.findAll();
+        ObservableList<Produto> obbList = FXCollections.observableArrayList(list);
+        filteredList = filteredTableView(obbList);
+
+        if (filteredList.isEmpty() || filteredList == null){
+            tbvLocalizaProduto.setVisible(false);
+        } else {
+            tbvLocalizaProduto.setItems(filteredList);
+        }
 
     }
 
@@ -158,12 +180,14 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
             this.filteredList.setPredicate(produto -> {
                 if (newValue == null || newValue.isEmpty()){
+                    tbvLocalizaProduto.setVisible(false);
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
                 if (produto.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    tbvLocalizaProduto.setVisible(true);
                     return true;
                 } else {
                     return false;
@@ -172,7 +196,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         }));
 
 
-        return produtoFilteredList;
+        return filteredList;
     }
 
     @Override

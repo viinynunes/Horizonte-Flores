@@ -58,9 +58,7 @@ public class MainViewController implements Initializable{
 	public void onBtnNovoPedidoAction(ActionEvent event){
 		System.out.println("Novo pedido");
 		Stage parentStage = Utils.atualStage(event);
-		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
-			controller.setProdutoServico(new ProdutoServico());
-		});
+		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml");
 	}
 
 	@FXML
@@ -152,13 +150,17 @@ public class MainViewController implements Initializable{
 		}
 	}
 
-	public synchronized <T> void carregaViewPedido(Stage parentStage, String caminho, Consumer<T> initializingAction) {
+	public synchronized <T> void carregaViewPedido(Stage parentStage, String caminho) {
 
 		try {
 			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
 			VBox novoVBox = load.load();
 
 			Stage dialog = new Stage();
+
+			PedidoCadastroController controller = load.getController();
+			controller.setProdutoServico(new ProdutoServico());
+			controller.updateFormLocalizaProduto();
 
 			dialog.setTitle("Pedido");
 			dialog.setResizable(false);
@@ -169,8 +171,6 @@ public class MainViewController implements Initializable{
 			dialog.setMaximized(true);
 			dialog.showAndWait();
 
-			T controller = load.getController();
-			initializingAction.accept(controller);
 
 		} catch (IOException e) {
 			e.printStackTrace();
