@@ -87,11 +87,11 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView prefHeight="714.0" prefWidth="1521.0" style="-fx-background-color: #555866;">
+            <TableView fx:id="tbvListaPedidos" prefHeight="714.0" prefWidth="1521.0" style="-fx-background-color: #555866;">
               <columns>
-                  <TableColumn prefWidth="75.0" text="ID" />
-                <TableColumn prefWidth="208.80003106594086" text="Data" />
-                <TableColumn prefWidth="347.1999816894531" text="Cliente" />
+                  <TableColumn fx:id="tbcPedidoId" prefWidth="75.0" text="ID" />
+                <TableColumn fx:id="tbcPedidoData" prefWidth="208.80003106594086" text="Data" />
+                <TableColumn fx:id="tbcPedidoCliente" prefWidth="347.1999816894531" text="Cliente" />
                   <TableColumn prefWidth="491.2000732421875" text="Produto" />
                   <TableColumn prefWidth="381.59991455078125" text="Quantidade de Produtos" />
               </columns>

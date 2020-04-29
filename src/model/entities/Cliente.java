@@ -110,4 +110,8 @@ public class Cliente implements Serializable {
 		} else return nome.equals(other.nome);
 	}
 
+	@Override
+	public String toString() {
+		return nome;
+	}
 }

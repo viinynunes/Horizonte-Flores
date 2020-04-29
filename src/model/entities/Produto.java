@@ -8,6 +8,7 @@ public class Produto implements Serializable {
 
     private Integer id;
     private String nome;
+    private Integer quantidade;
     private Categoria categoria;
     private Fornecedor fornecedor;
 
@@ -54,6 +55,14 @@ public class Produto implements Serializable {
         this.fornecedor = fornecedor;
     }
 
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -72,11 +81,8 @@ public class Produto implements Serializable {
             return false;
         Produto other = (Produto) obj;
         if (nome == null) {
-            if (other.nome != null)
-                return false;
-        } else if (!nome.equals(other.nome))
-            return false;
-        return true;
+            return other.nome == null;
+        } else return nome.equals(other.nome);
     }
 
 

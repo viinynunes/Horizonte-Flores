@@ -2,11 +2,15 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import application.Main;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,9 +18,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -25,12 +28,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.entities.Cliente;
 import model.entities.ItemPedido;
+import model.entities.Pedido;
 import model.services.ClienteServico;
+import model.services.ItemPedidoServico;
+import model.services.PedidoServico;
 import model.services.ProdutoServico;
 
 public class MainViewController implements Initializable{
-	
+
+	private PedidoServico servico = new PedidoServico();
+
 	@FXML
 	private MenuItem miFechar;
 	@FXML
@@ -53,6 +62,14 @@ public class MainViewController implements Initializable{
 	private Button btnNovoPedido;
 	@FXML
 	private ImageView imvLogo;
+	@FXML
+	private TableView<Pedido> tbvListaPedidos;
+	@FXML
+	private TableColumn<Integer, Pedido> tbcPedidoId;
+	@FXML
+	private TableColumn<Date, Pedido> tbcPedidoData;
+	@FXML
+	private TableColumn<Pedido, Cliente> tbcPedidoCliente;
 
 	@FXML
 	public void onBtnNovoPedidoAction(ActionEvent event){
@@ -122,6 +139,19 @@ public class MainViewController implements Initializable{
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
+		tbcPedidoId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tbcPedidoData.setCellValueFactory(new PropertyValueFactory<>("data"));
+		tbcPedidoCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
+
+		updateFormData();
+	}
+
+	public void updateFormData(){
+
+		List<Pedido> list = servico.findAll();
+		ObservableList<Pedido> obbList = FXCollections.observableArrayList(list);
+		tbvListaPedidos.setItems(obbList);
+
 	}
 	
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {
@@ -160,6 +190,7 @@ public class MainViewController implements Initializable{
 
 			PedidoCadastroController controller = load.getController();
 			controller.setProdutoServico(new ProdutoServico());
+			controller.setItemPedidoServico(new ItemPedidoServico());
 			controller.updateFormLocalizaProduto();
 			controller.updateFormProdutosPedido();
 

@@ -1,8 +1,10 @@
 package gui;
 
 import application.Main;
+import db.DBException;
 import gui.listeners.ClienteChangeListener;
 import gui.listeners.DataChangeListener;
+import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyProperty;
@@ -25,26 +27,27 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.entities.Cliente;
-import model.entities.Fornecedor;
-import model.entities.ItemPedido;
-import model.entities.Produto;
+import model.entities.*;
 import model.services.ClienteServico;
+import model.services.ItemPedidoServico;
 import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
-    private ItemPedido itemPedido;
+    private ItemPedidoServico itemPedidoServico;
     private ProdutoServico produtoServico;
     private FilteredList<Produto> filteredList;
     private List<Produto> listProdutosSelecionados = new ArrayList<>();
+    private Cliente cliente;
+    private ItemPedido itemPedido;
 
     @FXML
     private Button btnSalvar;
@@ -75,6 +78,13 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     public void onBtnSalvarAction(ActionEvent event){
 
+        try {
+            itemPedido = getDataForm();
+            itemPedidoServico.insert(itemPedido);
+            Utils.atualStage(event).close();
+        } catch (DBException e){
+            Alerts.showAlert("Erro ao salvar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     public void onBtnCancelarAction(ActionEvent event){
@@ -93,9 +103,10 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     }
 
-    public void setItemPedido(ItemPedido itemPedido){
-        this.itemPedido = itemPedido;
+    public void setItemPedidoServico(ItemPedidoServico itemPedidoServico) {
+        this.itemPedidoServico = itemPedidoServico;
     }
+
     public void setProdutoServico(ProdutoServico produtoServico){
         this.produtoServico = produtoServico;
     }
@@ -119,16 +130,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                tbvLocalizaProduto.setVisible(false);
                updateFormProdutosPedido();
                txtLocalizaProduto.clear();
+               txtQuantidade.clear();
 
            }
         });
 
         tbvLocalizaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                listProdutosSelecionados.add(tbvLocalizaProduto.getSelectionModel().getSelectedItem());
+                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
+                p.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
+                listProdutosSelecionados.add(p);
                 tbvLocalizaProduto.setVisible(false);
                 updateFormProdutosPedido();
                 txtLocalizaProduto.clear();
+                txtQuantidade.clear();
             }
         });
     }
@@ -138,7 +153,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         ObservableList<Produto> obbList = FXCollections.observableArrayList(list);
         filteredList = filteredTableView(obbList);
 
-        if (filteredList.isEmpty() || filteredList == null){
+        if (filteredList.isEmpty()){
             tbvLocalizaProduto.setVisible(false);
         } else {
             tbvLocalizaProduto.setItems(filteredList);
@@ -151,7 +166,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbvItemsPedidoPorduto.refresh();
     }
 
-    public synchronized <T> void carregaDialog (Stage parentStage, String caminho){
+    public synchronized void carregaDialog (Stage parentStage, String caminho){
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
@@ -179,31 +194,43 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList) {
         FilteredList<Produto> filteredList = new FilteredList<>(obbProdutoList);
 
-        txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> {
+        txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> this.filteredList.setPredicate(produto -> {
+            if (newValue == null || newValue.isEmpty()){
+                tbvLocalizaProduto.setVisible(false);
+                return true;
+            }
 
-            this.filteredList.setPredicate(produto -> {
-                if (newValue == null || newValue.isEmpty()){
-                    tbvLocalizaProduto.setVisible(false);
-                    return true;
-                }
+            String lowerCaseFilter = newValue.toLowerCase();
 
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (produto.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
-                    tbvLocalizaProduto.setVisible(true);
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-        }));
+            if (produto.getNome().toLowerCase().contains(lowerCaseFilter)){
+                tbvLocalizaProduto.setVisible(true);
+                return true;
+            } else {
+                return false;
+            }
+        })));
 
 
         return filteredList;
     }
 
+    private ItemPedido getDataForm(){
+        Pedido pedido = new Pedido();
+        ItemPedido item = new ItemPedido();
+
+        pedido.setCliente(cliente);
+        pedido.setData(new Date());
+
+        item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
+        item.setListProduto(listProdutosSelecionados);
+        item.setPedido(pedido);
+
+        return item;
+    }
+
     @Override
     public void onClienteChanged(Cliente cliente) {
+        this.cliente = cliente;
         hyperlinkSelecionarCliente.setText(cliente.getNome());
     }
 }

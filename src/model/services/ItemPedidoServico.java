@@ -9,7 +9,7 @@ public class ItemPedidoServico {
 
     private ItemPedidoDao dao = DaoFactory.createItemDao();
 
-    public void insert (ItemPedido item, Pedido pedido){
-        dao.insert(item, pedido);
+    public void insert (ItemPedido item){
+        dao.insert(item);
     }
 }

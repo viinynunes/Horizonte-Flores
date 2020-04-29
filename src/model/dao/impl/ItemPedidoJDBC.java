@@ -1,23 +1,24 @@
 package model.dao.impl;
 
+import db.DB;
 import db.DBException;
 import model.dao.ItemPedidoDao;
 import model.entities.ItemPedido;
-import model.entities.Pedido;
+import model.entities.Produto;
 
 import java.sql.*;
 import java.util.List;
 
 public class ItemPedidoJDBC implements ItemPedidoDao {
 
-    private Connection conn;
+    private final Connection conn;
 
     public ItemPedidoJDBC(Connection conn){
         this.conn = conn;
     }
 
     @Override
-    public void insert(ItemPedido item, Pedido pedido) {
+    public void insert(ItemPedido item) {
         PreparedStatement st = null;
         ResultSet rs = null;
 
@@ -25,8 +26,8 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
             conn.setAutoCommit(false);
             st = conn.prepareStatement("Insert into pedido (data, cliente_id) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
 
-            st.setDate(1, new Date((pedido.getData().getTime())));
-            st.setInt(2, pedido.getCliente().getId());
+            st.setDate(1, new Date((item.getPedido().getData().getTime())));
+            st.setInt(2, item.getPedido().getCliente().getId());
 
             int rows = st.executeUpdate();
 
@@ -34,37 +35,43 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
                 rs = st.getGeneratedKeys();
                 if (rs.next()) {
                     int id = rs.getInt(1);
-                    pedido.setId(id);
+                    item.getPedido().setId(id);
                 }
             }
 
-            st = conn.prepareStatement("Insert into Itens_do_pedido (quantidade, pedido_id, produto_id) values " +
-                    "(?, ?, ?)");
+            for (Produto p : item.getListProduto()){
 
-            st.setInt(1, item.getQuantidade());
-            st.setInt(2, item.getPedido().getId());
-            st.setInt(3, item.getProduto().getId());
+                st = conn.prepareStatement("Insert into Itens_do_pedido (quantidade, pedido_id, produto_id) values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
-            rows = st.executeUpdate();
+                st.setInt(1, p.getQuantidade());
+                st.setInt(2, item.getPedido().getId());
+                st.setInt(3, p.getId());
 
-            if (rows > 0){
-                rs = st.getGeneratedKeys();
-                if (rs.next()) {
-                    int id = rs.getInt(1);
-                    item.setId(id);
+                rows = st.executeUpdate();
+
+                if (rows > 0){
+                    rs = st.getGeneratedKeys();
+                    if (rs.next()) {
+                        int id1 = rs.getInt(1);
+                        item.setId(id1);
+                    }
                 }
             }
+
 
             conn.commit();
 
         } catch (SQLException e){
             throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
         }
 
     }
 
     @Override
-    public void update(ItemPedido item, Pedido pedido) {
+    public void update(ItemPedido item) {
 
     }
 
@@ -75,6 +82,9 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
 
     @Override
     public List<ItemPedido> findAll() {
+
+
+
         return null;
     }
 }

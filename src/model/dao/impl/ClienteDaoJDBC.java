@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class ClienteDaoJDBC implements ClienteDao {
 
-    private Connection conn;
+    private final Connection conn;
 
     public ClienteDaoJDBC(Connection conn) {
         this.conn = conn;
@@ -25,7 +25,6 @@ public class ClienteDaoJDBC implements ClienteDao {
     public void insert(Cliente cliente) {
 
         PreparedStatement st = null;
-        ResultSet rs = null;
 
         try {
 
@@ -59,7 +58,6 @@ public class ClienteDaoJDBC implements ClienteDao {
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
-            DB.closeResultSet(rs);
             DB.closeStatement(st);
         }
 
@@ -84,7 +82,6 @@ public class ClienteDaoJDBC implements ClienteDao {
                 st.setString(6, cliente.getCnpj());
                 st.setInt(7, cliente.getId());
 
-                st.executeUpdate();
             } else {
 
                 st = conn.prepareStatement("UPDATE cliente " +
@@ -100,8 +97,8 @@ public class ClienteDaoJDBC implements ClienteDao {
                 st.setInt(7, cliente.getEndereco().getId());
                 st.setInt(8, cliente.getId());
 
-                st.executeUpdate();
             }
+            st.executeUpdate();
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
@@ -146,7 +143,7 @@ public class ClienteDaoJDBC implements ClienteDao {
             if (rs.next()) {
                 Endereco endereco = Utils.createEndereco(rs);
 
-                return createCliente(rs, endereco);
+                return Utils.createCliente(rs, endereco);
             }
 
         } catch (SQLException e) {
@@ -183,16 +180,14 @@ public class ClienteDaoJDBC implements ClienteDao {
                     map.put(rs.getInt("endereco_id"), endereco);
                 }
 
-                Cliente cliente = createCliente(rs, endereco);
+                Cliente cliente = Utils.createCliente(rs, endereco);
                 list.add(cliente);
-                return list;
             }
+            return list;
 
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
-
-        return null;
     }
 
     @Override
@@ -203,8 +198,8 @@ public class ClienteDaoJDBC implements ClienteDao {
         PreparedStatement st1 = null;
         ResultSet rs = null;
         ResultSet rs1 = null;
-        Cliente cliente = null;
-        Endereco endereco = null;
+        Cliente cliente;
+        Endereco endereco;
 
         try {
             st = conn.prepareStatement("select * from cliente inner join endereco on cliente.endereco_id = endereco.id");
@@ -224,7 +219,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                     enderecoMap.put(rs.getInt("endereco_id"), endereco);
                 }
                 if (cliente == null) {
-                    cliente = createCliente(rs, endereco);
+                    cliente = Utils.createCliente(rs, endereco);
                     clienteMap.put(rs.getInt("id"), cliente);
                 }
                 list.add(cliente);
@@ -238,7 +233,7 @@ public class ClienteDaoJDBC implements ClienteDao {
                 cliente = clienteMap.get(rs1.getInt("id"));
 
                 if (cliente == null) {
-                    cliente = createCliente(rs1);
+                    cliente = Utils.createCliente(rs1);
                     list.add(cliente);
                 }
             }
@@ -252,35 +247,6 @@ public class ClienteDaoJDBC implements ClienteDao {
             DB.closeStatement(st);
             DB.closeStatement(st1);
         }
-    }
-
-    private Cliente createCliente(ResultSet rs, Endereco endereco) throws SQLException {
-        Cliente cliente = new Cliente();
-
-        cliente.setId(rs.getInt("id"));
-        cliente.setNome(rs.getString("nome"));
-        cliente.setTelefone(rs.getString("telefone"));
-        cliente.setTelefone2(rs.getString("telefone2"));
-        cliente.setEmail(rs.getString("email"));
-        cliente.setCpf(rs.getString("cpf"));
-        cliente.setCnpj(rs.getString("cnpj"));
-        cliente.setEndereco(endereco);
-
-        return cliente;
-    }
-
-    private Cliente createCliente(ResultSet rs) throws SQLException {
-        Cliente cliente = new Cliente();
-
-        cliente.setId(rs.getInt("id"));
-        cliente.setNome(rs.getString("nome"));
-        cliente.setTelefone(rs.getString("telefone"));
-        cliente.setTelefone2(rs.getString("telefone2"));
-        cliente.setEmail(rs.getString("email"));
-        cliente.setCpf(rs.getString("cpf"));
-        cliente.setCnpj(rs.getString("cnpj"));
-
-        return cliente;
     }
 
 }
