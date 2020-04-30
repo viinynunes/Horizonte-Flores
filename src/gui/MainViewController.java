@@ -2,12 +2,15 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import application.Main;
+import db.DBException;
+import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +41,8 @@ import model.services.ProdutoServico;
 
 public class MainViewController implements Initializable{
 
-	private PedidoServico servico = new PedidoServico();
+	private ItemPedidoServico itemServico = new ItemPedidoServico();
+	private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
 	@FXML
 	private MenuItem miFechar;
@@ -61,6 +65,10 @@ public class MainViewController implements Initializable{
 	@FXML
 	private Button btnNovoPedido;
 	@FXML
+	private Button btnEditarPedido;
+	@FXML
+	private Button btnCancelarPedido;
+	@FXML
 	private ImageView imvLogo;
 	@FXML
 	private TableView<Pedido> tbvListaPedidos;
@@ -75,7 +83,29 @@ public class MainViewController implements Initializable{
 	public void onBtnNovoPedidoAction(ActionEvent event){
 		System.out.println("Novo pedido");
 		Stage parentStage = Utils.atualStage(event);
-		carregaViewPedido(parentStage,"/gui/PedidoCadastro.fxml");
+		Pedido pedido = new Pedido();
+		carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
+	}
+
+	@FXML
+	public void onBtnEditarPedidoAction(ActionEvent event){
+		try {
+			Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
+			itemPedidoList = itemServico.findAllPedidos(pedido);
+			Stage parentStage = Utils.atualStage(event);
+			carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
+				controller.setPedido(pedido);
+				controller.setItemPedidoList(itemPedidoList);
+			});
+		} catch (DBException e){
+			Alerts.showAlert("Erro ao carregar a pagina", null, e.getMessage(), Alert.AlertType.ERROR);
+		}
+
+	}
+
+	@FXML
+	public void onBtnCancelarPedidoAction(){
+
 	}
 
 	@FXML
@@ -148,10 +178,17 @@ public class MainViewController implements Initializable{
 
 	public void updateFormData(){
 
-		List<Pedido> list = servico.findAll();
-		ObservableList<Pedido> obbList = FXCollections.observableArrayList(list);
-		tbvListaPedidos.setItems(obbList);
+		PedidoServico serv = new PedidoServico();
 
+		List<Pedido> pedidoList = serv.findAll();
+		ObservableList<Pedido> obb = FXCollections.observableArrayList(pedidoList);
+		tbvListaPedidos.setItems(obb);
+
+		/*
+		List<ItemPedido> list = itemServico.findAllPedidos();
+		ObservableList<ItemPedido> obbList = FXCollections.observableArrayList(list);
+		tbvListaPedidos.setItems(obbList);
+		 */
 	}
 	
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {
@@ -180,13 +217,16 @@ public class MainViewController implements Initializable{
 		}
 	}
 
-	public synchronized <T> void carregaViewPedido(Stage parentStage, String caminho) {
+	public synchronized <T> void carregaViewPedido(Pedido pedido, List<ItemPedido> list, Stage parentStage, String caminho, Consumer<T> initConsumer) {
 
 		try {
 			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
 			VBox novoVBox = load.load();
 
 			Stage dialog = new Stage();
+
+			T cont = load.getController();
+			initConsumer.accept(cont);
 
 			PedidoCadastroController controller = load.getController();
 			controller.setProdutoServico(new ProdutoServico());

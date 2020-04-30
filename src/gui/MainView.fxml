@@ -59,12 +59,12 @@
                      <font>
                         <Font size="16.0" />
                      </font></Button>
-                  <Button fx:id="btnNovoPedido1" minWidth="200.0" mnemonicParsing="false" onAction="#onBtnNovoPedidoAction" prefHeight="102.0" prefWidth="191.0" text="Editar Pedido [F3]">
+                  <Button fx:id="btnEditarPedido" minWidth="200.0" mnemonicParsing="false" onAction="#onBtnEditarPedidoAction" prefHeight="102.0" prefWidth="191.0" text="Editar Pedido [F3]">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnNovoPedido2" minWidth="200.0" mnemonicParsing="false" onAction="#onBtnNovoPedidoAction" prefHeight="98.0" prefWidth="280.0" text="Cancelar Pedido [F4]">
+                  <Button fx:id="btnCancelarPedido" minWidth="200.0" mnemonicParsing="false" onAction="#onBtnCancelarPedidoAction" prefHeight="98.0" prefWidth="280.0" text="Cancelar Pedido [F4]">
                      <font>
                         <Font size="16.0" />
                      </font>

@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,19 +9,19 @@ public class ItemPedido implements Serializable {
 
     private Integer id;
     private Integer quantidade;
-    private Double total;
     private Pedido pedido;
-    private List<Produto> listProduto;
+    private Produto produto;
+    private List<Produto> produtoList = new ArrayList<>();
 
     public ItemPedido() {
 
     }
 
-    public ItemPedido(Integer id, Integer quantidade, Double total, Pedido pedido) {
+    public ItemPedido(Integer id, Integer quantidade, Pedido pedido, Produto produto) {
         this.id = id;
         this.quantidade = quantidade;
-        this.total = total;
         this.pedido = pedido;
+        this.produto = produto;
     }
 
     public Integer getId() {
@@ -31,14 +32,6 @@ public class ItemPedido implements Serializable {
         this.id = id;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
     public Pedido getPedido() {
         return pedido;
     }
@@ -47,11 +40,27 @@ public class ItemPedido implements Serializable {
         this.pedido = pedido;
     }
 
-    public List<Produto> getListProduto() {
-        return listProduto;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setListProduto(List<Produto> listProduto) {
-        this.listProduto = listProduto;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public void setProdutoList(List<Produto> produtoList) {
+        this.produtoList = produtoList;
+    }
+
+    public List<Produto> getProdutoList() {
+        return produtoList;
     }
 }

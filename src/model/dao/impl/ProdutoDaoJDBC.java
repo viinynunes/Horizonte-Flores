@@ -4,6 +4,7 @@ import db.DB;
 import db.DBException;
 import model.dao.ProdutoDao;
 import model.entities.*;
+import model.util.Utils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -111,12 +112,12 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
                 if (rs.next()) {
 
-                    Categoria categoria = createCategoria(rs);
-                    Endereco endereco = createEndereco(rs);
-                    Estabelecimento estabelecimento = createEstabelecimento(rs, endereco);
-                    Fornecedor fornecedor = createFornecedor(rs, estabelecimento);
+                    Categoria categoria = Utils.createCategoria(rs);
+                    Endereco endereco = Utils.createEndereco(rs);
+                    Estabelecimento estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    Fornecedor fornecedor = Utils.createFornecedor(rs, estabelecimento);
 
-                    return createProduto(rs, categoria, fornecedor);
+                    return Utils.createProduto(rs, categoria, fornecedor);
                 }
             }
 
@@ -160,29 +161,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
                 Categoria categoria = categoriaMap.get(rs.getInt("categoria_id"));
                 if (categoria == null) {
-                    categoria = createCategoria(rs);
+                    categoria = Utils.createCategoria(rs);
                     categoriaMap.put(rs.getInt("categoria_id"), categoria);
                 }
 
                 Endereco endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
                 if (endereco == null) {
-                    endereco = createEndereco(rs);
+                    endereco = Utils.createEndereco(rs);
                     enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
                 }
 
                 Estabelecimento estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento_id"));
                 if (estabelecimento == null) {
-                    estabelecimento = createEstabelecimento(rs, endereco);
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
                     estabelecimentoMap.put(rs.getInt("estabelecimento_id"), estabelecimento);
                 }
 
                 Fornecedor fornecedor = fornecedorMap.get(rs.getInt("fornecedor_id"));
                 if (fornecedor == null) {
-                    fornecedor = createFornecedor(rs, estabelecimento);
+                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
                     fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
                 }
 
-                Produto produto = createProduto(rs, categoria, fornecedor);
+                Produto produto = Utils.createProduto(rs, categoria, fornecedor);
                 list.add(produto);
                 return list;
             }
@@ -225,29 +226,29 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
                 Categoria categoria = categoriaMap.get(rs.getInt("categoria_id"));
                 if (categoria == null) {
-                    categoria = createCategoria(rs);
+                    categoria = Utils.createCategoria(rs);
                     categoriaMap.put(rs.getInt("categoria_id"), categoria);
                 }
 
                 Endereco endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
                 if (endereco == null) {
-                    endereco = createEndereco(rs);
+                    endereco = Utils.createEndereco(rs);
                     enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
                 }
 
                 Estabelecimento estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento_id"));
                 if (estabelecimento == null) {
-                    estabelecimento = createEstabelecimento(rs, endereco);
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
                     estabelecimentoMap.put(rs.getInt("estabelecimento_id"), estabelecimento);
                 }
 
                 Fornecedor fornecedor = fornecedorMap.get(rs.getInt("fornecedor_id"));
                 if (fornecedor == null) {
-                    fornecedor = createFornecedor(rs, estabelecimento);
+                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
                     fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
                 }
 
-                Produto produto = createProduto(rs, categoria, fornecedor);
+                Produto produto = Utils.createProduto(rs, categoria, fornecedor);
                 list.add(produto);
 
             }
@@ -263,61 +264,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
 
     }
 
-    private Fornecedor createFornecedor(ResultSet rs, Estabelecimento estabelecimento) throws SQLException {
-        Fornecedor fornecedor = new Fornecedor();
 
-        fornecedor.setId(rs.getInt("fornecedor.id"));
-        fornecedor.setNome(rs.getString("fornecedor.nome"));
-        fornecedor.setEstabelecimento(estabelecimento);
 
-        return fornecedor;
 
-    }
 
-    private Estabelecimento createEstabelecimento(ResultSet rs, Endereco endereco) throws SQLException {
-
-        Estabelecimento estabelecimento = new Estabelecimento();
-        estabelecimento.setId(rs.getInt("estabelecimento.id"));
-        estabelecimento.setNome(rs.getString("estabelecimento.nome"));
-        estabelecimento.setEndereco(endereco);
-
-        return estabelecimento;
-
-    }
-
-    private Categoria createCategoria(ResultSet rs) throws SQLException {
-
-        Categoria categoria = new Categoria();
-        categoria.setId(rs.getInt("categoria.id"));
-        categoria.setNome(rs.getString("categoria.nome"));
-        categoria.setAbreviacao(rs.getString("categoria.abreviacao"));
-
-        return categoria;
-    }
-
-    private Endereco createEndereco(ResultSet rs) throws SQLException {
-        Endereco endereco = new Endereco();
-        endereco.setId(rs.getInt("endereco_id"));
-        endereco.setLogadouro(rs.getString("endereco.logadouro"));
-        endereco.setNumero(rs.getString("endereco.numero"));
-        endereco.setBairro(rs.getString("endereco.bairro"));
-        endereco.setReferencia(rs.getString("endereco.referencia"));
-        endereco.setCidade(rs.getString("endereco.cidade"));
-        endereco.setEstado(rs.getString("estado"));
-        endereco.setPais(rs.getString("pais"));
-
-        return endereco;
-    }
-
-    private Produto createProduto(ResultSet rs, Categoria categoria, Fornecedor fornecedor) throws SQLException {
-
-        Produto produto = new Produto();
-        produto.setId(rs.getInt("id"));
-        produto.setNome(rs.getString("nome"));
-        produto.setCategoria(categoria);
-        produto.setFornecedor(fornecedor);
-
-        return produto;
-
-    }
 }

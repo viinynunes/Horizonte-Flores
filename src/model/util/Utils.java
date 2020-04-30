@@ -1,9 +1,6 @@
 package model.util;
 
-import model.entities.Cliente;
-import model.entities.Endereco;
-import model.entities.Estabelecimento;
-import model.entities.Pedido;
+import model.entities.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,14 +21,14 @@ public class Utils {
         return endereco;
     }
 
-    public static Estabelecimento createEstabelecimento(ResultSet rs, Endereco endereco) throws SQLException{
+    public static Estabelecimento createEstabelecimento(ResultSet rs, Endereco endereco) throws SQLException {
 
         Estabelecimento estabelecimento = new Estabelecimento();
 
         estabelecimento.setId(rs.getInt("id"));
         estabelecimento.setNome(rs.getString("nome"));
 
-        if (endereco == null){
+        if (endereco == null) {
             return estabelecimento;
         } else {
             estabelecimento.setEndereco(endereco);
@@ -69,12 +66,52 @@ public class Utils {
         return cliente;
     }
 
-    public static Pedido createPedido(ResultSet rs, Cliente cliente) throws SQLException{
+    public static Produto createProduto(ResultSet rs, Categoria categoria, Fornecedor fornecedor) throws SQLException {
+        Produto produto = new Produto();
+        produto.setId(rs.getInt("produto.id"));
+        produto.setNome(rs.getString("produto.nome"));
+        produto.setCategoria(categoria);
+        produto.setFornecedor(fornecedor);
+
+        return produto;
+    }
+
+    public static Categoria createCategoria(ResultSet rs) throws SQLException {
+        Categoria categoria = new Categoria();
+        categoria.setId(rs.getInt("categoria.id"));
+        categoria.setNome(rs.getString("categoria.nome"));
+        categoria.setAbreviacao(rs.getString("categoria.abreviacao"));
+
+        return categoria;
+    }
+
+
+    public static Fornecedor createFornecedor(ResultSet rs, Estabelecimento estabelecimento) throws SQLException {
+        Fornecedor fornecedor = new Fornecedor();
+        fornecedor.setId(rs.getInt("fornecedor.id"));
+        fornecedor.setNome(rs.getString("fornecedor.nome"));
+        fornecedor.setEstabelecimento(estabelecimento);
+
+        return fornecedor;
+    }
+
+    public static Pedido createPedido(ResultSet rs, Cliente cliente) throws SQLException {
         Pedido pedido = new Pedido();
-        pedido.setId(rs.getInt("id"));
-        pedido.setData(rs.getDate("data"));
+        pedido.setId(rs.getInt("pedido.id"));
+        pedido.setData(rs.getDate("pedido.data"));
         pedido.setCliente(cliente);
 
         return pedido;
+    }
+
+    public static ItemPedido createItemPedido(ResultSet rs, Produto produto, Pedido pedido) throws SQLException {
+        ItemPedido itemPedido = new ItemPedido();
+
+        itemPedido.setId(rs.getInt("itens_do_pedido.id"));
+        itemPedido.setPedido(pedido);
+        itemPedido.setQuantidade(rs.getInt("itens_do_pedido.quantidade"));
+        itemPedido.setProduto(produto);
+
+        return itemPedido;
     }
 }

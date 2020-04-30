@@ -85,5 +85,8 @@ public class Produto implements Serializable {
         } else return nome.equals(other.nome);
     }
 
-
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

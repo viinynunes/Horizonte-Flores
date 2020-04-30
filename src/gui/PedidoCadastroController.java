@@ -42,12 +42,15 @@ import java.util.function.Consumer;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
+    private ItemPedido itemPedido;
     private ItemPedidoServico itemPedidoServico;
     private ProdutoServico produtoServico;
+    private Pedido pedido;
     private FilteredList<Produto> filteredList;
     private List<Produto> listProdutosSelecionados = new ArrayList<>();
+    private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
-    private ItemPedido itemPedido;
+
 
     @FXML
     private Button btnSalvar;
@@ -62,13 +65,13 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     @FXML
     private TextField txtLocalizaProduto;
     @FXML
-    private TableView<Produto> tbvItemsPedidoPorduto;
+    private TableView<ItemPedido> tbvItemsPedidoPorduto;
     @FXML
-    private TableColumn<Integer, Produto> tbcProdutoId;
+    private TableColumn<Produto, ItemPedido> tbcProdutoId;
     @FXML
-    private TableColumn<String, Produto> tbcProdutoNome;
+    private TableColumn<Produto, ItemPedido> tbcProdutoNome;
     @FXML
-    private TableColumn<Double, ItemPedido> tbcTotalItem;
+    private TableColumn<Integer, ItemPedido> tbcQuantidade;
     @FXML
     private TableView<Produto> tbvLocalizaProduto;
     @FXML
@@ -103,6 +106,18 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     }
 
+    public void setItemPedido(ItemPedido itemPedido) {
+        this.itemPedido = itemPedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
+        this.itemPedidoList = itemPedidoList;
+    }
+
     public void setItemPedidoServico(ItemPedidoServico itemPedidoServico) {
         this.itemPedidoServico = itemPedidoServico;
     }
@@ -121,7 +136,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcLocalizaProdutoFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
 
         tbcProdutoId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("produto"));
+        tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
 
         tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -161,9 +177,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     }
 
     public void updateFormProdutosPedido(){
-        ObservableList<Produto> obbList = FXCollections.observableArrayList(listProdutosSelecionados);
-        tbvItemsPedidoPorduto.setItems(obbList);
-        tbvItemsPedidoPorduto.refresh();
+
+        ObservableList<ItemPedido> obbList;
+
+        if (pedido == null){
+
+        } else {
+            hyperlinkSelecionarCliente.setText(pedido.getCliente().getNome());
+            obbList = FXCollections.observableArrayList(itemPedidoList);
+            tbvItemsPedidoPorduto.setItems(obbList);
+            tbvItemsPedidoPorduto.refresh();
+        }
+
+
+
     }
 
     public synchronized void carregaDialog (Stage parentStage, String caminho){
@@ -221,8 +248,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         pedido.setCliente(cliente);
         pedido.setData(new Date());
 
-        item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-        item.setListProduto(listProdutosSelecionados);
+        item.setProdutoList(listProdutosSelecionados);
         item.setPedido(pedido);
 
         return item;

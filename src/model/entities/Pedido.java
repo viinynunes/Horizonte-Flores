@@ -1,6 +1,8 @@
 package model.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class Pedido {
@@ -8,6 +10,8 @@ public class Pedido {
     private Integer id;
     private Date Data;
     private Cliente cliente;
+
+    private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
     public Pedido (){
 
@@ -41,6 +45,14 @@ public class Pedido {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public void addItemPedidoList(ItemPedido itemPedido){
+        itemPedidoList.add(itemPedido);
+    }
+
+    public void removeItemPedidoList(ItemPedido itemPedido){
+        itemPedidoList.remove(itemPedido);
     }
 
     @Override

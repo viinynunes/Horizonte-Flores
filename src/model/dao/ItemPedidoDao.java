@@ -10,4 +10,5 @@ public interface ItemPedidoDao {
     void update (ItemPedido item);
     void deleteById (Integer id);
     List<ItemPedido> findAll();
+    List<ItemPedido> findAllPedido(Pedido pedido);
 }
