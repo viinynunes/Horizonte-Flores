@@ -3,30 +3,27 @@ package gui;
 import application.Main;
 import db.DBException;
 import gui.listeners.ClienteChangeListener;
-import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
-import gui.util.Constraints;
 import gui.util.Utils;
-import javafx.beans.property.ReadOnlyProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import model.entities.*;
 import model.services.ClienteServico;
 import model.services.ItemPedidoServico;
@@ -34,11 +31,9 @@ import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
@@ -47,10 +42,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private ProdutoServico produtoServico;
     private Pedido pedido;
     private FilteredList<Produto> filteredList;
-    private List<Produto> listProdutosSelecionados = new ArrayList<>();
     private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
-
 
     @FXML
     private Button btnSalvar;
@@ -67,9 +60,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     @FXML
     private TableView<ItemPedido> tbvItemsPedidoPorduto;
     @FXML
-    private TableColumn<Produto, ItemPedido> tbcProdutoId;
+    private TableColumn<ItemPedido, Produto> tbcProdutoId;
     @FXML
-    private TableColumn<Produto, ItemPedido> tbcProdutoNome;
+    private TableColumn<ItemPedido, Produto> tbcProdutoNome;
     @FXML
     private TableColumn<Integer, ItemPedido> tbcQuantidade;
     @FXML
@@ -79,27 +72,27 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     @FXML
     private TableColumn<Produto, Fornecedor> tbcLocalizaProdutoFornecedor;
 
-    public void onBtnSalvarAction(ActionEvent event){
+    public void onBtnSalvarAction(ActionEvent event) {
 
         try {
             itemPedido = getDataForm();
             itemPedidoServico.insert(itemPedido);
             Utils.atualStage(event).close();
-        } catch (DBException e){
+        } catch (DBException e) {
             Alerts.showAlert("Erro ao salvar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    public void onBtnCancelarAction(ActionEvent event){
+    public void onBtnCancelarAction(ActionEvent event) {
         Utils.atualStage(event).close();
     }
 
-    public void onBtnApagarItemAction(){
-        listProdutosSelecionados.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
+    public void onBtnApagarItemAction() {
+        itemPedidoList.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
         updateFormProdutosPedido();
     }
 
-    public void onHyperlinkSelecionarCliente(ActionEvent event){
+    public void onHyperlinkSelecionarCliente(ActionEvent event) {
         Stage parentStage = Utils.atualStage(event);
 
         carregaDialog(parentStage, "/gui/ClienteListDialog.fxml");
@@ -122,7 +115,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         this.itemPedidoServico = itemPedidoServico;
     }
 
-    public void setProdutoServico(ProdutoServico produtoServico){
+    public void setProdutoServico(ProdutoServico produtoServico) {
         this.produtoServico = produtoServico;
     }
 
@@ -132,30 +125,37 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvItemsPedidoPorduto.prefHeightProperty().bind(stage.heightProperty());
 
+        //tabela da busca de produtos
         tbcLocalizaProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcLocalizaProdutoFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
 
-        tbcProdutoId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("produto"));
+        //tabela de itens do pedido selecionados
+        tbcProdutoId.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getId()));
+        tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
 
         tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-           if (event.getCode() == KeyCode.ENTER){
-               listProdutosSelecionados.add(tbvLocalizaProduto.getSelectionModel().getSelectedItem());
-               tbvLocalizaProduto.setVisible(false);
-               updateFormProdutosPedido();
-               txtLocalizaProduto.clear();
-               txtQuantidade.clear();
+            if (event.getCode() == KeyCode.ENTER) {
+                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
+                ItemPedido item = new ItemPedido();
+                item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
+                item.setProduto(p);
+                itemPedidoList.add(item);
+                tbvLocalizaProduto.setVisible(false);
+                updateFormProdutosPedido();
+                txtLocalizaProduto.clear();
+                txtQuantidade.clear();
 
-           }
+            }
         });
 
         tbvLocalizaProduto.setOnMousePressed(event -> {
-            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
                 Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
-                p.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-                listProdutosSelecionados.add(p);
+                itemPedido.setProduto(p);
+                itemPedido.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
+                itemPedidoList.add(itemPedido);
                 tbvLocalizaProduto.setVisible(false);
                 updateFormProdutosPedido();
                 txtLocalizaProduto.clear();
@@ -164,36 +164,43 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         });
     }
 
-    public void updateFormLocalizaProduto(){
+    public void updateFormLocalizaProduto() {
         List<Produto> list = produtoServico.findAll();
         ObservableList<Produto> obbList = FXCollections.observableArrayList(list);
         filteredList = filteredTableView(obbList);
 
-        if (filteredList.isEmpty()){
+        if (filteredList.isEmpty()) {
             tbvLocalizaProduto.setVisible(false);
         } else {
             tbvLocalizaProduto.setItems(filteredList);
         }
     }
 
-    public void updateFormProdutosPedido(){
+    public void updateFormProdutosPedido() {
+
+        if (pedido == null){
+            throw new IllegalStateException("pedido null");
+        }
+
+        if (itemPedidoList == null){
+            throw new IllegalStateException("lista de itens null");
+        }
 
         ObservableList<ItemPedido> obbList;
 
-        if (pedido == null){
-
-        } else {
-            hyperlinkSelecionarCliente.setText(pedido.getCliente().getNome());
-            obbList = FXCollections.observableArrayList(itemPedidoList);
-            tbvItemsPedidoPorduto.setItems(obbList);
-            tbvItemsPedidoPorduto.refresh();
+        if (pedido.getCliente() != null) {
+            hyperlinkSelecionarCliente.setText(pedido.getCliente().toString());
         }
 
+
+        obbList = FXCollections.observableArrayList(itemPedidoList);
+        tbvItemsPedidoPorduto.setItems(obbList);
+        tbvItemsPedidoPorduto.refresh();
 
 
     }
 
-    public synchronized void carregaDialog (Stage parentStage, String caminho){
+    public synchronized void carregaDialog(Stage parentStage, String caminho) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
@@ -213,7 +220,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             dialog.setResizable(false);
             dialog.showAndWait();
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -222,15 +229,19 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         FilteredList<Produto> filteredList = new FilteredList<>(obbProdutoList);
 
         txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> this.filteredList.setPredicate(produto -> {
-            if (newValue == null || newValue.isEmpty()){
+            if (newValue == null || newValue.isEmpty()) {
                 tbvLocalizaProduto.setVisible(false);
                 return true;
             }
 
             String lowerCaseFilter = newValue.toLowerCase();
 
-            if (produto.getNome().toLowerCase().contains(lowerCaseFilter)){
+            if (produto.getNome().toLowerCase().contains(lowerCaseFilter)) {
                 tbvLocalizaProduto.setVisible(true);
+                return true;
+            } else if (produto.getId().toString().contains(lowerCaseFilter)){
+                return true;
+            } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)){
                 return true;
             } else {
                 return false;
@@ -241,15 +252,16 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         return filteredList;
     }
 
-    private ItemPedido getDataForm(){
+    private ItemPedido getDataForm() {
         Pedido pedido = new Pedido();
         ItemPedido item = new ItemPedido();
 
         pedido.setCliente(cliente);
         pedido.setData(new Date());
 
-        item.setProdutoList(listProdutosSelecionados);
+        item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
         item.setPedido(pedido);
+
 
         return item;
     }

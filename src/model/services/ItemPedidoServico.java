@@ -22,4 +22,8 @@ public class ItemPedidoServico {
     public List<ItemPedido> findAllPedidos(Pedido pedido){
         return dao.findAllPedido(pedido);
     }
+
+    public List<ItemPedido> findAll() {
+        return dao.findAll();
+    }
 }

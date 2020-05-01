@@ -11,7 +11,6 @@ public class ItemPedido implements Serializable {
     private Integer quantidade;
     private Pedido pedido;
     private Produto produto;
-    private List<Produto> produtoList = new ArrayList<>();
 
     public ItemPedido() {
 
@@ -54,13 +53,5 @@ public class ItemPedido implements Serializable {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
-    }
-
-    public void setProdutoList(List<Produto> produtoList) {
-        this.produtoList = produtoList;
-    }
-
-    public List<Produto> getProdutoList() {
-        return produtoList;
     }
 }

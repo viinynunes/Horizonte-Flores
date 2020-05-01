@@ -84,7 +84,8 @@ public class MainViewController implements Initializable{
 		System.out.println("Novo pedido");
 		Stage parentStage = Utils.atualStage(event);
 		Pedido pedido = new Pedido();
-		carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
+		List<ItemPedido> list = new ArrayList<>();
+		carregaViewPedido(pedido, list, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
 	}
 
 	@FXML
@@ -93,10 +94,7 @@ public class MainViewController implements Initializable{
 			Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
 			itemPedidoList = itemServico.findAllPedidos(pedido);
 			Stage parentStage = Utils.atualStage(event);
-			carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
-				controller.setPedido(pedido);
-				controller.setItemPedidoList(itemPedidoList);
-			});
+			carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
 		} catch (DBException e){
 			Alerts.showAlert("Erro ao carregar a pagina", null, e.getMessage(), Alert.AlertType.ERROR);
 		}
@@ -229,6 +227,8 @@ public class MainViewController implements Initializable{
 			initConsumer.accept(cont);
 
 			PedidoCadastroController controller = load.getController();
+			controller.setPedido(pedido);
+			controller.setItemPedidoList(itemPedidoList);
 			controller.setProdutoServico(new ProdutoServico());
 			controller.setItemPedidoServico(new ItemPedidoServico());
 			controller.updateFormLocalizaProduto();

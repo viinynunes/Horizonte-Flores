@@ -78,7 +78,7 @@
               <columns>
                 <TableColumn fx:id="tbcProdutoId" prefWidth="188.7999849319458" text="ID" />
                 <TableColumn fx:id="tbcProdutoNome" prefWidth="884.8000030517578" text="Produto" />
-                  <TableColumn fx:id="tbcTotalItem" prefWidth="455.2000488281251" text="Total" />
+                  <TableColumn fx:id="tbcQuantidade" prefWidth="455.2000488281251" text="Quantidade" />
               </columns>
                <padding>
                   <Insets left="1.0" right="1.0" />
