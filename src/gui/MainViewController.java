@@ -230,6 +230,7 @@ public class MainViewController implements Initializable{
 			controller.setPedido(pedido);
 			controller.setItemPedidoList(itemPedidoList);
 			controller.setProdutoServico(new ProdutoServico());
+			controller.setPedidoServico(new PedidoServico());
 			controller.setItemPedidoServico(new ItemPedidoServico());
 			controller.updateFormLocalizaProduto();
 			controller.updateFormProdutosPedido();

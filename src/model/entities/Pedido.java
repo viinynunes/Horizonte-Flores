@@ -47,12 +47,12 @@ public class Pedido {
         this.cliente = cliente;
     }
 
-    public void addItemPedidoList(ItemPedido itemPedido){
-        itemPedidoList.add(itemPedido);
+    public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
+        this.itemPedidoList = itemPedidoList;
     }
 
-    public void removeItemPedidoList(ItemPedido itemPedido){
-        itemPedidoList.remove(itemPedido);
+    public List<ItemPedido> getItemPedidoList() {
+        return itemPedidoList;
     }
 
     @Override

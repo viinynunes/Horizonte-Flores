@@ -35,95 +35,6 @@ public class PedidoDaoJDBC implements PedidoDao {
         Categoria categoria;
         Fornecedor fornecedor;
         Estabelecimento estabelecimento;
-/*
-        try {
-            st = conn.prepareStatement("select * from pedido inner join cliente " +
-                    "on pedido.CLIENTE_ID = cliente.id " +
-                    "inner join itens_do_pedido " +
-                    "on itens_do_pedido.PEDIDO_ID = pedido.id " +
-                    "inner join produto " +
-                    "on itens_do_pedido.PRODUTO_ID = produto.id " +
-                    "inner join categoria " +
-                    "on produto.CATEGORIA_ID = categoria.id " +
-                    "inner join fornecedor " +
-                    "on produto.FORNECEDOR_ID = fornecedor.id " +
-                    "inner join estabelecimento " +
-                    "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
-                    "inner join endereco " +
-                    "on cliente.ENDERECO_ID = endereco.id");
-
-            rs = st.executeQuery();
-
-            Map<Integer, Pedido> pedidoMap = new HashMap<>();
-            Map<Integer, Categoria> categoriaMap = new HashMap<>();
-            Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
-            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
-            Map<Integer, Cliente> clienteMap = new HashMap<>();
-            Map<Integer, Produto> produtoMap = new HashMap<>();
-            Map<Integer, ItemPedido> itemPedidoMap = new HashMap<>();
-
-            while (rs.next()) {
-
-                categoria = categoriaMap.get(rs.getInt("categoria.id"));
-                estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento.id"));
-                fornecedor = fornecedorMap.get(rs.getInt("fornecedor.id"));
-                pedido = pedidoMap.get(rs.getInt("pedido.id"));
-                cliente = clienteMap.get(rs.getInt("cliente.id"));
-                itemPedido = itemPedidoMap.get(rs.getInt("itens_do_pedido.id"));
-                produto = produtoMap.get(rs.getInt("produto.id"));
-                endereco = Utils.createEndereco(rs);
-
-                if (cliente == null) {
-                    cliente = Utils.createCliente(rs, endereco);
-                    clienteMap.put(rs.getInt("cliente.id"), cliente);
-                }
-                if (pedido == null) {
-                    pedido = Utils.createPedido(rs, cliente);
-                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
-                }
-                if (estabelecimento == null) {
-                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
-                    estabelecimentoMap.put(rs.getInt("estabelecimento.id"), estabelecimento);
-                }
-                if (categoria == null) {
-                    categoria = Utils.createCategoria(rs);
-                    categoriaMap.put(rs.getInt("categoria.id"), categoria);
-                }
-                if (fornecedor == null) {
-                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
-                    fornecedorMap.put(rs.getInt("fornecedor.id"), fornecedor);
-                }
-                if (produto == null){
-                    produto = Utils.createProduto(rs, categoria, fornecedor);
-                    produtoMap.put(rs.getInt("produto.id"), produto);
-                }
-
-                if (pedido == null) {
-                    pedido = Utils.createPedido(rs, cliente);
-                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
-                    list.add(pedido);
-                }
-
-                if (itemPedido == null){
-                    itemPedido = Utils.createItemPedido(rs, produto, pedido);
-                    itemPedidoMap.put(rs.getInt("itens_do_pedido.id"), itemPedido);
-                    pedido.addItemPedidoList(itemPedido);
-                    itemPedidoList.add(itemPedido);
-                }
-
-
-            }
-
-            return list;
-
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage());
-        } finally {
-            DB.closeResultSet(rs);
-            DB.closeStatement(st);
-        }
-
- */
 
         try {
             st = conn.prepareStatement("select * from pedido inner join cliente " +
@@ -182,7 +93,6 @@ public class PedidoDaoJDBC implements PedidoDao {
                 }
             }
 
-
             return list;
 
         } catch (SQLException e) {
@@ -191,6 +101,65 @@ public class PedidoDaoJDBC implements PedidoDao {
             DB.closeResultSet(rs);
             DB.closeStatement(st);
         }
+
+    }
+
+    @Override
+    public void insert(Pedido pedido) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            conn.setAutoCommit(false);
+
+            st = conn.prepareStatement("insert into pedido (data, cliente_id) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+            st.setDate(1, new Date((pedido.getData().getTime())));
+            st.setInt(2, pedido.getCliente().getId());
+
+            int rows = st.executeUpdate();
+
+            if (rows > 0){
+                rs = st.getGeneratedKeys();
+                if (rs.next()){
+                    int id = rs.getInt(1);
+                    pedido.setId(id);
+                }
+            }
+
+            for (ItemPedido i : pedido.getItemPedidoList()){
+
+                st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +
+                        "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+                st.setInt(1, i.getQuantidade());
+                st.setInt(2, pedido.getId());
+                st.setInt(3, i.getProduto().getId());
+
+                rows = st.executeUpdate();
+
+                if (rows > 0){
+                    rs = st.getGeneratedKeys();
+                    if (rs.next()){
+                        int id = rs.getInt(1);
+                        i.setId(id);
+                    }
+                }
+            }
+
+            conn.commit();
+
+        }catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+
+    }
+
+    @Override
+    public void update(Pedido pedido) {
 
     }
 

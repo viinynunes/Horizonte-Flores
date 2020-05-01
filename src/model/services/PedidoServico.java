@@ -13,4 +13,12 @@ public class PedidoServico {
     public List<Pedido> findAll(){
         return dao.findAll();
     }
+
+    public void saveOrUpdate(Pedido pedido){
+        if (pedido.getId() == null){
+            dao.insert(pedido);
+        } else {
+            dao.update(pedido);
+        }
+    }
 }

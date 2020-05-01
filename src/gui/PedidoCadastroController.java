@@ -27,6 +27,7 @@ import javafx.util.Callback;
 import model.entities.*;
 import model.services.ClienteServico;
 import model.services.ItemPedidoServico;
+import model.services.PedidoServico;
 import model.services.ProdutoServico;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.ResourceBundle;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
+    private PedidoServico pedidoServico;
     private ItemPedido itemPedido;
     private ItemPedidoServico itemPedidoServico;
     private ProdutoServico produtoServico;
@@ -75,8 +77,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     public void onBtnSalvarAction(ActionEvent event) {
 
         try {
-            itemPedido = getDataForm();
-            itemPedidoServico.insert(itemPedido);
+            pedido = getDataForm();
+            pedidoServico.saveOrUpdate(pedido);
             Utils.atualStage(event).close();
         } catch (DBException e) {
             Alerts.showAlert("Erro ao salvar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -99,12 +101,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     }
 
-    public void setItemPedido(ItemPedido itemPedido) {
-        this.itemPedido = itemPedido;
-    }
-
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
+    }
+
+    public void setPedidoServico(PedidoServico pedidoServico) {
+        this.pedidoServico = pedidoServico;
     }
 
     public void setItemPedidoList(List<ItemPedido> itemPedidoList) {
@@ -252,18 +254,14 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         return filteredList;
     }
 
-    private ItemPedido getDataForm() {
+    private Pedido getDataForm() {
         Pedido pedido = new Pedido();
-        ItemPedido item = new ItemPedido();
 
         pedido.setCliente(cliente);
         pedido.setData(new Date());
+        pedido.setItemPedidoList(itemPedidoList);
 
-        item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-        item.setPedido(pedido);
-
-
-        return item;
+        return pedido;
     }
 
     @Override
