@@ -170,7 +170,7 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st.setInt(1, pedido.getId());
 
-            st.executeQuery();
+            st.executeUpdate();
 
             for (ItemPedido i : pedido.getItemPedidoList()) {
                 st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +
@@ -180,7 +180,7 @@ public class PedidoDaoJDBC implements PedidoDao {
                 st.setInt(2, pedido.getId());
                 st.setInt(3, i.getProduto().getId());
 
-                st.executeQuery();
+                st.executeUpdate();
             }
 
             //conn.commit();

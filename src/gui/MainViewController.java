@@ -183,12 +183,6 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		ObservableList<Pedido> obb = FXCollections.observableArrayList(pedidoList);
 		tbvListaPedidos.setItems(obb);
 		tbvListaPedidos.refresh();
-
-		/*
-		List<ItemPedido> list = itemServico.findAllPedidos();
-		ObservableList<ItemPedido> obbList = FXCollections.observableArrayList(list);
-		tbvListaPedidos.setItems(obbList);
-		 */
 	}
 	
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {

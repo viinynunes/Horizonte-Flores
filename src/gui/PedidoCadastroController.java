@@ -277,7 +277,6 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     }
 
     private Pedido getDataForm() {
-        Pedido pedido = new Pedido();
 
         pedido.setCliente(cliente);
         pedido.setData(new Date());
