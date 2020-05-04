@@ -2,10 +2,7 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Consumer;
 
 import application.Main;
@@ -105,13 +102,17 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 	@FXML
 	public void onBtnCancelarPedidoAction(){
-		try {
-			Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
-			pedidoServico.deleteById(pedido);
-			updateFormData();
-		} catch (DBException e){
-			Alerts.showAlert("Erro ao deletar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
-		}
+		Alert alert = Alerts.showAlert("Confirmação", null, "Deseja realmente apagar o pedido?", Alert.AlertType.CONFIRMATION);
+
+			if (alert.getResult() == ButtonType.OK) {
+				try {
+					Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
+					pedidoServico.deleteById(pedido);
+					updateFormData();
+				} catch (DBException e) {
+					Alerts.showAlert("Erro ao deletar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
+				}
+			}
 	}
 
 	@FXML
