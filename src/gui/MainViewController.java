@@ -43,6 +43,7 @@ import model.services.ProdutoServico;
 public class MainViewController implements Initializable, PedidoChangeListener {
 
 	private ItemPedidoServico itemServico = new ItemPedidoServico();
+	private PedidoServico pedidoServico = new PedidoServico();
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
 	@FXML
@@ -104,7 +105,13 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 	@FXML
 	public void onBtnCancelarPedidoAction(){
-
+		try {
+			Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
+			pedidoServico.deleteById(pedido);
+			updateFormData();
+		} catch (DBException e){
+			Alerts.showAlert("Erro ao deletar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
+		}
 	}
 
 	@FXML

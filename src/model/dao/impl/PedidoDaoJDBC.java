@@ -163,7 +163,7 @@ public class PedidoDaoJDBC implements PedidoDao {
         PreparedStatement st = null;
 
         try {
-            //conn.setAutoCommit(false);
+            conn.setAutoCommit(false);
 
             st = conn.prepareStatement("delete from itens_do_pedido " +
                     "where pedido_id = ?");
@@ -183,9 +183,38 @@ public class PedidoDaoJDBC implements PedidoDao {
                 st.executeUpdate();
             }
 
-            //conn.commit();
+            conn.commit();
 
         } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
+    public void deleteById(Pedido pedido) {
+        PreparedStatement st = null;
+
+        try {
+            conn.setAutoCommit(false);
+
+            st = conn.prepareStatement("delete from itens_do_pedido " +
+                    "where pedido_id = ?");
+
+            st.setInt(1, pedido.getId());
+
+            st.executeUpdate();
+
+            st = conn.prepareStatement("delete from pedido where id = ?");
+
+            st.setInt(1, pedido.getId());
+
+            st.executeUpdate();
+
+            conn.commit();
+
+        } catch (SQLException e){
             throw new DBException(e.getMessage());
         } finally {
             DB.closeStatement(st);

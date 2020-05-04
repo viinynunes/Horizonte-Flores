@@ -21,4 +21,8 @@ public class PedidoServico {
             dao.update(pedido);
         }
     }
+
+    public void deleteById(Pedido pedido){
+        dao.deleteById(pedido);
+    }
 }
