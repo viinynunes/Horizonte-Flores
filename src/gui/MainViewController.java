@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 
 import application.Main;
 import db.DBException;
+import gui.listeners.PedidoChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -39,7 +40,7 @@ import model.services.ItemPedidoServico;
 import model.services.PedidoServico;
 import model.services.ProdutoServico;
 
-public class MainViewController implements Initializable{
+public class MainViewController implements Initializable, PedidoChangeListener {
 
 	private ItemPedidoServico itemServico = new ItemPedidoServico();
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
@@ -181,6 +182,7 @@ public class MainViewController implements Initializable{
 		List<Pedido> pedidoList = serv.findAll();
 		ObservableList<Pedido> obb = FXCollections.observableArrayList(pedidoList);
 		tbvListaPedidos.setItems(obb);
+		tbvListaPedidos.refresh();
 
 		/*
 		List<ItemPedido> list = itemServico.findAllPedidos();
@@ -231,9 +233,9 @@ public class MainViewController implements Initializable{
 			controller.setItemPedidoList(itemPedidoList);
 			controller.setProdutoServico(new ProdutoServico());
 			controller.setPedidoServico(new PedidoServico());
-			controller.setItemPedidoServico(new ItemPedidoServico());
 			controller.updateFormLocalizaProduto();
 			controller.updateFormProdutosPedido();
+			controller.subscribeDataChangeListener(this);
 
 			dialog.setTitle("Pedido");
 			dialog.setResizable(false);
@@ -248,5 +250,10 @@ public class MainViewController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onDataChangedListener(Pedido pedido) {
+		updateFormData();
 	}
 }

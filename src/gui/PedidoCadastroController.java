@@ -3,6 +3,7 @@ package gui;
 import application.Main;
 import db.DBException;
 import gui.listeners.ClienteChangeListener;
+import gui.listeners.PedidoChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -32,6 +33,7 @@ import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,12 +42,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     private PedidoServico pedidoServico;
     private ItemPedido itemPedido;
-    private ItemPedidoServico itemPedidoServico;
     private ProdutoServico produtoServico;
     private Pedido pedido;
     private FilteredList<Produto> filteredList;
     private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
+    private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
 
     @FXML
     private Button btnSalvar;
@@ -78,14 +80,33 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         try {
             pedido = getDataForm();
-            pedidoServico.saveOrUpdate(pedido);
-            Utils.atualStage(event).close();
+
+            if (pedido.getCliente() == null) {
+                Alerts.showAlert("Cliente não selecionado", null, "Selecione um cliente", Alert.AlertType.INFORMATION);
+
+            } else if (pedido.getItemPedidoList().isEmpty() || pedido.getItemPedidoList() == null){
+                Alerts.showAlert("Nenhum produto selecionado", null, "Nenhum produto no pedido", Alert.AlertType.INFORMATION);
+            } else {
+                pedidoServico.saveOrUpdate(pedido);
+                notifyDataChanged();
+                itemPedidoList.clear();
+                Utils.atualStage(event).close();
+            }
+
         } catch (DBException e) {
             Alerts.showAlert("Erro ao salvar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    private void notifyDataChanged() {
+        for (PedidoChangeListener listener : pedidoChangeListeners){
+            listener.onDataChangedListener(pedido);
+        }
+    }
+
+
     public void onBtnCancelarAction(ActionEvent event) {
+        itemPedidoList.clear();
         Utils.atualStage(event).close();
     }
 
@@ -113,12 +134,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         this.itemPedidoList = itemPedidoList;
     }
 
-    public void setItemPedidoServico(ItemPedidoServico itemPedidoServico) {
-        this.itemPedidoServico = itemPedidoServico;
-    }
-
     public void setProdutoServico(ProdutoServico produtoServico) {
         this.produtoServico = produtoServico;
+    }
+
+    public void subscribeDataChangeListener(PedidoChangeListener listener){
+        pedidoChangeListeners.add(listener);
     }
 
     @Override
@@ -139,31 +160,32 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
-                ItemPedido item = new ItemPedido();
-                item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-                item.setProduto(p);
-                itemPedidoList.add(item);
-                tbvLocalizaProduto.setVisible(false);
-                updateFormProdutosPedido();
-                txtLocalizaProduto.clear();
-                txtQuantidade.clear();
-
+                addItemPedido();
             }
         });
 
         tbvLocalizaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
-                itemPedido.setProduto(p);
-                itemPedido.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-                itemPedidoList.add(itemPedido);
-                tbvLocalizaProduto.setVisible(false);
-                updateFormProdutosPedido();
-                txtLocalizaProduto.clear();
-                txtQuantidade.clear();
+                addItemPedido();
             }
         });
+    }
+
+    private void addItemPedido() {
+
+        if (txtQuantidade.getText().isEmpty() || txtQuantidade.getText() == null) {
+            Alerts.showAlert("Digite a quantidade do produto", null, "Digite a quantidade do produto", Alert.AlertType.INFORMATION);
+        } else {
+            Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
+            ItemPedido item = new ItemPedido();
+            item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
+            item.setProduto(p);
+            itemPedidoList.add(item);
+            tbvLocalizaProduto.setVisible(false);
+            updateFormProdutosPedido();
+            txtLocalizaProduto.clear();
+            txtQuantidade.clear();
+        }
     }
 
     public void updateFormLocalizaProduto() {
@@ -180,11 +202,11 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     public void updateFormProdutosPedido() {
 
-        if (pedido == null){
+        if (pedido == null) {
             throw new IllegalStateException("pedido null");
         }
 
-        if (itemPedidoList == null){
+        if (itemPedidoList == null) {
             throw new IllegalStateException("lista de itens null");
         }
 
@@ -241,9 +263,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             if (produto.getNome().toLowerCase().contains(lowerCaseFilter)) {
                 tbvLocalizaProduto.setVisible(true);
                 return true;
-            } else if (produto.getId().toString().contains(lowerCaseFilter)){
+            } else if (produto.getId().toString().contains(lowerCaseFilter)) {
                 return true;
-            } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)){
+            } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)) {
                 return true;
             } else {
                 return false;

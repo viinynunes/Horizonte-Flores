@@ -119,15 +119,15 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             int rows = st.executeUpdate();
 
-            if (rows > 0){
+            if (rows > 0) {
                 rs = st.getGeneratedKeys();
-                if (rs.next()){
+                if (rs.next()) {
                     int id = rs.getInt(1);
                     pedido.setId(id);
                 }
             }
 
-            for (ItemPedido i : pedido.getItemPedidoList()){
+            for (ItemPedido i : pedido.getItemPedidoList()) {
 
                 st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +
                         "values (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -138,9 +138,9 @@ public class PedidoDaoJDBC implements PedidoDao {
 
                 rows = st.executeUpdate();
 
-                if (rows > 0){
+                if (rows > 0) {
                     rs = st.getGeneratedKeys();
-                    if (rs.next()){
+                    if (rs.next()) {
                         int id = rs.getInt(1);
                         i.setId(id);
                     }
@@ -149,7 +149,7 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             conn.commit();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
             DB.closeResultSet(rs);
@@ -160,7 +160,36 @@ public class PedidoDaoJDBC implements PedidoDao {
 
     @Override
     public void update(Pedido pedido) {
+        PreparedStatement st = null;
 
+        try {
+            //conn.setAutoCommit(false);
+
+            st = conn.prepareStatement("delete from itens_do_pedido " +
+                    "where pedido_id = ?");
+
+            st.setInt(1, pedido.getId());
+
+            st.executeQuery();
+
+            for (ItemPedido i : pedido.getItemPedidoList()) {
+                st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +
+                        "values (?, ?, ?) ");
+
+                st.setInt(1, i.getQuantidade());
+                st.setInt(2, pedido.getId());
+                st.setInt(3, i.getProduto().getId());
+
+                st.executeQuery();
+            }
+
+            //conn.commit();
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
 }
