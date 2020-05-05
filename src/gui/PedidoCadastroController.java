@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -41,7 +42,6 @@ import java.util.ResourceBundle;
 public class PedidoCadastroController implements Initializable, ClienteChangeListener {
 
     private PedidoServico pedidoServico;
-    private ItemPedido itemPedido;
     private ProdutoServico produtoServico;
     private Pedido pedido;
     private FilteredList<Produto> filteredList;
@@ -49,6 +49,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
 
+    @FXML
+    private VBox vBox;
     @FXML
     private Button btnSalvar;
     @FXML
@@ -77,7 +79,22 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private TableColumn<Produto, Fornecedor> tbcLocalizaProdutoFornecedor;
 
     public void onBtnSalvarAction(ActionEvent event) {
+        salvarPedido(event);
+    }
 
+    public void onBtnCancelarAction(ActionEvent event) {
+        cancelarPedido(event);
+    }
+
+    public void onBtnApagarItemAction() {
+        apagarItem();
+    }
+
+    public void onHyperlinkSelecionarCliente(ActionEvent event) {
+        selecionarCliente(event);
+    }
+
+    private void salvarPedido(Event event){
         try {
             pedido = getDataForm();
 
@@ -98,28 +115,25 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         }
     }
 
-    private void notifyDataChanged() {
-        for (PedidoChangeListener listener : pedidoChangeListeners){
-            listener.onDataChangedListener(pedido);
-        }
-    }
-
-
-    public void onBtnCancelarAction(ActionEvent event) {
+    private void cancelarPedido(Event event){
         itemPedidoList.clear();
         Utils.atualStage(event).close();
     }
 
-    public void onBtnApagarItemAction() {
+    private void apagarItem(){
         itemPedidoList.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
         updateFormProdutosPedido();
     }
 
-    public void onHyperlinkSelecionarCliente(ActionEvent event) {
+    private void selecionarCliente(Event event){
         Stage parentStage = Utils.atualStage(event);
-
         carregaDialog(parentStage, "/gui/ClienteListDialog.fxml");
+    }
 
+    private void notifyDataChanged() {
+        for (PedidoChangeListener listener : pedidoChangeListeners){
+            listener.onDataChangedListener(pedido);
+        }
     }
 
     public void setPedido(Pedido pedido) {
@@ -157,6 +171,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2){
+                salvarPedido(event);
+            }
+            if (event.getCode() == KeyCode.F3){
+                cancelarPedido(event);
+            }
+            if (event.getCode() == KeyCode.F4){
+                apagarItem();
+            }
+            if (event.getCode() == KeyCode.F5){
+                selecionarCliente(event);
+            }
+        });
 
         tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -169,6 +197,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                 addItemPedido();
             }
         });
+
+
     }
 
     private void addItemPedido() {
@@ -264,14 +294,15 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                 tbvLocalizaProduto.setVisible(true);
                 return true;
             } else if (produto.getId().toString().contains(lowerCaseFilter)) {
+                tbvLocalizaProduto.setVisible(true);
                 return true;
             } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)) {
+                tbvLocalizaProduto.setVisible(true);
                 return true;
             } else {
                 return false;
             }
         })));
-
 
         return filteredList;
     }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="830.0" minWidth="1530.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PedidoCadastroController">
+<VBox fx:id="vBox" minHeight="830.0" minWidth="1530.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.PedidoCadastroController">
    <children>
       <HBox prefHeight="52.0" prefWidth="640.0" spacing="15.0">
          <children>

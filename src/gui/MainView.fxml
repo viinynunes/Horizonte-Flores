@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #555866;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
+<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #555866;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainViewController">
    <content>
       <VBox prefHeight="850.0" prefWidth="1530.0" style="-fx-background-color: #555866;">
          <children>
@@ -28,7 +28,7 @@
                 </Menu>
                   <Menu mnemonicParsing="false" text="Pedido">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Pedidos" />
+                      <MenuItem fx:id="miPedido" mnemonicParsing="false" onAction="#onMiPedidoAction" text="Pedidos" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Abas">

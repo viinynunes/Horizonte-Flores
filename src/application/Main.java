@@ -11,6 +11,7 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
 	private static Scene mainScene;
+	private static Stage stage;
 
 	@Override
 	public void start(Stage stage) {
@@ -25,7 +26,8 @@ public class Main extends Application {
 			mainScene = new Scene(scrollPanel);
 			stage.setScene(mainScene);
 			stage.setTitle("Horizonte Flores e Plantas");
-			//stage.initStyle(StageStyle.UNDECORATED);
+
+			setStage(stage);
 
 			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.png"));
 			stage.getIcons().add(icon);
@@ -35,6 +37,14 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 
 	public static Scene getScene() {

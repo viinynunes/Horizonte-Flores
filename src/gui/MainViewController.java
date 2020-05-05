@@ -44,7 +44,11 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
 
 	@FXML
+	private ScrollPane scrollPane;
+	@FXML
 	private MenuItem miFechar;
+	@FXML
+	private MenuItem miPedido;
 	@FXML
 	private MenuItem miAbasProduto;
 	@FXML
@@ -102,24 +106,35 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 	@FXML
 	public void onBtnCancelarPedidoAction(){
-		Alert alert = Alerts.showAlert("Confirmação", null, "Deseja realmente apagar o pedido?", Alert.AlertType.CONFIRMATION);
+		cancelarPedido();
+	}
 
-			if (alert.getResult() == ButtonType.OK) {
-				try {
-					Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
-					pedidoServico.deleteById(pedido);
-					updateFormData();
-				} catch (DBException e) {
-					Alerts.showAlert("Erro ao deletar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
-				}
+	private void cancelarPedido(){
+		Alert alert = Alerts.showAlert("Confirmação", null, "Deseja realmente cancelar o pedido?", Alert.AlertType.CONFIRMATION);
+
+		if (alert.getResult() == ButtonType.OK) {
+			try {
+				Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
+				pedidoServico.deleteById(pedido);
+				updateFormData();
+			} catch (DBException e) {
+				Alerts.showAlert("Erro ao cancelar pedido", null, e.getMessage(), Alert.AlertType.ERROR);
 			}
+		}
 	}
 
 	@FXML
 	public void onMiFecharAction() {
 		System.exit(0);
 	}
-	
+
+	@FXML
+	public void onMiPedidoAction(){
+		Stage stage = Main.getStage();
+		Main main = new Main();
+		main.start(stage);
+	}
+
 	@FXML
 	public void onMiAbasProdutoAction() {
 		System.out.println("Produto");
@@ -180,6 +195,29 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		tbcPedidoData.setCellValueFactory(new PropertyValueFactory<>("data"));
 		tbcPedidoCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
 
+		scrollPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.getCode() == KeyCode.F2){
+				System.out.println("Novo pedido");
+				Stage parentStage = Utils.atualStage(event);
+				Pedido pedido = new Pedido();
+				List<ItemPedido> list = new ArrayList<>();
+				carregaViewPedido(pedido, list, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
+			}
+			if (event.getCode() == KeyCode.F3){
+				try {
+					Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
+					itemPedidoList = itemServico.findAllPedidos(pedido);
+					Stage parentStage = Utils.atualStage(event);
+					carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
+				} catch (DBException e){
+					Alerts.showAlert("Erro ao carregar a pagina", null, e.getMessage(), Alert.AlertType.ERROR);
+				}
+			}
+			if (event.getCode() == KeyCode.F4){
+				cancelarPedido();
+			}
+		});
+
 		updateFormData();
 	}
 
@@ -218,7 +256,37 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 			e.printStackTrace();
 		}
 	}
+/*
+	public synchronized void carregaViewMain(String caminho) {
+		try {
+			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
+			ScrollPane novoScroll = load.load();
 
+			Scene mainScene = Main.getScene();
+
+			Stage stage = Main.getStage();
+
+			novoScroll.setFitToHeight(true);
+			novoScroll.setFitToWidth(true);
+
+			mainScene = new Scene(novoScroll);
+
+			stage.setScene(mainScene);
+			stage.setTitle("Horizonte Flores e Plantas");
+			//stage.initStyle(StageStyle.UNDECORATED);
+
+			Image icon = new Image(getClass().getResourceAsStream("/resources/imagens/HFP_logo.png"));
+			stage.getIcons().add(icon);
+			stage.setMaximized(true);
+			stage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+ */
 	public synchronized <T> void carregaViewPedido(Pedido pedido, List<ItemPedido> list, Stage parentStage, String caminho, Consumer<T> initConsumer) {
 
 		try {

@@ -2,6 +2,7 @@ package gui.util;
 
 import application.Main;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 
 public class Utils {
 
+    /*
     public static Stage atualStage(ActionEvent event) {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
@@ -21,6 +23,11 @@ public class Utils {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
+     */
+
+    public static Stage atualStage(Event event){
+        return (Stage) ((Node) event.getSource()).getScene().getWindow();
+    }
 
 
     public static Integer converterInteiro(String msg) {

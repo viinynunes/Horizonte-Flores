@@ -50,7 +50,6 @@ public class ClienteListDialogController implements Initializable {
     private ObservableList<Cliente> obbList;
 
 
-
     public void onBtnNovoAction(ActionEvent event) {
 
     }
@@ -59,9 +58,11 @@ public class ClienteListDialogController implements Initializable {
         this.servico = servico;
     }
 
-    public void setCliente(Cliente cliente) {this.cliente = cliente; }
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
-    public void subscribeDataChangeListener(ClienteChangeListener listener){
+    public void subscribeDataChangeListener(ClienteChangeListener listener) {
         clienteChangeListeners.add(listener);
     }
 
@@ -79,7 +80,7 @@ public class ClienteListDialogController implements Initializable {
                 Utils.atualStage(event).close();
             }
 
-            if (event.getCode() == KeyCode.F2){
+            if (event.getCode() == KeyCode.F2) {
                 //carrega dialog cadastro de cliente
             }
         });
@@ -93,8 +94,8 @@ public class ClienteListDialogController implements Initializable {
         });
     }
 
-    private void notifyDataChanged(){
-        for (ClienteChangeListener listener : clienteChangeListeners){
+    private void notifyDataChanged() {
+        for (ClienteChangeListener listener : clienteChangeListeners) {
             listener.onClienteChanged(cliente);
         }
     }
@@ -111,23 +112,28 @@ public class ClienteListDialogController implements Initializable {
         filterdClienteList = filteredTableView(obbList);
 
         tbvListaCliente.setItems(filterdClienteList);
+        tbvListaCliente.focusedProperty().addListener(event -> {
+            tbvListaCliente.getSelectionModel().selectFirst();
+        });
         tbvListaCliente.refresh();
     }
 
-    private FilteredList<Cliente> filteredTableView(ObservableList<Cliente> obbClienteList){
+    private FilteredList<Cliente> filteredTableView(ObservableList<Cliente> obbClienteList) {
         FilteredList<Cliente> filteredClienteList = new FilteredList<>(obbClienteList);
 
         txtProcura.textProperty().addListener(((observable, oldValue, newValue) -> {
 
             filteredClienteList.setPredicate(cliente -> {
 
-                if (newValue == null || newValue.isEmpty()){
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (cliente.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                if (cliente.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    tbvListaCliente.requestFocus();
+                    txtProcura.requestFocus();
                     return true;
                 } else {
                     return false;
