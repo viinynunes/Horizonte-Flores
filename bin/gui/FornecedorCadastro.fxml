@@ -17,16 +17,6 @@
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="271.0" prefWidth="653.0">
          <children>
-             <HBox prefHeight="53.0" prefWidth="606.0" spacing="15.0">
-                 <children>
-                     <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]" />
-                     <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onBtnCancelarAction" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]" />
-                     <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]" />
-                 </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-               </padding>
-             </HBox>
              <GridPane layoutY="54.0" prefHeight="252.0" prefWidth="594.0">
                  <columnConstraints>
                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.20001220703125" minWidth="10.0" prefWidth="142.19998779296876" />
@@ -66,6 +56,16 @@
                      <Insets left="10.0" top="15.0" />
                  </padding>
              </GridPane>
+             <HBox prefHeight="53.0" prefWidth="606.0" spacing="15.0">
+                 <children>
+                     <Button fx:id="btnCadastrar" mnemonicParsing="false" onAction="#onBtnCadastrarAction" prefHeight="39.0" prefWidth="269.0" text="Cadastrar [F2]" />
+                     <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#onBtnCancelarAction" prefHeight="39.0" prefWidth="269.0" text="Cancelar [F3]" />
+                     <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#onBtnLimparAction" prefHeight="39.0" prefWidth="269.0" text="Limpar [F4]" />
+                 </children>
+                 <padding>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                 </padding>
+             </HBox>
          </children></AnchorPane>
   </content>
    <font>

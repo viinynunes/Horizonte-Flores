@@ -112,9 +112,6 @@ public class ClienteListDialogController implements Initializable {
         filterdClienteList = filteredTableView(obbList);
 
         tbvListaCliente.setItems(filterdClienteList);
-        tbvListaCliente.focusedProperty().addListener(event -> {
-            tbvListaCliente.getSelectionModel().selectFirst();
-        });
         tbvListaCliente.refresh();
     }
 

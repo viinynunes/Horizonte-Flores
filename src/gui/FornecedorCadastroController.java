@@ -8,6 +8,7 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -47,38 +48,19 @@ public class FornecedorCadastroController implements Initializable {
     private ComboBox<Estabelecimento> cbbEstabelecimento;
     private ObservableList<Estabelecimento> obbEstabelecimento;
 
-    public void onBtnCadastrarAction(ActionEvent event){
-
-        try {
-            fornecedor = getFormData();
-
-            servico.saveOrUpdate(fornecedor);
-            Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor "+ fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-            notifyDataChanged();
-            Utils.atualStage(event).close();
-
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
-        }
-
+    public void onBtnCadastrarAction(ActionEvent event) {
+        cadastrarFornecedor(event);
     }
 
-    private void notifyDataChanged() {
-        for (DataChangeListener listener : dataChangeListeners){
-            listener.onDataChanged();
-        }
-    }
-
-
-    public void onBtnCancelarAction(ActionEvent event){
+    public void onBtnCancelarAction(ActionEvent event) {
         Utils.atualStage(event).close();
     }
 
-    public void onBtnLimparAction(){
+    public void onBtnLimparAction() {
         limpaForm();
     }
 
-    private void limpaForm(){
+    private void limpaForm() {
         txtNome.clear();
         cbbEstabelecimento.getSelectionModel().clearSelection();
     }
@@ -99,7 +81,7 @@ public class FornecedorCadastroController implements Initializable {
         this.estabelecimento = estabelecimento;
     }
 
-    public void subscribeDataChangeListener(DataChangeListener listener){
+    public void subscribeDataChangeListener(DataChangeListener listener) {
         dataChangeListeners.add(listener);
     }
 
@@ -108,35 +90,52 @@ public class FornecedorCadastroController implements Initializable {
         initializeNodes();
 
         titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.F2){
-                try {
-                    fornecedor = getFormData();
-
-                    servico.saveOrUpdate(fornecedor);
-                    Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor "+ fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-                    notifyDataChanged();
-                    Utils.atualStage(event).close();
-
-                } catch (DBException e){
-                    Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
+            if (event.getCode() == KeyCode.F2) {
+                cadastrarFornecedor(event);
             }
-            if (event.getCode() == KeyCode.F3){
+            if (event.getCode() == KeyCode.F3) {
                 Utils.atualStage(event).close();
             }
-            if (event.getCode() == KeyCode.F4){
+            if (event.getCode() == KeyCode.F4) {
                 limpaForm();
             }
         });
     }
 
-    private void initializeNodes(){
+    private void initializeNodes() {
         Constraints.setLabeldInteger(lblId);
     }
 
-    public void updateFormData(){
+    private void cadastrarFornecedor(Event event) {
 
-        if (fornecedor == null){
+        if (txtNome.getText() == null || txtNome.getText().isEmpty()) {
+            Alerts.showAlert("Nome do fornecedor vazio", null, "O nome do fornecedor não pode estar vazio", Alert.AlertType.ERROR);
+        } else if (cbbEstabelecimento.getSelectionModel().isEmpty()) {
+            Alerts.showAlert("Estabelecimento não selecionado", null, "O estabelecimento do fornecedor deve ser selecionado", Alert.AlertType.ERROR);
+        } else {
+            try {
+                fornecedor = getFormData();
+
+                servico.saveOrUpdate(fornecedor);
+                Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor " + fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                notifyDataChanged();
+                Utils.atualStage(event).close();
+            } catch (DBException e) {
+                Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
+    private void notifyDataChanged() {
+        for (DataChangeListener listener : dataChangeListeners) {
+            listener.onDataChanged();
+        }
+    }
+
+
+    public void updateFormData() {
+
+        if (fornecedor == null) {
             throw new IllegalStateException("fornecedor estava null");
         }
 

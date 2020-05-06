@@ -42,6 +42,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	private ItemPedidoServico itemServico = new ItemPedidoServico();
 	private PedidoServico pedidoServico = new PedidoServico();
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
+	private static EventHandler<KeyEvent> keyEventEventHandler;
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -188,6 +189,10 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		System.out.println("Tela transações");
 	}
 
+	public static void setKeyEventEventHandler(EventHandler<KeyEvent> keyEventEventHandler) {
+		MainViewController.keyEventEventHandler = keyEventEventHandler;
+	}
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
@@ -195,30 +200,42 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		tbcPedidoData.setCellValueFactory(new PropertyValueFactory<>("data"));
 		tbcPedidoCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
 
-		scrollPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.getCode() == KeyCode.F2){
+
+		scrollPane.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
+
+		updateFormData();
+	}
+
+	private EventHandler<KeyEvent> getEventHandler(){
+		EventHandler<KeyEvent> keyEvent = event -> {
+
+			if (event.getCode() == KeyCode.F2) {
 				System.out.println("Novo pedido");
 				Stage parentStage = Utils.atualStage(event);
 				Pedido pedido = new Pedido();
 				List<ItemPedido> list = new ArrayList<>();
-				carregaViewPedido(pedido, list, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
+				carregaViewPedido(pedido, list, parentStage, "/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
+				});
 			}
-			if (event.getCode() == KeyCode.F3){
+			if (event.getCode() == KeyCode.F3) {
 				try {
 					Pedido pedido = tbvListaPedidos.getSelectionModel().getSelectedItem();
 					itemPedidoList = itemServico.findAllPedidos(pedido);
 					Stage parentStage = Utils.atualStage(event);
-					carregaViewPedido(pedido, itemPedidoList, parentStage,"/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) ->{});
-				} catch (DBException e){
+					carregaViewPedido(pedido, itemPedidoList, parentStage, "/gui/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
+					});
+				} catch (DBException e) {
 					Alerts.showAlert("Erro ao carregar a pagina", null, e.getMessage(), Alert.AlertType.ERROR);
 				}
 			}
-			if (event.getCode() == KeyCode.F4){
+			if (event.getCode() == KeyCode.F4) {
 				cancelarPedido();
 			}
-		});
+		};
 
-		updateFormData();
+		setKeyEventEventHandler(keyEvent);
+
+		return keyEvent;
 	}
 
 	public void updateFormData(){
@@ -232,6 +249,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	}
 	
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {
+
+		scrollPane.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
 
 		try {
 			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
@@ -247,9 +266,9 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 			mainVBox.getChildren().add(mainMenu);
 			mainVBox.getChildren().addAll(novoVBox.getChildren());
 
-
 			T controller = load.getController();
 			initializingAction.accept(controller);
+
 
 
 		} catch (IOException e) {

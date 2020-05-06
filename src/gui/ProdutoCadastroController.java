@@ -7,6 +7,7 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -68,17 +69,7 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
 
     @FXML
     public void onBtnCadastrarAction(ActionEvent event) {
-        try {
-
-            Produto produto = getFormData();
-            produtoServico.saveOrUpdate(produto);
-            Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-            notifyDataChanged();
-            Utils.atualStage(event).close();
-
-        } catch (DBException e) {
-            Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
-        }
+        cadastrarProduto(event);
     }
 
     private void notifyDataChanged() {
@@ -154,27 +145,41 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
 
         box.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F2) {
-                try {
-
-                    Produto produto = getFormData();
-                    produtoServico.saveOrUpdate(produto);
-                    Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-                    notifyDataChanged();
-                    Utils.atualStage(event).close();
-
-                } catch (DBException e) {
-                    Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
+               cadastrarProduto(event);
             }
 
-            if (event.getCode() == KeyCode.F3){
+            if (event.getCode() == KeyCode.F3) {
                 Utils.atualStage(event).close();
             }
 
-            if (event.getCode() == KeyCode.F4){
+            if (event.getCode() == KeyCode.F4) {
                 limpaTela();
             }
         });
+    }
+
+    private void cadastrarProduto(Event event) {
+
+        if (txtNome.getText() == null || txtNome.getText().isEmpty()) {
+            Alerts.showAlert("Nome do produto vazio", null, "O nome do produto não pode estar vazio", Alert.AlertType.ERROR);
+        } else if (cbbCategoria.getSelectionModel().isEmpty()) {
+            Alerts.showAlert("Categoria do produto não selecionada", null, "A categoria do produto não pode estar vazio", Alert.AlertType.ERROR);
+        } else if (cbbFornecedor.getSelectionModel().isEmpty()) {
+            Alerts.showAlert("Fornecedor do produto não selecionado", null, "O fornecedor do produto não pode estar vazio", Alert.AlertType.ERROR);
+        } else {
+            try {
+                Produto produto = getFormData();
+                produtoServico.saveOrUpdate(produto);
+                Alerts.showAlert("Produto salvo com sucesso", null, "Produto " + produto.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                notifyDataChanged();
+                Utils.atualStage(event).close();
+
+            } catch (DBException e) {
+                Alerts.showAlert("Erro ao cadastrar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+
+
     }
 
     private void limpaTela() {

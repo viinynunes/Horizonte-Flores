@@ -10,6 +10,7 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -57,31 +58,39 @@ public class EnderecoCadastroController implements Initializable {
     private ComboBox<String> cbbEstado;
     private ObservableList<String> obbEstado;
 
-    public void onBtnCadastrarAction(ActionEvent event){
+    public void onBtnCadastrarAction(ActionEvent event) {
+        cadastrarEndereco(event);
+    }
 
-        try {
-            endereco = getFormData();
-            servico.saveOrUpdate(endereco);
-            Alerts.showAlert("Endereço cadastrado com sucesso", null, "Endereco cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-            notifyEnderecoChanged(endereco);
-            Utils.atualStage(event).close();
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
+    private void cadastrarEndereco(Event event) {
+
+        if (txtlogadouro.getText() == null || txtlogadouro.getText().isEmpty()) {
+            Alerts.showAlert("Logadouro vazio", null, "O campo logadouro não pode estar vazio", Alert.AlertType.ERROR);
+        } else {
+            try {
+                endereco = getFormData();
+                servico.saveOrUpdate(endereco);
+                Alerts.showAlert("Endereço cadastrado com sucesso", null, "Endereco cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
+                notifyEnderecoChanged(endereco);
+                Utils.atualStage(event).close();
+            } catch (DBException e) {
+                Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 
     private void notifyEnderecoChanged(Endereco endereco) {
-        for (EnderecoChangeListener listener : enderecoChangeListeners){
+        for (EnderecoChangeListener listener : enderecoChangeListeners) {
             listener.onEnderecoChanged(endereco);
         }
     }
 
 
-    public void onBtnCancelarAction(ActionEvent event){
+    public void onBtnCancelarAction(ActionEvent event) {
         Utils.atualStage(event).close();
     }
 
-    public void onBtnLimparAction(){
+    public void onBtnLimparAction() {
         limpaForm();
     }
 
@@ -93,7 +102,7 @@ public class EnderecoCadastroController implements Initializable {
         this.servico = servico;
     }
 
-    public void subscribeEnderecoChangeListener(EnderecoChangeListener listener){
+    public void subscribeEnderecoChangeListener(EnderecoChangeListener listener) {
         enderecoChangeListeners.add(listener);
     }
 
@@ -102,35 +111,27 @@ public class EnderecoCadastroController implements Initializable {
         initializaNodes();
 
         titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.F2){
-                try {
-                    endereco = getFormData();
-                    servico.saveOrUpdate(endereco);
-                    Alerts.showAlert("Endereço cadastrado com sucesso", null, "Endereco cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
-                    notifyEnderecoChanged(endereco);
-                    Utils.atualStage(event).close();
-                } catch (DBException e){
-                    Alerts.showAlert("Erro ao cadastrar", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
+            if (event.getCode() == KeyCode.F2) {
+                cadastrarEndereco(event);
             }
 
-            if (event.getCode() == KeyCode.F3){
+            if (event.getCode() == KeyCode.F3) {
                 Utils.atualStage(event).close();
             }
 
-            if (event.getCode() == KeyCode.F4){
+            if (event.getCode() == KeyCode.F4) {
                 limpaForm();
             }
         });
     }
 
-    private void initializaNodes(){
+    private void initializaNodes() {
         Constraints.setLabeldInteger(lblId);
     }
 
-    public void updateDataForm(){
+    public void updateDataForm() {
 
-        if (endereco == null){
+        if (endereco == null) {
             throw new IllegalStateException("endereco null");
         }
 
@@ -148,7 +149,7 @@ public class EnderecoCadastroController implements Initializable {
 
     }
 
-    private Endereco getFormData(){
+    private Endereco getFormData() {
         Endereco endereco = new Endereco();
 
         endereco.setId(Utils.converterInteiro(lblId.getText()));
@@ -164,7 +165,7 @@ public class EnderecoCadastroController implements Initializable {
         return endereco;
     }
 
-    private void limpaForm(){
+    private void limpaForm() {
         txtlogadouro.clear();
         txtNumero.clear();
         txtBairro.clear();
@@ -175,7 +176,7 @@ public class EnderecoCadastroController implements Initializable {
         cbbEstado.setItems(getEstados());
     }
 
-    private ObservableList<String> getEstados (){
+    private ObservableList<String> getEstados() {
         ObservableList<String> obb;
         List<String> list = new ArrayList<>();
 

@@ -7,6 +7,7 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -43,20 +44,30 @@ public class CategoriaCadastroController implements Initializable {
     private TextField txtAbreviacao;
 
     public void onBtnCadastrarAction(ActionEvent event) {
+        cadastrarCategoria(event);
+    }
 
-        try {
-            categoria = getFormData();
-            servico.saveOrUpdate(categoria);
-            Alerts.showAlert("Categoria Salva com sucesso !", null, "Categoria " + categoria.getNome()+ " salva com sucesso", Alert.AlertType.CONFIRMATION);
-            notifyDataChanged();
-            Utils.atualStage(event).close();
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao salvar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
+    private void cadastrarCategoria(Event event) {
+
+        if (txtNome.getText() == null || txtNome.getText().isEmpty()) {
+            Alerts.showAlert("Nome da categoria vazia", null, "O nome da categoria não pode estar vazio", Alert.AlertType.ERROR);
+        } else if (txtAbreviacao.getText() == null || txtAbreviacao.getText().isEmpty()) {
+            Alerts.showAlert("Abreviação da categoria vazia", null, "A abreviação da categoria não pode estar vazia", Alert.AlertType.ERROR);
+        } else {
+            try {
+                categoria = getFormData();
+                servico.saveOrUpdate(categoria);
+                Alerts.showAlert("Categoria Salva com sucesso !", null, "Categoria " + categoria.getNome() + " salva com sucesso", Alert.AlertType.CONFIRMATION);
+                notifyDataChanged();
+                Utils.atualStage(event).close();
+            } catch (DBException e) {
+                Alerts.showAlert("Erro ao salvar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 
     private void notifyDataChanged() {
-        for (DataChangeListener listener : dataChangeListeners){
+        for (DataChangeListener listener : dataChangeListeners) {
             listener.onDataChanged();
         }
     }
@@ -75,21 +86,13 @@ public class CategoriaCadastroController implements Initializable {
         initializeNodes();
 
         titledPane.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.F2){
-                try {
-                    categoria = getFormData();
-                    servico.saveOrUpdate(categoria);
-                    Alerts.showAlert("Categoria Salva com sucesso !", null, "Categoria " + categoria.getNome()+ " salva com sucesso", Alert.AlertType.CONFIRMATION);
-                    notifyDataChanged();
-                    Utils.atualStage(event).close();
-                } catch (DBException e){
-                    Alerts.showAlert("Erro ao salvar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
+            if (event.getCode() == KeyCode.F2) {
+                cadastrarCategoria(event);
             }
-            if (event.getCode() == KeyCode.F3){
+            if (event.getCode() == KeyCode.F3) {
                 Utils.atualStage(event).close();
             }
-            if (event.getCode() == KeyCode.F4){
+            if (event.getCode() == KeyCode.F4) {
                 limpaForm();
             }
         });
@@ -103,18 +106,18 @@ public class CategoriaCadastroController implements Initializable {
         this.servico = servico;
     }
 
-    public void setCategoria(Categoria categoria){
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    public void subscribeDataChangeListener(DataChangeListener listener){
+    public void subscribeDataChangeListener(DataChangeListener listener) {
         dataChangeListeners.add(listener);
     }
 
     public void updateTableView() {
 
-        if (categoria == null){
-            throw  new IllegalStateException("Categoria nao instanciada");
+        if (categoria == null) {
+            throw new IllegalStateException("Categoria nao instanciada");
         }
 
         lblId.setText(String.valueOf(categoria.getId()));
@@ -122,7 +125,7 @@ public class CategoriaCadastroController implements Initializable {
         txtAbreviacao.setText(categoria.getAbreviacao());
     }
 
-    private Categoria getFormData(){
+    private Categoria getFormData() {
 
         Categoria categoria = new Categoria();
         categoria.setId(Utils.converterInteiro(lblId.getText()));
@@ -133,7 +136,7 @@ public class CategoriaCadastroController implements Initializable {
 
     }
 
-    private void limpaForm(){
+    private void limpaForm() {
         txtNome.clear();
         txtAbreviacao.clear();
     }

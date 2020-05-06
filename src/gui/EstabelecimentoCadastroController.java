@@ -6,6 +6,7 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -49,20 +50,26 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
     private Hyperlink hyperlinkCadEndereco;
 
     public void onBtnCadastrarAction(ActionEvent event) {
-        try {
+        cadastrarEstabelecimento(event);
+    }
 
-            if (servico == null){
-                throw new IllegalStateException("Servico null");
+    private void cadastrarEstabelecimento(Event event){
+
+        if (txtNome.getText() == null || txtNome.getText().isEmpty()){
+            Alerts.showAlert("Nome do estabelecimento vazio", null, "O nome do estabelecimento não pode estar vazio", Alert.AlertType.ERROR);
+        } else if (txaEndereco.getText() == null || txaEndereco.getText().isEmpty()){
+            Alerts.showAlert("Endereço do estabelecimento vazio", null, "O endereço do estabelecimento não pode estar vazio", Alert.AlertType.ERROR);
+        } else {
+            try {
+                estabelecimento = getFormData();
+
+                servico.saveOrUpdate(estabelecimento);
+                Alerts.showAlert("Estabelecimento cadastrado com sucesso", null, "Estabelecimento " + estabelecimento.getNome() +
+                        " cadastrado com sucesso !", Alert.AlertType.CONFIRMATION);
+                Utils.atualStage(event).close();
+            } catch (DBException e){
+                Alerts.showAlert("Erro ao cadastrar estabelecimento", null, e.getMessage(), Alert.AlertType.ERROR);
             }
-
-            estabelecimento = getFormData();
-
-            servico.saveOrUpdate(estabelecimento);
-            Alerts.showAlert("Estabelecimento cadastrado com sucesso", null, "Estabelecimento " + estabelecimento.getNome() +
-                    " cadastrado com sucesso !", Alert.AlertType.CONFIRMATION);
-            Utils.atualStage(event).close();
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao cadastrar estabelecimento", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -104,20 +111,7 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
 
         box.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F2){
-                try {
-                    if (servico == null){
-                        throw new IllegalStateException("Servico null");
-                    }
-
-                    estabelecimento = getFormData();
-
-                    servico.saveOrUpdate(estabelecimento);
-                    Alerts.showAlert("Estabelecimento cadastrado com sucesso", null, "Estabelecimento " + estabelecimento.getNome() +
-                            " cadastrado com sucesso !", Alert.AlertType.CONFIRMATION);
-                    Utils.atualStage(event).close();
-                } catch (DBException e){
-                    Alerts.showAlert("Erro ao cadastrar estabelecimento", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
+                cadastrarEstabelecimento(event);
             }
 
             if (event.getCode() == KeyCode.F3){

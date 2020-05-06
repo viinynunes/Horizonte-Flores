@@ -78,6 +78,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
+                         <TextArea fx:id="txaEndereco" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" editable="false" />
                         <Hyperlink fx:id="hyperlinkCadEndereco" onAction="#onHyperlinkCadEnderecoAction" prefHeight="27.0" prefWidth="275.0" text="Adicionar Endereço" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <font>
                               <Font size="18.0" />
@@ -93,7 +94,6 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="txaEndereco" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" editable="false" />
                      </children>
                   </GridPane>
                   <HBox alignment="TOP_CENTER" maxHeight="48.0" maxWidth="758.0" spacing="15.0" AnchorPane.bottomAnchor="540.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="20.0">

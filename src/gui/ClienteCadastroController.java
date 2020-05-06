@@ -7,6 +7,7 @@ import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,7 +34,7 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
     private Cliente cliente;
     private Endereco endereco;
     private ClienteServico servico;
-    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
+    private final List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
     private VBox box;
@@ -87,19 +88,23 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
 
     @FXML
     public void onBtnCadastrarAction(ActionEvent event) {
-       salvarCliente();
-        Utils.atualStage(event).close();
+       salvarCliente(event);
     }
 
-    private void salvarCliente(){
-        try {
-            cliente = getFormData();
-            servico.saveOrUpdate(cliente);
-            Alerts.showAlert("Cliente salvo com sucesso", null, "Cliente " + cliente.getNome() + " salvo com sucesso", Alert.AlertType.CONFIRMATION);
-            notifyDataChanged();
+    private void salvarCliente(Event event){
 
-        } catch (DBException e) {
-            Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+        if (txtNome.getText() == null || txtNome.getText().isEmpty()){
+            Alerts.showAlert("Nome do cliente vazio", null, "O nome do cliente não pode estar vazio", Alert.AlertType.ERROR);
+        } else {
+            try {
+                cliente = getFormData();
+                servico.saveOrUpdate(cliente);
+                Alerts.showAlert("Cliente salvo com sucesso", null, "Cliente " + cliente.getNome() + " salvo com sucesso", Alert.AlertType.CONFIRMATION);
+                notifyDataChanged();
+                Utils.atualStage(event).close();
+            } catch (DBException e) {
+                Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 
@@ -136,7 +141,7 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
         box.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 
             if (event.getCode() == KeyCode.F2) {
-                salvarCliente();
+                salvarCliente(event);
                 Utils.atualStage(event).close();
             }
             if (event.getCode() == KeyCode.F3){

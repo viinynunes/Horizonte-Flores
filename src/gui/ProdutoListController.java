@@ -122,33 +122,30 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
         Node node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.F2){
-                    Stage parentStage = Utils.atualStage(event);
-                    Produto produto = new Produto();
-                    carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
-                }
+        node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F2) {
+                Stage parentStage = Utils.atualStage(event);
+                Produto produto = new Produto();
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
 
-                if (event.getCode() == KeyCode.F3){
-                    produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+            if (event.getCode() == KeyCode.F3) {
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
 
-                    Stage parentStage = Utils.atualStage(event);
+                Stage parentStage = Utils.atualStage(event);
 
-                    carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
-                }
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
 
-                if (event.getCode() == KeyCode.F4){
-                    produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+            if (event.getCode() == KeyCode.F4) {
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
 
-                    try {
-                        servico.deleteById(produto.getId());
-                        updateTableView();
-                        Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
-                    } catch (DBException e){
-                        Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
-                    }
+                try {
+                    servico.deleteById(produto.getId());
+                    updateTableView();
+                    Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
+                } catch (DBException e) {
+                    Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
                 }
             }
         });
@@ -236,9 +233,11 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (produto.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                if (produto.getNome().toLowerCase().contains(lowerCaseFilter)){
                     return true;
-                } else {
+                } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+                }else {
                     return false;
                 }
             });
