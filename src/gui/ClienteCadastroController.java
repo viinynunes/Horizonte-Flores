@@ -142,7 +142,6 @@ public class ClienteCadastroController implements Initializable, EnderecoChangeL
 
             if (event.getCode() == KeyCode.F2) {
                 salvarCliente(event);
-                Utils.atualStage(event).close();
             }
             if (event.getCode() == KeyCode.F3){
                 Utils.atualStage(event).close();

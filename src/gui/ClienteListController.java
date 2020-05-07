@@ -3,14 +3,15 @@ package gui;
 import application.Main;
 import db.DBException;
 import gui.listeners.DataChangeListener;
+import gui.listeners.KeyEventHandler;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,13 +34,14 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ClienteListController implements Initializable, DataChangeListener {
+public class ClienteListController implements Initializable, DataChangeListener, KeyEventHandler {
 
     Stage parentStage;
 
     private ClienteServico servico;
     private Cliente cliente;
-
+    private EventHandler<KeyEvent> keyEventEventHandler;
+    private Node node;
     FilteredList<Cliente> filteredClienteList;
 
     @FXML
@@ -118,44 +120,11 @@ public class ClienteListController implements Initializable, DataChangeListener 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListar.prefHeightProperty().bind(stage.heightProperty());
 
-        Node node = Main.getScene().getRoot();
+        node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.F2) {
-                parentStage = Utils.atualStage(event);
+        node.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
 
-                Cliente cliente = new Cliente();
-
-                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
-            }
-
-            if (event.getCode() == KeyCode.F3){
-                cliente = tbvListar.getSelectionModel().getSelectedItem();
-
-                parentStage = Utils.atualStage(event);
-
-                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
-            }
-
-            if (event.getCode() == KeyCode.F4){
-                deleteCliente();
-            }
-        });
-
-        tbvListar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-
-            if (event.getCode() == KeyCode.DELETE){
-                deleteCliente();
-            }
-
-            if (event.getCode() == KeyCode.ENTER){
-                cliente = tbvListar.getSelectionModel().getSelectedItem();
-
-                parentStage = Utils.atualStage(event);
-
-                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
-            }
-        });
+        tbvListar.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
     }
 
     private void deleteCliente() {
@@ -239,5 +208,51 @@ public class ClienteListController implements Initializable, DataChangeListener 
     @Override
     public void onDataChanged() {
         updateTableView();
+    }
+
+    @Override
+    public EventHandler<KeyEvent> addEventHandler() {
+        keyEventEventHandler = event -> {
+            if (event.getCode() == KeyCode.F2) {
+                parentStage = Utils.atualStage(event);
+
+                Cliente cliente = new Cliente();
+
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F3){
+                cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+                parentStage = Utils.atualStage(event);
+
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F4){
+                deleteCliente();
+            }
+            if (event.getCode() == KeyCode.DELETE){
+                deleteCliente();
+            }
+
+            if (event.getCode() == KeyCode.ENTER){
+                cliente = tbvListar.getSelectionModel().getSelectedItem();
+
+                parentStage = Utils.atualStage(event);
+
+                criarTelaDialog(cliente, "/gui/ClienteCadastro.fxml", parentStage);
+            }
+        };
+
+        return keyEventEventHandler;
+    }
+
+    @Override
+    public void removeEventHandler() {
+        if (node != null || tbvListar != null){
+            node.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+            tbvListar.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+        }
     }
 }

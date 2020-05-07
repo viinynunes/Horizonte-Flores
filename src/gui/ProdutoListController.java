@@ -44,6 +44,8 @@ public class ProdutoListController implements Initializable, DataChangeListener 
     private ProdutoServico servico;
     private Produto produto;
     private FilteredList<Produto> filteredProdutoList;
+    private EventHandler<KeyEvent> keyEventEventHandler;
+    private Node node;
 
     @FXML
     private Button btnNovo;
@@ -120,9 +122,15 @@ public class ProdutoListController implements Initializable, DataChangeListener 
         Stage stage = (Stage) Main.getScene().getWindow();
         tbvListaProduto.prefHeightProperty().bind(stage.heightProperty());
 
-        Node node = Main.getScene().getRoot();
+        node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        node.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
+
+        tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
+    }
+
+    private EventHandler<KeyEvent> getEventHandler(){
+        keyEventEventHandler = event -> {
             if (event.getCode() == KeyCode.F2) {
                 Stage parentStage = Utils.atualStage(event);
                 Produto produto = new Produto();
@@ -148,9 +156,6 @@ public class ProdutoListController implements Initializable, DataChangeListener 
                     Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
                 }
             }
-        });
-
-        tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.DELETE){
                 deleteProduto();
             }
@@ -162,7 +167,9 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
                 carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
             }
-        });
+        };
+
+        return keyEventEventHandler;
     }
 
     private void deleteProduto(){

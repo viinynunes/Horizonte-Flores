@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 
 import application.Main;
 import db.DBException;
+import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -43,6 +44,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	private PedidoServico pedidoServico = new PedidoServico();
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
 	private static EventHandler<KeyEvent> keyEventEventHandler;
+	KeyEventHandler eventHandler = new ClienteListController();
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -138,19 +140,20 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 	@FXML
 	public void onMiAbasProdutoAction() {
-		System.out.println("Produto");
+		eventHandler.removeEventHandler();
 		carregaView("/gui/ProdutoList.fxml", (ProdutoListController controller) -> {
 			controller.setProdutoServico(new ProdutoServico());
 			controller.updateTableView();
+
 		});
 	}
 	
 	@FXML
 	public void onMiAbasClienteAction() {
-		System.out.println("Cadastro Cliente");
 		carregaView("/gui/ClienteList.fxml", (ClienteListController controller) -> {
 			controller.setClienteServico(new ClienteServico());
 			controller.updateTableView();
+			eventHandler = controller;
 		});
 	}
 
@@ -189,10 +192,6 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		System.out.println("Tela transações");
 	}
 
-	public static void setKeyEventEventHandler(EventHandler<KeyEvent> keyEventEventHandler) {
-		MainViewController.keyEventEventHandler = keyEventEventHandler;
-	}
-
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 
@@ -207,7 +206,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	}
 
 	private EventHandler<KeyEvent> getEventHandler(){
-		EventHandler<KeyEvent> keyEvent = event -> {
+			keyEventEventHandler = event -> {
 
 			if (event.getCode() == KeyCode.F2) {
 				System.out.println("Novo pedido");
@@ -233,9 +232,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 			}
 		};
 
-		setKeyEventEventHandler(keyEvent);
-
-		return keyEvent;
+		return keyEventEventHandler;
 	}
 
 	public void updateFormData(){
