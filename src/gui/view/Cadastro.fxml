@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="697.0" style="-fx-background-color: #555866;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.CadastroController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+         <children>
+            <Button fx:id="btnCategoria5" mnemonicParsing="false" onAction="#onBtnProdutoActio" prefHeight="90.0" prefWidth="284.0" text="Produto" />
+            <Button fx:id="btnCliente" mnemonicParsing="false" onAction="#onBtnClienteAction" prefHeight="90.0" prefWidth="284.0" text="Cliente" />
+         </children>
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+         <children>
+            <Button fx:id="btnCategoria4" mnemonicParsing="false" onAction="#onBtnFornecedorAction" prefHeight="90.0" prefWidth="284.0" text="Fornecedor" />
+            <Button fx:id="btnCategoria" mnemonicParsing="false" onAction="#onBtnCategoriaAction" prefHeight="90.0" prefWidth="284.0" text="Categoria" />
+         </children>
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+         <children>
+            <Button fx:id="btnCategoria3" mnemonicParsing="false" onAction="#onBtnEstabelecimentoAction" prefHeight="90.0" prefWidth="284.0" text="Estabelecimento" />
+            <Button fx:id="btnCategoria2" mnemonicParsing="false" onAction="#onBtnEnderecoAction" prefHeight="90.0" prefWidth="284.0" text="Endereço" />
+         </children>
+         <VBox.margin>
+            <Insets left="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

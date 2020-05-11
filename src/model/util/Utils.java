@@ -114,4 +114,12 @@ public class Utils {
 
         return itemPedido;
     }
+
+    public static Relatorio createRelatorioProduto(ResultSet rs) throws SQLException{
+        Relatorio rp = new Relatorio();
+        rp.setNome(rs.getString("nome"));
+        rp.setQuantidade(rs.getInt("total"));
+
+        return rp;
+    }
 }

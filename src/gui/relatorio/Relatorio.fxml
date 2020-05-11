@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="435.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioController">
+   <children>
+      <Label prefHeight="27.0" prefWidth="428.0" text="Selecione o fornecedor e o período do relatório">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <HBox prefHeight="30.0" prefWidth="591.0" spacing="15.0">
+         <children>
+            <ComboBox fx:id="cbbFornecedor" prefWidth="150.0" />
+            <DatePicker fx:id="datePicker1" />
+            <DatePicker fx:id="datePicker2" />
+            <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" text="Gerar Relatório" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </HBox>
+      <TableView fx:id="tbvListaRelatorio" prefHeight="271.0" prefWidth="591.0">
+         <columns>
+            <TableColumn fx:id="tbcProdutoNome" prefWidth="251.999966442585" text="Nome" />
+            <TableColumn fx:id="tbcQuantidade" prefWidth="184.00001525878906" text="Quantidade" />
+         </columns>
+      </TableView>
+   </children>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+</VBox>

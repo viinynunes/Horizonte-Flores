@@ -8,7 +8,7 @@ import java.util.List;
 
 public class PedidoServico {
 
-    private final PedidoDao dao = DaoFactory.createPedido();
+    private final PedidoDao dao = DaoFactory.createPedidoDao();
 
     public List<Pedido> findAll(){
         return dao.findAll();
