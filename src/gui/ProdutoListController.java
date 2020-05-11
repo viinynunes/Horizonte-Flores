@@ -3,6 +3,7 @@ package gui;
 import application.Main;
 import db.DBException;
 import gui.listeners.DataChangeListener;
+import gui.listeners.KeyEventHandler;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -39,7 +40,7 @@ import java.util.EventObject;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProdutoListController implements Initializable, DataChangeListener {
+public class ProdutoListController implements Initializable, DataChangeListener, KeyEventHandler {
 
     private ProdutoServico servico;
     private Produto produto;
@@ -124,52 +125,9 @@ public class ProdutoListController implements Initializable, DataChangeListener 
 
         node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
+        node.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
 
-        tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
-    }
-
-    private EventHandler<KeyEvent> getEventHandler(){
-        keyEventEventHandler = event -> {
-            if (event.getCode() == KeyCode.F2) {
-                Stage parentStage = Utils.atualStage(event);
-                Produto produto = new Produto();
-                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
-            }
-
-            if (event.getCode() == KeyCode.F3) {
-                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
-
-                Stage parentStage = Utils.atualStage(event);
-
-                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
-            }
-
-            if (event.getCode() == KeyCode.F4) {
-                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
-
-                try {
-                    servico.deleteById(produto.getId());
-                    updateTableView();
-                    Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
-                } catch (DBException e) {
-                    Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
-                }
-            }
-            if (event.getCode() == KeyCode.DELETE){
-                deleteProduto();
-            }
-
-            if (event.getCode() == KeyCode.ENTER){
-                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
-
-                Stage parentStage = Utils.atualStage(event);
-
-                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
-            }
-        };
-
-        return keyEventEventHandler;
+        tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
     }
 
     private void deleteProduto(){
@@ -257,5 +215,57 @@ public class ProdutoListController implements Initializable, DataChangeListener 
     @Override
     public void onDataChanged() {
         updateTableView();
+    }
+
+    @Override
+    public EventHandler addEventHandler() {
+        keyEventEventHandler = event -> {
+            if (event.getCode() == KeyCode.F2) {
+                Stage parentStage = Utils.atualStage(event);
+                Produto produto = new Produto();
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F3) {
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                Stage parentStage = Utils.atualStage(event);
+
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
+
+            if (event.getCode() == KeyCode.F4) {
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                try {
+                    servico.deleteById(produto.getId());
+                    updateTableView();
+                    Alerts.showAlert("Produto Apagado com sucesso", null, "Produto apagado com sucesso", Alert.AlertType.CONFIRMATION);
+                } catch (DBException e) {
+                    Alerts.showAlert("Erro ao apagar produto", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+            if (event.getCode() == KeyCode.DELETE){
+                deleteProduto();
+            }
+
+            if (event.getCode() == KeyCode.ENTER){
+                produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+
+                Stage parentStage = Utils.atualStage(event);
+
+                carregaDialog(produto, "/gui/ProdutoCadastro.fxml", parentStage);
+            }
+        };
+
+        return keyEventEventHandler;
+    }
+
+    @Override
+    public void removeEventHandler() {
+        if (node != null || tbvListaProduto != null){
+            node.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+            tbvListaProduto.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+        }
     }
 }

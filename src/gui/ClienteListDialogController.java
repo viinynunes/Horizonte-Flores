@@ -73,15 +73,23 @@ public class ClienteListDialogController implements Initializable {
         tbcClienteNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcClienteTelefone.setCellValueFactory(new PropertyValueFactory<>("telefone"));
 
-        tbvListaCliente.setOnKeyPressed(event -> {
+        txtProcura.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
+                setCliente(tbvListaCliente.getItems().get(0));
                 notifyDataChanged();
                 Utils.atualStage(event).close();
             }
 
             if (event.getCode() == KeyCode.F2) {
                 //carrega dialog cadastro de cliente
+            }
+        });
+
+        tbvListaCliente.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
+                notifyDataChanged();
+                Utils.atualStage(event).close();
             }
         });
 

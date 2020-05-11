@@ -140,10 +140,10 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 	@FXML
 	public void onMiAbasProdutoAction() {
-		eventHandler.removeEventHandler();
 		carregaView("/gui/ProdutoList.fxml", (ProdutoListController controller) -> {
 			controller.setProdutoServico(new ProdutoServico());
 			controller.updateTableView();
+			eventHandler = controller;
 
 		});
 	}
@@ -248,6 +248,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	public synchronized <T> void carregaView(String caminho, Consumer<T> initializingAction) {
 
 		scrollPane.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+
+		eventHandler.removeEventHandler();
 
 		try {
 			FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));

@@ -94,14 +94,14 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         selecionarCliente(event);
     }
 
-    private void salvarPedido(Event event){
+    private void salvarPedido(Event event) {
         try {
             pedido = getDataForm();
 
             if (pedido.getCliente() == null) {
                 Alerts.showAlert("Cliente não selecionado", null, "Selecione um cliente", Alert.AlertType.INFORMATION);
 
-            } else if (pedido.getItemPedidoList().isEmpty() || pedido.getItemPedidoList() == null){
+            } else if (pedido.getItemPedidoList().isEmpty() || pedido.getItemPedidoList() == null) {
                 Alerts.showAlert("Nenhum produto selecionado", null, "Nenhum produto no pedido", Alert.AlertType.INFORMATION);
             } else {
                 pedidoServico.saveOrUpdate(pedido);
@@ -115,23 +115,23 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         }
     }
 
-    private void cancelarPedido(Event event){
+    private void cancelarPedido(Event event) {
         itemPedidoList.clear();
         Utils.atualStage(event).close();
     }
 
-    private void apagarItem(){
+    private void apagarItem() {
         itemPedidoList.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
         updateFormProdutosPedido();
     }
 
-    private void selecionarCliente(Event event){
+    private void selecionarCliente(Event event) {
         Stage parentStage = Utils.atualStage(event);
         carregaDialog(parentStage, "/gui/ClienteListDialog.fxml");
     }
 
     private void notifyDataChanged() {
-        for (PedidoChangeListener listener : pedidoChangeListeners){
+        for (PedidoChangeListener listener : pedidoChangeListeners) {
             listener.onDataChangedListener(pedido);
         }
     }
@@ -152,7 +152,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         this.produtoServico = produtoServico;
     }
 
-    public void subscribeDataChangeListener(PedidoChangeListener listener){
+    public void subscribeDataChangeListener(PedidoChangeListener listener) {
         pedidoChangeListeners.add(listener);
     }
 
@@ -172,44 +172,54 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.F2){
+            if (event.getCode() == KeyCode.F2) {
                 salvarPedido(event);
             }
-            if (event.getCode() == KeyCode.F3){
+            if (event.getCode() == KeyCode.F3) {
                 cancelarPedido(event);
             }
-            if (event.getCode() == KeyCode.F4){
+            if (event.getCode() == KeyCode.F4) {
                 apagarItem();
             }
-            if (event.getCode() == KeyCode.F5){
+            if (event.getCode() == KeyCode.F5) {
                 selecionarCliente(event);
             }
         });
 
         tbvLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                addItemPedido();
+                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
+                addItemPedido(p);
             }
         });
 
+
         tbvLocalizaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                addItemPedido();
+                Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
+                addItemPedido(p);
+            }
+        });
+
+        txtLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                Produto p = tbvLocalizaProduto.getItems().get(0);
+
+                addItemPedido(p);
             }
         });
 
 
     }
 
-    private void addItemPedido() {
+    private void addItemPedido(Produto produto) {
 
         if (txtQuantidade.getText().isEmpty() || txtQuantidade.getText() == null) {
             Alerts.showAlert("Digite a quantidade do produto", null, "Digite a quantidade do produto", Alert.AlertType.INFORMATION);
         } else {
-            Produto p = tbvLocalizaProduto.getSelectionModel().getSelectedItem();
             ItemPedido item = new ItemPedido();
             item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
-            item.setProduto(p);
+            item.setProduto(produto);
             itemPedidoList.add(item);
             tbvLocalizaProduto.setVisible(false);
             updateFormProdutosPedido();
@@ -309,7 +319,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     private Pedido getDataForm() {
 
-        if (pedido.getId() == null){
+        if (pedido.getId() == null) {
             Pedido pedidoNovo = new Pedido();
             pedidoNovo.setCliente(cliente);
             pedidoNovo.setData(new Date());
