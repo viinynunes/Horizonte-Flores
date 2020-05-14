@@ -2,6 +2,7 @@ package model.services;
 
 import model.dao.DaoFactory;
 import model.dao.RelatorioDao;
+import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Relatorio;
 
@@ -12,5 +13,8 @@ public class RelatorioServico {
 
     public List<Relatorio> findByFornecedor(Fornecedor fornecedor){
         return dao.findByFornecedor(fornecedor);
+    }
+    public List<Relatorio> findByEstabelecimento(Estabelecimento estabelecimento){
+        return dao.findByEstabelecimento(estabelecimento);
     }
 }

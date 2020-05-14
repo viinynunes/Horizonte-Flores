@@ -144,5 +144,36 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
         }
     }
 
+    @Override
+    public Estabelecimento findById(Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Estabelecimento estabelecimento = null;
+        Endereco endereco;
+
+        try {
+            st = conn.prepareStatement("select * from estabelecimento inner join endereco " +
+                    "on estabelecimento.endereco_id = endereco.id " +
+                    "where estabelecimento.id = ?");
+
+            st.setInt(1, id);
+
+            rs = st.executeQuery();
+
+            if (rs.next()){
+                endereco = Utils.createEndereco(rs);
+                estabelecimento = Utils.createEstabelecimento(rs, endereco);
+            }
+
+            return estabelecimento;
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
+
 
 }

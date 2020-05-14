@@ -9,6 +9,7 @@ import application.Main;
 import db.DBException;
 import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
+import gui.relatorio.RelatorioCaixariaController;
 import gui.relatorio.RelatorioController;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -166,7 +167,11 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	}
 	@FXML
 	public void onMiRelCaixariaAction() {
-		System.out.println("Relat�rio Caixaria");
+		carregaView("/gui/relatorio/RelatorioCaixaria.fxml", (RelatorioCaixariaController controller) -> {
+			controller.setRelatorioServico(new RelatorioServico());
+			controller.setEstabelecimentoServico(new EstabelecimentoServico());
+			controller.updateFormData();
+		});
 	}
 	
 	@FXML

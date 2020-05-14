@@ -19,5 +19,6 @@
     <orderEntry type="library" name="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER" level="application" />
     <orderEntry type="library" exported="" name="javafx-swt" level="project" />
     <orderEntry type="library" exported="" name="mysql-connector-java-5.1.48" level="project" />
+    <orderEntry type="library" name="org.apache.poi:poi:3.16" level="application" />
   </component>
 </module>

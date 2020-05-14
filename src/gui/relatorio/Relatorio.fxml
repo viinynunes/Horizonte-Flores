@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="435.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioController">
+<VBox prefHeight="799.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioController">
    <children>
-      <Label prefHeight="27.0" prefWidth="428.0" text="Selecione o fornecedor e o período do relatório">
+      <Label prefHeight="27.0" prefWidth="428.0" text="Selecione o fornecedor e o período do relatório" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -27,19 +27,23 @@
             <DatePicker fx:id="datePicker1" />
             <DatePicker fx:id="datePicker2" />
             <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" text="Gerar Relatório" />
+            <Button fx:id="btnExportar" minWidth="96.0" mnemonicParsing="false" onAction="#onBtnExportarAction" text="Exportar" />
          </children>
          <VBox.margin>
             <Insets bottom="15.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="tbvListaRelatorio" prefHeight="271.0" prefWidth="591.0">
+      <TableView fx:id="tbvListaRelatorio" maxWidth="532.0" minHeight="690.0" prefHeight="505.0" prefWidth="532.0">
          <columns>
-            <TableColumn fx:id="tbcProdutoNome" prefWidth="251.999966442585" text="Nome" />
-            <TableColumn fx:id="tbcQuantidade" prefWidth="184.00001525878906" text="Quantidade" />
+            <TableColumn fx:id="tbcProdutoNome" prefWidth="322.40002459287643" text="Nome" />
+            <TableColumn fx:id="tbcQuantidade" prefWidth="206.39996337890625" text="Quantidade" />
          </columns>
+         <VBox.margin>
+            <Insets bottom="10.0" />
+         </VBox.margin>
       </TableView>
    </children>
    <padding>
-      <Insets left="5.0" right="5.0" />
+      <Insets left="15.0" right="5.0" />
    </padding>
 </VBox>

@@ -21,4 +21,8 @@ public class EstabelecimentoServico {
             dao.update(estabelecimento);
         }
     }
+
+    public Estabelecimento findById(Integer id){
+        return dao.findById(id);
+    }
 }

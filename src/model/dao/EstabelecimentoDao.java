@@ -10,4 +10,5 @@ public interface EstabelecimentoDao {
     void update(Estabelecimento estabelecimento);
     void deleteById(Integer id);
     List<Estabelecimento> findAll();
+    Estabelecimento findById(Integer id);
 }

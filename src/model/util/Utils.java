@@ -119,6 +119,7 @@ public class Utils {
         Relatorio rp = new Relatorio();
         rp.setNome(rs.getString("nome"));
         rp.setQuantidade(rs.getInt("total"));
+        rp.setFornecedor(rs.getString("fornecedor"));
 
         return rp;
     }

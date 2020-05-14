@@ -49,4 +49,32 @@ public class RelatorioDaoJDBC implements RelatorioDao {
             DB.closeStatement(st);
         }
     }
+
+    @Override
+    public List<Relatorio> findByEstabelecimento(Estabelecimento estabelecimento) {
+        List<Relatorio> list = new ArrayList<>();
+
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("call spRelFindByEstabelecimento(?)");
+
+            st.setInt(1, estabelecimento.getId());
+
+            rs = st.executeQuery();
+
+            while (rs.next()){
+                Relatorio rp = Utils.createRelatorioProduto(rs);
+                list.add(rp);
+            }
+
+            return list;
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
 }

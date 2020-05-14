@@ -3,14 +3,16 @@ package model.entities;
 public class Relatorio {
     private String nome;
     private Integer quantidade;
+    private String fornecedor;
 
     public Relatorio(){
 
     }
 
-    public Relatorio(String nome, Integer quantidade) {
+    public Relatorio(String nome, Integer quantidade, String fornecedor) {
         this.nome = nome;
         this.quantidade = quantidade;
+        this.fornecedor = fornecedor;
     }
 
     public String getNome() {
@@ -27,5 +29,13 @@ public class Relatorio {
 
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
     }
 }

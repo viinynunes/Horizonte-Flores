@@ -1,6 +1,9 @@
 package gui.relatorio;
 
 import application.Main;
+import gui.util.Alerts;
+import gui.util.ExportExcel;
+import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,12 +18,15 @@ import model.services.FornecedorServico;
 import model.services.RelatorioServico;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class RelatorioController implements Initializable {
     private FornecedorServico fornecedorServico;
     private RelatorioServico relatorioServico;
+    private List<Relatorio> relatorioList;
+    private Fornecedor fornecedor;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
@@ -31,6 +37,8 @@ public class RelatorioController implements Initializable {
     @FXML
     private Button btnGerarRelatorio;
     @FXML
+    private Button btnExportar;
+    @FXML
     private TableView<Relatorio> tbvListaRelatorio;
     @FXML
     private TableColumn<String, Relatorio> tbcProdutoNome;
@@ -38,13 +46,22 @@ public class RelatorioController implements Initializable {
     private TableColumn<Integer, Relatorio> tbcQuantidade;
 
     public void onBtnGerarRelatorioAction(){
-        Fornecedor fornecedor = getFormData();
+        fornecedor = getFormData();
 
-        List<Relatorio> list = relatorioServico.findByFornecedor(fornecedor);
-        ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(list);
+        relatorioList = relatorioServico.findByFornecedor(fornecedor);
+        ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();
+    }
 
+    public void onBtnExportarAction(){
+        if (tbvListaRelatorio == null){
+            Alerts.showAlert("Relatório Vazio", null, "O relatório esta vazio", Alert.AlertType.INFORMATION);
+        } else if (relatorioList == null){
+            Alerts.showAlert("Relatório Vazio", null, "O relatório esta vazio", Alert.AlertType.INFORMATION);
+        } else {
+            ExportExcel.createExcel(relatorioList, fornecedor.getNome());
+        }
     }
 
     public void setFornecedorServico(FornecedorServico fornecedorServico) {
