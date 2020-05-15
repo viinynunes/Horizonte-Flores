@@ -7,6 +7,7 @@ import model.entities.*;
 import model.util.Utils;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +27,9 @@ public class PedidoDaoJDBC implements PedidoDao {
         PreparedStatement st = null;
         ResultSet rs = null;
         List<Pedido> list = new ArrayList<>();
-        List<ItemPedido> itemPedidoList = new ArrayList<>();
         Endereco endereco;
         Cliente cliente;
-        ItemPedido itemPedido;
         Pedido pedido;
-        Produto produto;
-        Categoria categoria;
-        Fornecedor fornecedor;
-        Estabelecimento estabelecimento;
 
         try {
             st = conn.prepareStatement("select * from pedido inner join cliente " +
@@ -102,6 +97,87 @@ public class PedidoDaoJDBC implements PedidoDao {
             DB.closeStatement(st);
         }
 
+    }
+
+    @Override
+    public List<Pedido> findByDate(Date date) {
+        List<Pedido> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Endereco endereco;
+        Cliente cliente;
+        Pedido pedido;
+
+        try {
+
+            st = conn.prepareStatement("select * from pedido inner join cliente " +
+                    "on CLIENTE_ID = cliente.id " +
+                    "inner join endereco " +
+                    "on cliente.endereco_id = endereco.id " +
+                    "where data = ?");
+
+            st.setDate(1, date);
+            rs = st.executeQuery();
+
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+            Map<Integer, Cliente> clienteMap = new HashMap<>();
+            Map<Integer, Pedido> pedidoMap = new HashMap<>();
+
+            while (rs.next()) {
+                endereco = enderecoMap.get(rs.getInt("endereco.id"));
+                cliente = clienteMap.get(rs.getInt("cliente.id"));
+                pedido = pedidoMap.get(rs.getInt("pedido.id"));
+
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("endereco.id"), endereco);
+                }
+
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs, endereco);
+                    clienteMap.put(rs.getInt("cliente.id"), cliente);
+                }
+
+                if (pedido == null) {
+                    pedido = Utils.createPedido(rs, cliente);
+                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
+                    list.add(pedido);
+                }
+            }
+
+
+            st = conn.prepareStatement("select * from pedido inner join cliente " +
+                    "on pedido.CLIENTE_ID = cliente.id " +
+                    "where data = ?");
+
+            st.setDate(1, date);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+
+                cliente = clienteMap.get(rs.getInt("cliente.id"));
+                pedido = pedidoMap.get(rs.getInt("pedido.id"));
+
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs);
+                    clienteMap.put(rs.getInt("cliente.id"), cliente);
+                }
+
+                if (pedido == null) {
+                    pedido = Utils.createPedido(rs, cliente);
+                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
+                    list.add(pedido);
+                }
+            }
+
+            return list;
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class ExportExcel {
@@ -20,7 +21,7 @@ public class ExportExcel {
 
     public static void createExcel(List<Relatorio> list, String name){
 
-        fileName = "D:/Documentos/" + name+".xls";
+        fileName = "D:/Documentos/" + name + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");

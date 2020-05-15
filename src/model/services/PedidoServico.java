@@ -4,6 +4,7 @@ import model.dao.DaoFactory;
 import model.dao.PedidoDao;
 import model.entities.Pedido;
 
+import java.sql.Date;
 import java.util.List;
 
 public class PedidoServico {
@@ -24,5 +25,9 @@ public class PedidoServico {
 
     public void deleteById(Pedido pedido){
         dao.deleteById(pedido);
+    }
+
+    public List<Pedido> findByDate(Date data){
+        return dao.findByDate(data);
     }
 }

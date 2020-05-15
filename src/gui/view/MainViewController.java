@@ -2,6 +2,7 @@ package gui.view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -43,6 +44,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	private List<ItemPedido> itemPedidoList = new ArrayList<>();
 	private static EventHandler<KeyEvent> keyEventEventHandler;
 	KeyEventHandler eventHandler = new ClienteListController();
+	LocalDate localDateDataPedido;
+	java.sql.Date dataPedido;
 
 	@FXML
 	private ScrollPane scrollPane;
@@ -82,6 +85,14 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 	private TableColumn<Date, Pedido> tbcPedidoData;
 	@FXML
 	private TableColumn<Pedido, Cliente> tbcPedidoCliente;
+	@FXML
+	private DatePicker dpDataPedido = new DatePicker();
+
+	public void onDpDataPedidoAction(){
+		localDateDataPedido = dpDataPedido.getValue();
+		dataPedido = java.sql.Date.valueOf(localDateDataPedido);
+		updateFormData();
+	}
 
 	@FXML
 	public void onBtnNovoPedidoAction(ActionEvent event){
@@ -205,7 +216,9 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		tbcPedidoData.setCellValueFactory(new PropertyValueFactory<>("data"));
 		tbcPedidoCliente.setCellValueFactory(new PropertyValueFactory<>("cliente"));
 
-
+		dpDataPedido.setValue(LocalDate.now());
+		localDateDataPedido = dpDataPedido.getValue();
+		dataPedido = java.sql.Date.valueOf(localDateDataPedido);
 		scrollPane.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
 
 		updateFormData();
@@ -245,7 +258,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
 		PedidoServico serv = new PedidoServico();
 
-		List<Pedido> pedidoList = serv.findAll();
+		List<Pedido> pedidoList = serv.findByDate(dataPedido);
 		ObservableList<Pedido> obb = FXCollections.observableArrayList(pedidoList);
 		tbvListaPedidos.setItems(obb);
 		tbvListaPedidos.refresh();
