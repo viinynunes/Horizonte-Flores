@@ -18,6 +18,8 @@ import model.services.FornecedorServico;
 import model.services.RelatorioServico;
 
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,13 +29,14 @@ public class RelatorioController implements Initializable {
     private RelatorioServico relatorioServico;
     private List<Relatorio> relatorioList;
     private Fornecedor fornecedor;
+    private Date iniDate, endDate;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
     @FXML
-    private DatePicker datePicker1;
+    private DatePicker datePicker1 = new DatePicker();
     @FXML
-    private DatePicker datePicker2;
+    private DatePicker datePicker2 = new DatePicker();
     @FXML
     private Button btnGerarRelatorio;
     @FXML
@@ -48,7 +51,10 @@ public class RelatorioController implements Initializable {
     public void onBtnGerarRelatorioAction(){
         fornecedor = getFormData();
 
-        relatorioList = relatorioServico.findByFornecedor(fornecedor);
+        iniDate = Date.valueOf(datePicker1.getValue());
+        endDate = Date.valueOf(datePicker2.getValue());
+
+        relatorioList = relatorioServico.findByFornecedor(fornecedor, iniDate, endDate);
         ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();

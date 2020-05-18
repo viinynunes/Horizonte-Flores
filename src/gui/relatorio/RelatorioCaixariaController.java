@@ -15,6 +15,8 @@ import model.services.EstabelecimentoServico;
 import model.services.RelatorioServico;
 
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -23,6 +25,7 @@ public class RelatorioCaixariaController implements Initializable {
     private EstabelecimentoServico estabelecimentoServico;
     private RelatorioServico relatorioServico;
     private List<Relatorio> relatorioList;
+    private Date iniDate, endDate;
 
     @FXML
     private Button btnGerarRelatorio;
@@ -37,16 +40,19 @@ public class RelatorioCaixariaController implements Initializable {
     @FXML
     private TableColumn<String, Relatorio> tbcFornecedor;
     @FXML
-    private DatePicker datePicker1;
+    private DatePicker datePicker1 = new DatePicker();
     @FXML
-    private DatePicker datePicker2;
+    private DatePicker datePicker2 = new DatePicker();
 
     public void onBtnGerarRelatorioAction(){
         if (relatorioServico == null){
             throw new IllegalStateException("Servico null");
         }
 
-        relatorioList = relatorioServico.findByEstabelecimento(estabelecimento);
+        iniDate = Date.valueOf(datePicker1.getValue());
+        endDate = Date.valueOf(datePicker2.getValue());
+
+        relatorioList = relatorioServico.findByEstabelecimento(estabelecimento, iniDate, endDate);
         ObservableList<Relatorio> obbList = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbList);
     }

@@ -219,6 +219,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 		dpDataPedido.setValue(LocalDate.now());
 		localDateDataPedido = dpDataPedido.getValue();
 		dataPedido = java.sql.Date.valueOf(localDateDataPedido);
+
 		scrollPane.addEventFilter(KeyEvent.KEY_PRESSED, getEventHandler());
 
 		updateFormData();
