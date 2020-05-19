@@ -221,6 +221,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             updateFormProdutosPedido();
             txtLocalizaProduto.clear();
             txtQuantidade.clear();
+            txtQuantidade.requestFocus();
         }
     }
 

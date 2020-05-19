@@ -58,6 +58,9 @@ public class RelatorioController implements Initializable {
         ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();
+        if (obbRelatorio.isEmpty()){
+            Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+        }
     }
 
     public void onBtnExportarAction(){
@@ -98,11 +101,12 @@ public class RelatorioController implements Initializable {
         tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+        datePicker1.setValue(LocalDate.now());
+        datePicker2.setValue(LocalDate.now());
+
     }
 
     private Fornecedor getFormData(){
-        Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
-
-        return fornecedor;
+       return cbbFornecedor.getSelectionModel().getSelectedItem();
     }
 }

@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.entities.Estabelecimento;
-import model.entities.Fornecedor;
 import model.entities.Relatorio;
 import model.services.EstabelecimentoServico;
 import model.services.RelatorioServico;
@@ -25,7 +24,6 @@ public class RelatorioCaixariaController implements Initializable {
     private EstabelecimentoServico estabelecimentoServico;
     private RelatorioServico relatorioServico;
     private List<Relatorio> relatorioList;
-    private Date iniDate, endDate;
 
     @FXML
     private Button btnGerarRelatorio;
@@ -49,12 +47,15 @@ public class RelatorioCaixariaController implements Initializable {
             throw new IllegalStateException("Servico null");
         }
 
-        iniDate = Date.valueOf(datePicker1.getValue());
-        endDate = Date.valueOf(datePicker2.getValue());
+        Date iniDate = Date.valueOf(datePicker1.getValue());
+        Date endDate = Date.valueOf(datePicker2.getValue());
 
         relatorioList = relatorioServico.findByEstabelecimento(estabelecimento, iniDate, endDate);
         ObservableList<Relatorio> obbList = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbList);
+        if (obbList.isEmpty()){
+            Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+        }
     }
 
     public void onBtnExportarAction(){
@@ -82,5 +83,8 @@ public class RelatorioCaixariaController implements Initializable {
         tbcProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
         tbcFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
+
+        datePicker1.setValue(LocalDate.now());
+        datePicker2.setValue(LocalDate.now());
     }
 }
