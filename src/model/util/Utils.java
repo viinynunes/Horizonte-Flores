@@ -2,10 +2,14 @@ package model.util;
 
 import model.entities.*;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 public class Utils {
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public static Endereco createEndereco(ResultSet rs) throws SQLException {
         Endereco endereco = new Endereco();
@@ -56,7 +60,7 @@ public class Utils {
         Cliente cliente = new Cliente();
 
         cliente.setId(rs.getInt("id"));
-        cliente.setNome(rs.getString("nome"));
+        cliente.setNome(rs.getString("cliente.nome"));
         cliente.setTelefone(rs.getString("telefone"));
         cliente.setTelefone2(rs.getString("telefone2"));
         cliente.setEmail(rs.getString("email"));
@@ -97,6 +101,7 @@ public class Utils {
 
     public static Pedido createPedido(ResultSet rs, Cliente cliente) throws SQLException {
         Pedido pedido = new Pedido();
+
         pedido.setId(rs.getInt("pedido.id"));
         pedido.setData(rs.getDate("pedido.data"));
         pedido.setCliente(cliente);

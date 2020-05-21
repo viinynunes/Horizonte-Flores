@@ -3,7 +3,9 @@ package model.dao.impl;
 import db.DB;
 import db.DBException;
 import model.dao.RelatorioDao;
-import model.entities.*;
+import model.entities.Estabelecimento;
+import model.entities.Fornecedor;
+import model.entities.Relatorio;
 import model.util.Utils;
 
 import java.sql.*;

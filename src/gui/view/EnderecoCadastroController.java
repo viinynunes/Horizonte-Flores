@@ -1,8 +1,6 @@
 package gui.view;
 
-import com.sun.nio.sctp.IllegalReceiveException;
 import db.DBException;
-import gui.listeners.DataChangeListener;
 import gui.listeners.EnderecoChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;

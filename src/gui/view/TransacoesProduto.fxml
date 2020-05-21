@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.TransacoesProdutoController">
+   <children>
+      <Label prefHeight="46.0" prefWidth="383.0" text="Insira o nome do produto e localize onde foi pedido" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="27.0" prefWidth="734.0">
+         <children>
+            <TextField fx:id="txtLocalizaProduto" prefHeight="26.0" prefWidth="428.0" />
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <TableView fx:id="tbvListaPedido" maxWidth="750.0" minWidth="0.0" prefHeight="214.0" prefWidth="825.0">
+               <columns>
+                  <TableColumn fx:id="tbcPedidoId" prefWidth="75.0" text="Id" />
+                  <TableColumn fx:id="tbcPedidoData" prefWidth="162.4000244140625" text="Data" />
+                  <TableColumn fx:id="tbcPedidoCliente" prefWidth="203.19996643066406" text="Cliente" />
+                  <TableColumn fx:id="tbcPedidoProduto" prefWidth="194.4000244140625" text="Produto" />
+                  <TableColumn fx:id="tbcPedidoQuantidade" prefWidth="112.80002441406248" text="Quantidade" />
+               </columns>
+            </TableView>
+            <TableView fx:id="tbvListaProduto" prefHeight="200.0" prefWidth="750.0" visible="false">
+              <columns>
+                <TableColumn fx:id="tbcProdutoId" prefWidth="161.6000091433525" text="ID" />
+                <TableColumn fx:id="tbcProdutoNome" prefWidth="311.9999542236328" text="Nome" />
+                  <TableColumn fx:id="tbcProdutoFornecedor" prefWidth="274.39990234375" text="Fornecedor" />
+              </columns>
+            </TableView>
+         </children>
+         <VBox.margin>
+            <Insets top="15.0" />
+         </VBox.margin>
+      </AnchorPane>
+   </children>
+</VBox>

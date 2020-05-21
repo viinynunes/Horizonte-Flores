@@ -7,7 +7,6 @@ import model.entities.Endereco;
 import model.entities.Estabelecimento;
 import model.util.Utils;
 
-import java.lang.reflect.GenericDeclaration;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -3,11 +3,15 @@ package model.dao.impl;
 import db.DB;
 import db.DBException;
 import model.dao.PedidoDao;
-import model.entities.*;
+import model.entities.Cliente;
+import model.entities.Endereco;
+import model.entities.ItemPedido;
+import model.entities.Pedido;
 import model.util.Utils;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,13 +188,14 @@ public class PedidoDaoJDBC implements PedidoDao {
     public void insert(Pedido pedido) {
         PreparedStatement st = null;
         ResultSet rs = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             conn.setAutoCommit(false);
 
             st = conn.prepareStatement("insert into pedido (data, cliente_id) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
 
-            st.setDate(1, new Date((pedido.getData().getTime())));
+            st.setDate(1, new Date(pedido.getData().getTime()));
             st.setInt(2, pedido.getCliente().getId());
 
             int rows = st.executeUpdate();

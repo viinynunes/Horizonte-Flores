@@ -50,7 +50,10 @@
                         <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
                   </items>
                 </Menu>
-                  <Menu fx:id="miTransacoes" mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações" />
+                  <Menu mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações">
+                     <items>
+                        <MenuItem fx:id="miTransacoes" mnemonicParsing="false" text="Transações Produto" />
+                     </items></Menu>
               </menus>
             </MenuBar>
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">

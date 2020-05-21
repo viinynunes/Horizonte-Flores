@@ -3,9 +3,7 @@ package model.services;
 import model.dao.ClienteDao;
 import model.dao.DaoFactory;
 import model.entities.Cliente;
-import model.entities.Endereco;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteServico {

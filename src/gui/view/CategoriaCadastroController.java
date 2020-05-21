@@ -1,6 +1,5 @@
 package gui.view;
 
-import db.DB;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
@@ -16,7 +15,6 @@ import javafx.scene.input.KeyEvent;
 import model.entities.Categoria;
 import model.services.CategoriaServico;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

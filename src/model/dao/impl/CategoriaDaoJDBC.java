@@ -4,7 +4,6 @@ import db.DB;
 import db.DBException;
 import model.dao.CategoriaDao;
 import model.entities.Categoria;
-import model.services.CategoriaServico;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

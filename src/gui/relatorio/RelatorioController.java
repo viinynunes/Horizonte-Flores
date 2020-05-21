@@ -1,18 +1,14 @@
 package gui.relatorio;
 
-import application.Main;
 import gui.util.Alerts;
 import gui.util.ExportExcel;
-import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.entities.Fornecedor;
-import model.entities.Produto;
 import model.entities.Relatorio;
 import model.services.FornecedorServico;
 import model.services.RelatorioServico;
@@ -20,7 +16,6 @@ import model.services.RelatorioServico;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 

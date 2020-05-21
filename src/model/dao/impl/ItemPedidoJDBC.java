@@ -288,4 +288,37 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
             DB.closeStatement(st);
         }
     }
+
+    @Override
+    public List<ItemPedido> findByProduto(Produto produto) {
+        List<ItemPedido> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Cliente cliente;
+        Pedido pedido;
+        ItemPedido itemPedido;
+
+        try {
+            st = conn.prepareStatement("call spTranFindByProduto(?)");
+
+            st.setInt(1, produto.getId());
+
+            rs = st.executeQuery();
+
+            while (rs.next()){
+                cliente = Utils.createCliente(rs);
+                pedido = Utils.createPedido(rs, cliente);
+                itemPedido = Utils.createItemPedido(rs, produto, pedido);
+                list.add(itemPedido);
+            }
+
+            return list;
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
 }

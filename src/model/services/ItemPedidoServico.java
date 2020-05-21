@@ -4,6 +4,7 @@ import model.dao.DaoFactory;
 import model.dao.ItemPedidoDao;
 import model.entities.ItemPedido;
 import model.entities.Pedido;
+import model.entities.Produto;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public class ItemPedidoServico {
     public List<ItemPedido> findAll() {
         return dao.findAll();
     }
+
+    public List<ItemPedido> findByProduto(Produto produto){return dao.findByProduto(produto); }
 }

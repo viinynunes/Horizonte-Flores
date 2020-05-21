@@ -54,7 +54,10 @@ public class RelatorioCaixariaController implements Initializable {
         ObservableList<Relatorio> obbList = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbList);
         if (obbList.isEmpty()){
+            btnExportar.setVisible(false);
             Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+        }else{
+            btnExportar.setVisible(true);
         }
     }
 
@@ -86,5 +89,7 @@ public class RelatorioCaixariaController implements Initializable {
 
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
+
+        btnExportar.setVisible(false);
     }
 }

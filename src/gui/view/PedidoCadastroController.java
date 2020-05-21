@@ -20,7 +20,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.*;
@@ -30,6 +31,8 @@ import model.services.ProdutoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -167,6 +170,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+
+
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F2) {
                 salvarPedido(event);
@@ -200,7 +205,6 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         txtLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 Produto p = tbvLocalizaProduto.getItems().get(0);
-
                 addItemPedido(p);
             }
         });
@@ -316,21 +320,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     private Pedido getDataForm() {
 
-        if (pedido.getId() == null) {
-            Pedido pedidoNovo = new Pedido();
-            pedidoNovo.setCliente(cliente);
-            pedidoNovo.setData(new Date());
-            pedidoNovo.setItemPedidoList(itemPedidoList);
-            return pedidoNovo;
-        } else {
-            pedido.setCliente(pedido.getCliente());
-            pedido.setData(new Date());
-            pedido.setItemPedidoList(itemPedidoList);
+            if (pedido.getId() == null) {
+                Pedido pedidoNovo = new Pedido();
+                pedidoNovo.setCliente(cliente);
+                pedidoNovo.setData(new Date());
+                pedidoNovo.setItemPedidoList(itemPedidoList);
 
-            return pedido;
-        }
+                return pedidoNovo;
+            } else {
+                pedido.setCliente(pedido.getCliente());
+                pedido.setData(new Date());
+                pedido.setItemPedidoList(itemPedidoList);
 
-
+                return pedido;
+            }
     }
 
     @Override
