@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EstabelecimentoServico {
 
-    EstabelecimentoDao dao = DaoFactory.createEstabelecimentoDao();
+    private EstabelecimentoDao dao = DaoFactory.createEstabelecimentoDao();
 
     public List<Estabelecimento> findAll(){
         return dao.findAll();

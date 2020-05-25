@@ -128,4 +128,16 @@ public class Utils {
 
         return rp;
     }
+
+    public static Sobra createSobra(ResultSet rs, Produto produto) throws SQLException{
+        Sobra sobra = new Sobra();
+
+        sobra.setId(rs.getInt("id"));
+        sobra.setData(rs.getDate("data"));
+        sobra.setProduto(produto);
+        sobra.setTotal(rs.getInt("sumTotal"));
+        sobra.setSobra(rs.getInt("sobra"));
+
+        return sobra;
+    }
 }

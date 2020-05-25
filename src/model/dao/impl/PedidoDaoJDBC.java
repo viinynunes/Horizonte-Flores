@@ -10,8 +10,6 @@ import model.entities.Pedido;
 import model.util.Utils;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -188,7 +186,6 @@ public class PedidoDaoJDBC implements PedidoDao {
     public void insert(Pedido pedido) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         try {
             conn.setAutoCommit(false);
@@ -228,6 +225,17 @@ public class PedidoDaoJDBC implements PedidoDao {
                 }
             }
 
+            for (ItemPedido item : pedido.getItemPedidoList()){
+                st = conn.prepareStatement("insert into sobra (data, produto_id, total, sobra, pedido_id) values (?, ?, ?, 0, ?)");
+
+                st.setDate(1, new Date(pedido.getData().getTime()));
+                st.setInt(2, item.getProduto().getId());
+                st.setInt(3, item.getQuantidade());
+                st.setInt(4, pedido.getId());
+
+                st.executeUpdate();
+            }
+
             conn.commit();
 
         } catch (SQLException e) {
@@ -253,6 +261,11 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st.executeUpdate();
 
+            st = conn.prepareStatement("delete from sobra where pedido_id = ?");
+            st.setInt(1, pedido.getId());
+
+            st.executeUpdate();
+
             for (ItemPedido i : pedido.getItemPedidoList()) {
                 st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +
                         "values (?, ?, ?) ");
@@ -260,6 +273,17 @@ public class PedidoDaoJDBC implements PedidoDao {
                 st.setInt(1, i.getQuantidade());
                 st.setInt(2, pedido.getId());
                 st.setInt(3, i.getProduto().getId());
+
+                st.executeUpdate();
+            }
+
+            for (ItemPedido item : pedido.getItemPedidoList()){
+                st = conn.prepareStatement("insert into sobra (data, produto_id, total, sobra, pedido_id) values (?, ?, ?, 0, ?)");
+
+                st.setDate(1, new Date(pedido.getData().getTime()));
+                st.setInt(2, item.getProduto().getId());
+                st.setInt(3, item.getQuantidade());
+                st.setInt(4, pedido.getId());
 
                 st.executeUpdate();
             }
@@ -289,6 +313,11 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st = conn.prepareStatement("delete from pedido where id = ?");
 
+            st.setInt(1, pedido.getId());
+
+            st.executeUpdate();
+
+            st = conn.prepareStatement("delete from sobra where pedido_id = ?");
             st.setInt(1, pedido.getId());
 
             st.executeUpdate();

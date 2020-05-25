@@ -21,12 +21,12 @@ import java.util.function.Consumer;
 
 public class CadastroController implements Initializable {
 
-    Endereco endereco = new Endereco();
-    Estabelecimento estabelecimento = new Estabelecimento();
-    Categoria categoria = new Categoria();
-    Fornecedor fornecedor = new Fornecedor();
-    Cliente cliente = new Cliente();
-    Produto produto = new Produto();
+    private Endereco endereco;// = new Endereco();
+    private Estabelecimento estabelecimento;// = new Estabelecimento();
+    private Categoria categoria;// = new Categoria();
+    private Fornecedor fornecedor;// = new Fornecedor();
+    private Cliente cliente;// = new Cliente();
+    private Produto produto;// = new Produto();
 
     @FXML
     private Button btnCategoria;
@@ -40,6 +40,14 @@ public class CadastroController implements Initializable {
     private Button btnFornededor;
     @FXML
     private Button btnProduto;
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public void onBtnCategoriaAction(ActionEvent event){
 

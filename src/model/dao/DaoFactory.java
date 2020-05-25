@@ -28,4 +28,6 @@ public class DaoFactory {
     public static PedidoDao createPedidoDao() {return new PedidoDaoJDBC(DB.getConnection()); }
 
     public static RelatorioDao createRelatorioDao() { return new RelatorioDaoJDBC(DB.getConnection()); }
+
+    public static SobraDao createSobraDao() {return new SobraDaoJDBC(DB.getConnection()); }
 }

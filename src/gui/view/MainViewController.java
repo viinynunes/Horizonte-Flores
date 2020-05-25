@@ -4,6 +4,7 @@ import application.Main;
 import db.DBException;
 import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
+import gui.relatorio.SobraCaixariaController;
 import gui.relatorio.RelatorioCaixariaController;
 import gui.relatorio.RelatorioController;
 import gui.util.Alerts;
@@ -27,9 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import model.entities.Cliente;
-import model.entities.ItemPedido;
-import model.entities.Pedido;
+import model.entities.*;
 import model.services.*;
 
 import java.io.IOException;
@@ -71,6 +70,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     private MenuItem miRelCeaflor;
     @FXML
     private MenuItem miRelGeral;
+    @FXML
+    private MenuItem miSobrasCaixaria;
     @FXML
     private MenuItem miTransacoes;
     @FXML
@@ -196,6 +197,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     public void onMenuCadastroAction() {
         System.out.println("Cadastro");
         carregaView("/gui/view/Cadastro.fxml", (CadastroController controller) -> {
+            controller.setProduto(new Produto());
+            controller.setCliente(new Cliente());
         });
     }
 
@@ -228,6 +231,15 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         carregaView("/gui/relatorio/Relatorio.fxml", (RelatorioController controller) -> {
             controller.setFornecedorServico(new FornecedorServico());
             controller.setRelatorioServico(new RelatorioServico());
+            controller.updateFormData();
+        });
+    }
+
+    @FXML
+    public void onMiSobrasCaixariaAction(){
+        carregaView("/gui/relatorio/SobraCaixaria.fxml", (SobraCaixariaController controller) -> {
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setSobraServico(new SobraServico());
             controller.updateFormData();
         });
     }

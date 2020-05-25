@@ -50,6 +50,11 @@
                         <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Sobra">
+                    <items>
+                        <MenuItem fx:id="miSobrasCaixaria" mnemonicParsing="false" onAction="#onMiSobrasCaixariaAction" text="Sobra Caixaria" />
+                    </items>
+                  </Menu>
                   <Menu mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações">
                      <items>
                         <MenuItem fx:id="miTransacoes" mnemonicParsing="false" text="Transações Produto" />

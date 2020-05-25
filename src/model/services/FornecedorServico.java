@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FornecedorServico {
 
-    FornecedorDao dao = DaoFactory.createFornecedorDao();
+    private FornecedorDao dao = DaoFactory.createFornecedorDao();
 
     public List<Fornecedor> findAll(){
         return dao.findAll();

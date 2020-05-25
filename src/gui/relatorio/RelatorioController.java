@@ -43,7 +43,7 @@ public class RelatorioController implements Initializable {
     @FXML
     private TableColumn<Integer, Relatorio> tbcQuantidade;
 
-    public void onBtnGerarRelatorioAction(){
+    public void onBtnGerarRelatorioAction() {
         fornecedor = getFormData();
 
         iniDate = Date.valueOf(datePicker1.getValue());
@@ -53,15 +53,15 @@ public class RelatorioController implements Initializable {
         ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();
-        if (obbRelatorio.isEmpty()){
+        if (obbRelatorio.isEmpty()) {
             Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
         }
     }
 
-    public void onBtnExportarAction(){
-        if (tbvListaRelatorio == null){
+    public void onBtnExportarAction() {
+        if (tbvListaRelatorio == null) {
             Alerts.showAlert("Relatório Vazio", null, "O relatório esta vazio", Alert.AlertType.INFORMATION);
-        } else if (relatorioList == null){
+        } else if (relatorioList == null) {
             Alerts.showAlert("Relatório Vazio", null, "O relatório esta vazio", Alert.AlertType.INFORMATION);
         } else {
             ExportExcel.createExcel(relatorioList, fornecedor.getNome());
@@ -76,12 +76,12 @@ public class RelatorioController implements Initializable {
         this.relatorioServico = relatorioServico;
     }
 
-    public void updateFormData(){
-        if (fornecedorServico == null){
+    public void updateFormData() {
+        if (fornecedorServico == null) {
             throw new IllegalStateException("fornecedor servico null");
         }
 
-        if (relatorioServico == null){
+        if (relatorioServico == null) {
             throw new IllegalStateException("relatorio servico null");
         }
 
@@ -101,7 +101,7 @@ public class RelatorioController implements Initializable {
 
     }
 
-    private Fornecedor getFormData(){
-       return cbbFornecedor.getSelectionModel().getSelectedItem();
+    private Fornecedor getFormData() {
+        return cbbFornecedor.getSelectionModel().getSelectedItem();
     }
 }
