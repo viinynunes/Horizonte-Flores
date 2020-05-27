@@ -150,6 +150,7 @@ public class SobraCaixariaController implements Initializable {
                         sobraServico.insertOrUpdate(sobra);
                         tbvSobraCadastro.refresh();
                         tbvSobraFinal.refresh();
+                        
 
                     });
                 }
