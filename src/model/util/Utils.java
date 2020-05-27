@@ -2,7 +2,6 @@ package model.util;
 
 import model.entities.*;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -135,7 +134,8 @@ public class Utils {
         sobra.setId(rs.getInt("id"));
         sobra.setData(rs.getDate("data"));
         sobra.setProduto(produto);
-        sobra.setTotal(rs.getInt("sumTotal"));
+        sobra.setTotalPedido(rs.getInt("sumTotal"));
+        sobra.setTotalPedidoAtualizado(rs.getInt("totalPedidoAtualizado"));
         sobra.setSobra(rs.getInt("sobra"));
 
         return sobra;

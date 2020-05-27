@@ -226,12 +226,14 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, total, sobra, pedido_id) values (?, ?, ?, 0, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                        "values (?, ?, 0, ?, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
-                st.setInt(3, item.getQuantidade());
-                st.setInt(4, pedido.getId());
+                st.setInt(3, pedido.getId());
+                st.setInt(4, item.getQuantidade());
+                st.setInt(5 , item.getQuantidade());
 
                 st.executeUpdate();
             }
@@ -278,12 +280,14 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, total, sobra, pedido_id) values (?, ?, ?, 0, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                        "values (?, ?, 0, ?, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
-                st.setInt(3, item.getQuantidade());
-                st.setInt(4, pedido.getId());
+                st.setInt(3, pedido.getId());
+                st.setInt(4, item.getQuantidade());
+                st.setInt(5, item.getQuantidade());
 
                 st.executeUpdate();
             }

@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="878.0" prefWidth="1620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.SobraCaixariaController">
    <children>
       <Label text="Selecione o fornecedor e cadastre as sobras dos produtos">
@@ -30,9 +25,10 @@
               <columns>
                 <TableColumn fx:id="tbcId" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="tbcData" prefWidth="119.20001220703125" text="Data" />
-                  <TableColumn fx:id="tbcProdutoNome" prefWidth="378.4000244140625" text="Produto" />
-                  <TableColumn fx:id="tbcTotal" prefWidth="168.0" text="Total" />
-                  <TableColumn fx:id="tbcSobra" prefWidth="229.5999755859375" text="Sobra" />
+                  <TableColumn fx:id="tbcProdutoNome" prefWidth="308.800048828125" text="Produto" />
+                  <TableColumn fx:id="tbcTotalPedido" prefWidth="157.60003662109375" text="Total Pedido" />
+                  <TableColumn fx:id="tbcTotalPedidoAtualizado" prefWidth="156.0" text="Total Atualizado" />
+                  <TableColumn fx:id="tbcSobra" prefWidth="148.0" text="Sobra" />
               </columns>
             </TableView>
             <TableView fx:id="tbvSobraFinal" prefHeight="710.0" prefWidth="550.0">

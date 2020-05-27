@@ -6,17 +6,19 @@ public class Sobra {
 
     private Integer id;
     private Date data;
-    private Integer total;
+    private Integer totalPedido;
+    private Integer totalPedidoAtualizado;
     private Integer sobra;
     private Produto produto;
 
     public Sobra(){
     }
 
-    public Sobra(Integer id, Date data, Integer total, Integer sobra, Produto produto) {
+    public Sobra(Integer id, Date data, Integer totalPedido, Integer totalPedidoAtualizado, Integer sobra, Produto produto) {
         this.id = id;
         this.data = data;
-        this.total = total;
+        this.totalPedido = totalPedido;
+        this.totalPedidoAtualizado = totalPedidoAtualizado;
         this.sobra = sobra;
         this.produto = produto;
     }
@@ -37,12 +39,20 @@ public class Sobra {
         this.data = data;
     }
 
-    public Integer getTotal() {
-        return total;
+    public Integer getTotalPedido() {
+        return totalPedido;
     }
 
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setTotalPedido(Integer totalPedido) {
+        this.totalPedido = totalPedido;
+    }
+
+    public Integer getTotalPedidoAtualizado() {
+        return totalPedidoAtualizado;
+    }
+
+    public void setTotalPedidoAtualizado(Integer totalPedidoAtualizado) {
+        this.totalPedidoAtualizado = totalPedidoAtualizado;
     }
 
     public Integer getSobra() {

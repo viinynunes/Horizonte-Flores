@@ -2,6 +2,7 @@ package gui.relatorio;
 
 import db.DBException;
 import gui.util.Alerts;
+import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,6 @@ import model.services.FornecedorServico;
 import model.services.SobraServico;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -37,7 +37,9 @@ public class SobraCaixariaController implements Initializable {
     @FXML
     private TableColumn<Sobra, Produto> tbcProdutoNome;
     @FXML
-    private TableColumn<Integer, Sobra> tbcTotal;
+    private TableColumn<Integer, Sobra> tbcTotalPedido;
+    @FXML
+    private TableColumn<Integer, Sobra> tbcTotalPedidoAtualizado;
     @FXML
     private TableColumn<Integer, Sobra> tbcSobra;
     @FXML
@@ -78,13 +80,31 @@ public class SobraCaixariaController implements Initializable {
         tbcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tbcData.setCellValueFactory(new PropertyValueFactory<>("data"));
         tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
-        //tbcTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
+
+        tbcTotalPedidoAtualizado.setCellValueFactory(new PropertyValueFactory<>("totalPedidoAtualizado"));
         tbcSobra.setCellValueFactory(new PropertyValueFactory<>("sobra"));
 
         //tableView Final
         tbcProdutoNomeFinal.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
-        tbcTotalFinal.setCellValueFactory(new PropertyValueFactory<>("total"));
+        tbcTotalFinal.setCellValueFactory(new PropertyValueFactory<>("totalPedidoAtualizado"));
 
+        tbvSobraCadastro.setRowFactory(event -> {
+            TableRow<Sobra> row = new TableRow<>();
+
+            row.setOnMousePressed(event1 -> {
+
+                if (row.isSelected()) {
+
+                    if (row != null) {
+                        String name = row.getItem().getProduto().getNome();
+                        System.out.println(name);
+                        System.out.println(row.getItem().getTotalPedido());
+                    }
+                }
+
+            });
+            return row;
+        });
     }
 
     public void setFornecedorServico(FornecedorServico fornecedorServico) {
@@ -104,22 +124,37 @@ public class SobraCaixariaController implements Initializable {
         cbbFornecedor.setItems(obbList);
     }
 
-    private void initTextFieldTotal(){
-        tbcTotal.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue()));
-        tbcTotal.setCellFactory(cell -> new TableCell<>(){
-            private final TextField txtTotal = new TextField();
+    private void initTextFieldTotal() {
+        tbcTotalPedido.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue()));
+        tbcTotalPedido.setCellFactory(cell -> new TableCell<>() {
+
+            TextField txtTotal = new TextField();
 
             @Override
-            protected void updateItem(Sobra obj, boolean empty){
-                super.updateItem(obj, empty);
-                if (obj == null){
+            protected void updateItem(Sobra sobra, boolean empty) {
+                super.updateItem(sobra, empty);
+                if (sobra == null) {
                     setGraphic(null);
                     return;
                 } else {
-                    txtTotal.setText(obj.getTotal().toString());
+                    txtTotal.setText(sobra.getTotalPedido().toString());
                     setGraphic(txtTotal);
+
+                    txtTotal.setOnAction(event -> {
+                        System.out.println(txtTotal.getText());
+                        Integer totalPedido = sobra.getTotalPedido();
+                        Integer totalSobra = Utils.converterInteiro(txtTotal.getText()) - totalPedido;
+
+                        sobra.setTotalPedidoAtualizado(Utils.converterInteiro(txtTotal.getText()));
+                        sobra.setSobra(totalSobra);
+                        sobraServico.insertOrUpdate(sobra);
+                        tbvSobraCadastro.refresh();
+                        tbvSobraFinal.refresh();
+
+                    });
                 }
             }
         });
+
     }
 }

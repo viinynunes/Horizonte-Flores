@@ -1,5 +1,6 @@
 package model.dao;
 
+import com.mysql.jdbc.Connection;
 import db.DB;
 import model.dao.impl.*;
 
@@ -29,5 +30,7 @@ public class DaoFactory {
 
     public static RelatorioDao createRelatorioDao() { return new RelatorioDaoJDBC(DB.getConnection()); }
 
-    public static SobraDao createSobraDao() {return new SobraDaoJDBC(DB.getConnection()); }
+    public static SobraDao createSobraDao() {
+        return new SobraDaoJDBC((Connection) DB.getConnection());
+    }
 }

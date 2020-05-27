@@ -1,5 +1,6 @@
 package model.dao.impl;
 
+import com.mysql.jdbc.Connection;
 import db.DB;
 import db.DBException;
 import model.dao.SobraDao;
@@ -31,7 +32,7 @@ public class SobraDaoJDBC implements SobraDao {
 
             st.setDate(1, new Date(sobra.getData().getTime()));
             st.setInt(2, sobra.getProduto().getId());
-            st.setInt(3, sobra.getTotal());
+            st.setInt(3, sobra.getTotalPedido());
             st.setInt(4, sobra.getSobra());
 
             int row = st.executeUpdate();
@@ -57,11 +58,17 @@ public class SobraDaoJDBC implements SobraDao {
         PreparedStatement st = null;
 
         try {
-            st = conn.prepareStatement("Update sobra set total = ?, sobra = ?, where id = ?");
 
-            st.setInt(1, sobra.getId());
+            conn.setAutoCommit(false);
+            st = conn.prepareStatement("Update sobra set totalPedidoAtualizado = ?, sobra = ? where id = ?");
+
+            st.setInt(1, sobra.getTotalPedidoAtualizado());
+            st.setInt(2, sobra.getSobra());
+            st.setInt(3, sobra.getId());
 
             st.executeUpdate();
+
+            conn.commit();
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {
@@ -247,7 +254,7 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            st = conn.prepareStatement("select *, sum(total) as sumTotal from sobra inner join produto " +
+            st = conn.prepareStatement("select *, sum(totalPedido) as sumTotal, totalPedidoAtualizado from sobra inner join produto " +
                     "on sobra.produto_id = produto.id " +
                     "inner join categoria " +
                     "on produto.categoria_id = categoria.id " +
