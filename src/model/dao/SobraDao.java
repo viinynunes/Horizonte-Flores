@@ -12,5 +12,5 @@ public interface SobraDao {
     void deleteById(Integer id);
     List<Sobra> findAll();
     List<Sobra> findByData(Date data, Date data2);
-    List<Sobra> findByFornecedor(Fornecedor fornecedor);
+    List<Sobra> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate);
 }

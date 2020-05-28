@@ -17,6 +17,7 @@ import model.services.FornecedorServico;
 import model.services.SobraServico;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ public class SobraCaixariaController implements Initializable {
 
     private FornecedorServico fornecedorServico;
     private SobraServico sobraServico;
+    private java.sql.Date iniDate, endDate;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
@@ -48,30 +50,48 @@ public class SobraCaixariaController implements Initializable {
     private TableColumn<Sobra, Produto> tbcProdutoNomeFinal;
     @FXML
     private TableColumn<Integer, Sobra> tbcTotalFinal;
+    @FXML
+    private DatePicker datePicker1 = new DatePicker();
+    @FXML
+    private DatePicker datePicker2 = new DatePicker();
+    @FXML
+    private Button btnGerarRelatorio;
+
+    @FXML
+    public void onBtnGerarRelatorioAction() {
+        Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
+
+        if (fornecedor == null) {
+            Alerts.showAlert("Selecione um fornecedor", null, "Selecione um fornecedor", Alert.AlertType.INFORMATION);
+        } else {
+            try {
+                iniDate = java.sql.Date.valueOf(datePicker1.getValue());
+                endDate = java.sql.Date.valueOf(datePicker2.getValue());
+
+                List<Sobra> list = sobraServico.findByFornecedor(fornecedor, iniDate, endDate);
+                ObservableList<Sobra> obbList = FXCollections.observableArrayList(list);
+                if (list.isEmpty()) {
+                    Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+                    tbvSobraCadastro.setItems(obbList);
+                    tbvSobraCadastro.refresh();
+                } else {
+                    tbvSobraCadastro.setItems(obbList);
+                    tbvSobraCadastro.refresh();
+                    initTextFieldTotal();
+                }
+
+                tbvSobraFinal.setItems(obbList);
+                tbvSobraFinal.refresh();
+
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     public void onCbbFornecedorAction() {
-        Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
 
-        try {
-            List<Sobra> list = sobraServico.findByFornecedor(fornecedor);
-            ObservableList<Sobra> obbList = FXCollections.observableArrayList(list);
-            if (list.isEmpty()) {
-                Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
-                tbvSobraCadastro.setItems(obbList);
-                tbvSobraCadastro.refresh();
-            } else {
-                tbvSobraCadastro.setItems(obbList);
-                tbvSobraCadastro.refresh();
-                initTextFieldTotal();
-            }
-
-            tbvSobraFinal.setItems(obbList);
-            tbvSobraFinal.refresh();
-
-        } catch (DBException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -88,6 +108,10 @@ public class SobraCaixariaController implements Initializable {
         tbcProdutoNomeFinal.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcTotalFinal.setCellValueFactory(new PropertyValueFactory<>("totalPedidoAtualizado"));
 
+        datePicker1.setValue(LocalDate.now());
+        datePicker2.setValue(LocalDate.now());
+
+
         tbvSobraCadastro.setRowFactory(event -> {
             TableRow<Sobra> row = new TableRow<>();
 
@@ -101,7 +125,6 @@ public class SobraCaixariaController implements Initializable {
                         System.out.println(row.getItem().getTotalPedido());
                     }
                 }
-
             });
             return row;
         });
@@ -122,6 +145,7 @@ public class SobraCaixariaController implements Initializable {
 
         ObservableList<Fornecedor> obbList = FXCollections.observableArrayList(fornecedorServico.findAll());
         cbbFornecedor.setItems(obbList);
+        cbbFornecedor.getSelectionModel().select(0);
     }
 
     private void initTextFieldTotal() {
@@ -150,7 +174,7 @@ public class SobraCaixariaController implements Initializable {
                         sobraServico.insertOrUpdate(sobra);
                         tbvSobraCadastro.refresh();
                         tbvSobraFinal.refresh();
-                        
+
 
                     });
                 }

@@ -28,7 +28,7 @@ public class SobraServico {
         return dao.findAll();
     }
 
-    public List<Sobra> findByFornecedor(Fornecedor fornecedor) {
-        return dao.findByFornecedor(fornecedor);
+    public List<Sobra> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate) {
+        return dao.findByFornecedor(fornecedor, iniDate, endDate);
     }
 }

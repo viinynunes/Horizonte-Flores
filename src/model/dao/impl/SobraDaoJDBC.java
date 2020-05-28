@@ -242,7 +242,7 @@ public class SobraDaoJDBC implements SobraDao {
     }
 
     @Override
-    public List<Sobra> findByFornecedor(Fornecedor fornecedor) {
+    public List<Sobra> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate) {
         List<Sobra> list = new ArrayList<>();
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -264,11 +264,13 @@ public class SobraDaoJDBC implements SobraDao {
                     "on fornecedor.estabelecimento_id = estabelecimento.id " +
                     "inner join endereco " +
                     "on estabelecimento.endereco_id = endereco.id " +
-                    "where fornecedor.id = ? " +
+                    "where fornecedor.id = ? and data between ? and ? " +
                     "group by produto.nome " +
                     "order by produto.nome");
 
             st.setInt(1, fornecedor.getId());
+            st.setDate(2, iniDate);
+            st.setDate(3, endDate);
 
             rs = st.executeQuery();
 

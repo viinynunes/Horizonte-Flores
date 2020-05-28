@@ -8,17 +8,15 @@
   </component>
   <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/bin" />
+    <output-test url="file://$MODULE_DIR$/classes/test/Horizonte Flores e Plantas" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
-    <orderEntry type="library" name="JavaFX" level="project" />
-    <orderEntry type="library" name="MySQLConnector" level="project" />
-    <orderEntry type="library" name="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER" level="application" />
     <orderEntry type="library" exported="" name="javafx-swt" level="project" />
     <orderEntry type="library" exported="" name="mysql-connector-java-5.1.48" level="project" />
-    <orderEntry type="library" exported="" name="org.apache.poi:poi:3.16" level="application" />
+    <orderEntry type="library" exported="" name="org.apache.poi:poi:3.16" level="project" />
   </component>
 </module>
