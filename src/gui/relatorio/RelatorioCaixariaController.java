@@ -65,7 +65,7 @@ public class RelatorioCaixariaController implements Initializable {
         if (relatorioList == null){
             Alerts.showAlert("Relatório Vazio", null, "O relatório esta vazio", Alert.AlertType.INFORMATION);
         } else {
-            ExportExcel.createExcel(relatorioList, estabelecimento.getNome());
+            ExportExcel.createExcelRelatorio(relatorioList, estabelecimento.getNome());
         }
     }
 

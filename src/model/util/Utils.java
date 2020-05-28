@@ -43,8 +43,8 @@ public class Utils {
     public static Cliente createCliente(ResultSet rs, Endereco endereco) throws SQLException {
         Cliente cliente = new Cliente();
 
-        cliente.setId(rs.getInt("id"));
-        cliente.setNome(rs.getString("nome"));
+        cliente.setId(rs.getInt("cliente.id"));
+        cliente.setNome(rs.getString("cliente.nome"));
         cliente.setTelefone(rs.getString("telefone"));
         cliente.setTelefone2(rs.getString("telefone2"));
         cliente.setEmail(rs.getString("email"));

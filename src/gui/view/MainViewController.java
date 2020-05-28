@@ -6,6 +6,7 @@ import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
 import gui.relatorio.RelatorioCaixariaController;
 import gui.relatorio.RelatorioController;
+import gui.relatorio.RelatorioPedidoController;
 import gui.relatorio.SobraCaixariaController;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -207,7 +208,10 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
     @FXML
     public void onMiRelPedidosAction() {
-        System.out.println("Relat�rio Pedidos");
+        carregaView("/gui/relatorio/RelatorioPedido.fxml", (RelatorioPedidoController controller) -> {
+            controller.setPedidoServico(new PedidoServico());
+            controller.setItemServico(new ItemPedidoServico());
+        });
     }
 
     @FXML

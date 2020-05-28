@@ -6,6 +6,7 @@ import model.entities.ItemPedido;
 import model.entities.Pedido;
 import model.entities.Produto;
 
+import java.sql.Date;
 import java.util.List;
 
 public class ItemPedidoServico {
@@ -29,4 +30,8 @@ public class ItemPedidoServico {
     }
 
     public List<ItemPedido> findByProduto(Produto produto){return dao.findByProduto(produto); }
+
+    public List<ItemPedido> findByData(Date iniDate, Date endDate){
+        return dao.findByData(iniDate, endDate);
+    }
 }
