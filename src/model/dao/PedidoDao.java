@@ -10,5 +10,6 @@ public interface PedidoDao {
     void update(Pedido pedido);
     void deleteById(Pedido pedido);
     List<Pedido> findAll();
-    List<Pedido> findByDate(Date data);
+    List<Pedido> findByDate(Date date);
+    List<Pedido> findByDate(Date iniDate, Date endDate);
 }

@@ -58,7 +58,7 @@ public class Utils {
     public static Cliente createCliente(ResultSet rs) throws SQLException {
         Cliente cliente = new Cliente();
 
-        cliente.setId(rs.getInt("id"));
+        cliente.setId(rs.getInt("cliente.id"));
         cliente.setNome(rs.getString("cliente.nome"));
         cliente.setTelefone(rs.getString("telefone"));
         cliente.setTelefone2(rs.getString("telefone2"));
@@ -114,6 +114,17 @@ public class Utils {
         itemPedido.setId(rs.getInt("itens_do_pedido.id"));
         itemPedido.setPedido(pedido);
         itemPedido.setQuantidade(rs.getInt("itens_do_pedido.quantidade"));
+        itemPedido.setProduto(produto);
+
+        return itemPedido;
+    }
+
+    public static ItemPedido createItemPedidoSobra(ResultSet rs, Produto produto, Pedido pedido) throws SQLException {
+        ItemPedido itemPedido = new ItemPedido();
+
+        itemPedido.setId(rs.getInt("itens_do_pedido.id"));
+        itemPedido.setPedido(pedido);
+        itemPedido.setQuantidade(rs.getInt("sumQuantidade"));
         itemPedido.setProduto(produto);
 
         return itemPedido;

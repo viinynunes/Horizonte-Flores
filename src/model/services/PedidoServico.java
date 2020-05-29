@@ -27,7 +27,11 @@ public class PedidoServico {
         dao.deleteById(pedido);
     }
 
-    public List<Pedido> findByDate(Date data){
-        return dao.findByDate(data);
+    public List<Pedido> findByDate(Date iniDate, Date endDate) {
+        return dao.findByDate(iniDate,endDate);
+    }
+
+    public List<Pedido> findByDate(Date date) {
+        return dao.findByDate(date);
     }
 }

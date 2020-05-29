@@ -24,7 +24,7 @@ public class DaoFactory {
 
     public static EnderecoDao createEnderecoDao() {return new EnderecoDaoJDBC(DB.getConnection()); }
 
-    public static ItemPedidoDao createItemDao() {return  new ItemPedidoJDBC(DB.getConnection()); }
+    public static ItemPedidoDao createItemDao() {return  new ItemPedidoDaoJDBC(DB.getConnection()); }
 
     public static PedidoDao createPedidoDao() {return new PedidoDaoJDBC(DB.getConnection()); }
 

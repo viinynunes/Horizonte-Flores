@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemPedidoJDBC implements ItemPedidoDao {
+public class ItemPedidoDaoJDBC implements ItemPedidoDao {
 
     private final Connection conn;
 
-    public ItemPedidoJDBC(Connection conn) {
+    public ItemPedidoDaoJDBC(Connection conn) {
         this.conn = conn;
     }
 
@@ -194,12 +194,11 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
     }
 
     @Override
-    public List<ItemPedido> findByData(Date iniDate, Date endDate) {
+    public List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate) {
         PreparedStatement st = null;
         ResultSet rs = null;
         List<ItemPedido> list = new ArrayList<>();
         Endereco endereco;
-        Cliente cliente;
         Estabelecimento estabelecimento;
         Categoria categoria;
         Fornecedor fornecedor;
@@ -209,7 +208,8 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
 
         try {
 
-            st = conn.prepareStatement("SELECT * from itens_do_pedido inner join pedido " +
+            st = conn.prepareStatement("SELECT *, sum(itens_do_pedido.quantidade) as sumQuantidade " +
+                    "from itens_do_pedido inner join pedido " +
                     "on itens_do_pedido.PEDIDO_ID = pedido.id " +
                     "inner join produto " +
                     "on itens_do_pedido.PRODUTO_ID = produto.id " +
@@ -223,15 +223,17 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
                     "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join endereco " +
                     "on estabelecimento.ENDERECO_ID = endereco.id " +
-                    "where pedido.data between ? and ?");
+                    "where cliente.id = ? and pedido.data between ? and ? " +
+                    "group by produto.nome " +
+                    "order by cliente.nome");
 
-            st.setDate(1, iniDate);
-            st.setDate(2, endDate);
+            st.setInt(1, cliente.getId());
+            st.setDate(2, iniDate);
+            st.setDate(3, endDate);
 
             rs = st.executeQuery();
 
             Map<Integer, Endereco> enderecoMap = new HashMap<>();
-            Map<Integer, Cliente> clienteMap = new HashMap<>();
             Map<Integer, Pedido> pedidoMap = new HashMap<>();
             Map<Integer, Produto> produtoMap = new HashMap<>();
             Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
@@ -241,7 +243,6 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
             while (rs.next()) {
 
                 endereco = enderecoMap.get(rs.getInt("endereco.id"));
-                cliente = clienteMap.get(rs.getInt("cliente.id"));
                 categoria = categoriaMap.get(rs.getInt("categoria.id"));
                 estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento.id"));
                 fornecedor = fornecedorMap.get(rs.getInt("fornecedor.id"));
@@ -264,10 +265,6 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
                     fornecedor = Utils.createFornecedor(rs, estabelecimento);
                     fornecedorMap.put(rs.getInt("fornecedor.id"), fornecedor);
                 }
-                if (cliente == null) {
-                    cliente = Utils.createCliente(rs, endereco);
-                    clienteMap.put(rs.getInt("cliente.id"), cliente);
-                }
                 if (produto == null) {
                     produto = Utils.createProduto(rs, categoria, fornecedor);
                     produtoMap.put(rs.getInt("produto.id"), produto);
@@ -278,7 +275,8 @@ public class ItemPedidoJDBC implements ItemPedidoDao {
                     pedidoMap.put(rs.getInt("pedido.id"), pedido);
                 }
 
-                itemPedido = Utils.createItemPedido(rs, produto, pedido);
+                itemPedido = Utils.createItemPedidoSobra(rs, produto, pedido);
+
                 list.add(itemPedido);
             }
             return list;

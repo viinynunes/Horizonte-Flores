@@ -18,6 +18,7 @@ import model.services.PedidoServico;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -46,6 +47,7 @@ public class RelatorioPedidoController implements Initializable {
     private TableColumn<Pedido, Cliente> tbcClienteNome;
     private List<Pedido> pedidoList;
     private List<ItemPedido> itemPedidoList;
+    private List<ItemPedido> itemPedidoListFinal = new ArrayList<>();
 
     @FXML
     public void onBtnGerarRelatorioAction(){
@@ -57,12 +59,18 @@ public class RelatorioPedidoController implements Initializable {
         }
 
         try {
-            pedidoList = pedidoServico.findByDate(iniDate);
+            pedidoList = pedidoServico.findByDate(iniDate, endDate);
             ObservableList<Pedido> obbList = FXCollections.observableArrayList(pedidoList);
             tbvPedido.setItems(obbList);
             tbvPedido.refresh();
 
-            itemPedidoList = itemServico.findByData(iniDate, endDate);
+            for (Pedido p : pedidoList){
+                itemPedidoList = itemServico.findByData(p.getCliente(), iniDate, endDate);
+                for (ItemPedido i : itemPedidoList){
+                    itemPedidoListFinal.add(i);
+                }
+            }
+
 
             if (obbList.isEmpty()){
                 Alerts.showAlert("Nenhum pedido encontrado", null, "Nenhum pedido encontrado", Alert.AlertType.INFORMATION);
@@ -79,7 +87,7 @@ public class RelatorioPedidoController implements Initializable {
 
     @FXML
     private void onBtnExportarAction(){
-        ExportExcel.createExcelPedido(itemPedidoList, iniDate.toString());
+        ExportExcel.createExcelPedido(itemPedidoListFinal, iniDate.toString());
     }
 
     @Override

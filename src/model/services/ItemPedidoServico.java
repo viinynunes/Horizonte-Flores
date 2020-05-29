@@ -2,6 +2,7 @@ package model.services;
 
 import model.dao.DaoFactory;
 import model.dao.ItemPedidoDao;
+import model.entities.Cliente;
 import model.entities.ItemPedido;
 import model.entities.Pedido;
 import model.entities.Produto;
@@ -31,7 +32,7 @@ public class ItemPedidoServico {
 
     public List<ItemPedido> findByProduto(Produto produto){return dao.findByProduto(produto); }
 
-    public List<ItemPedido> findByData(Date iniDate, Date endDate){
-        return dao.findByData(iniDate, endDate);
+    public List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate){
+        return dao.findByData(cliente, iniDate, endDate);
     }
 }

@@ -183,6 +183,90 @@ public class PedidoDaoJDBC implements PedidoDao {
     }
 
     @Override
+    public List<Pedido> findByDate(Date iniDate, Date endDate) {
+        List<Pedido> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Endereco endereco;
+        Cliente cliente;
+        Pedido pedido;
+
+        try {
+
+            st = conn.prepareStatement("select * from pedido inner join cliente " +
+                    "on CLIENTE_ID = cliente.id " +
+                    "inner join endereco " +
+                    "on cliente.endereco_id = endereco.id " +
+                    "where data between ? and ?");
+
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
+
+            rs = st.executeQuery();
+
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+            Map<Integer, Cliente> clienteMap = new HashMap<>();
+            Map<Integer, Pedido> pedidoMap = new HashMap<>();
+
+            while (rs.next()) {
+                endereco = enderecoMap.get(rs.getInt("endereco.id"));
+                cliente = clienteMap.get(rs.getInt("cliente.id"));
+                pedido = pedidoMap.get(rs.getInt("pedido.id"));
+
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("endereco.id"), endereco);
+                }
+
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs, endereco);
+                    clienteMap.put(rs.getInt("cliente.id"), cliente);
+                }
+
+                if (pedido == null) {
+                    pedido = Utils.createPedido(rs, cliente);
+                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
+                    list.add(pedido);
+                }
+            }
+
+
+            st = conn.prepareStatement("select * from pedido inner join cliente " +
+                    "on pedido.CLIENTE_ID = cliente.id " +
+                    "where data between ? and ?");
+
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+
+                cliente = clienteMap.get(rs.getInt("cliente.id"));
+                pedido = pedidoMap.get(rs.getInt("pedido.id"));
+
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs);
+                    clienteMap.put(rs.getInt("cliente.id"), cliente);
+                }
+
+                if (pedido == null) {
+                    pedido = Utils.createPedido(rs, cliente);
+                    pedidoMap.put(rs.getInt("pedido.id"), pedido);
+                    list.add(pedido);
+                }
+            }
+
+            return list;
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
     public void insert(Pedido pedido) {
         PreparedStatement st = null;
         ResultSet rs = null;

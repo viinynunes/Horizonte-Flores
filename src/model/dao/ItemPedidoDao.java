@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.entities.Cliente;
 import model.entities.ItemPedido;
 import model.entities.Pedido;
 import model.entities.Produto;
@@ -14,5 +15,5 @@ public interface ItemPedidoDao {
     List<ItemPedido> findAll();
     List<ItemPedido> findAllPedido(Pedido pedido);
     List<ItemPedido> findByProduto(Produto produto);
-    List<ItemPedido> findByData(Date iniDate, Date endDate);
+    List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate);
 }
