@@ -69,7 +69,6 @@ public class RelatorioPedidoController implements Initializable {
                 }
             }
 
-
             if (obbList.isEmpty()){
                 Alerts.showAlert("Nenhum pedido encontrado", null, "Nenhum pedido encontrado", Alert.AlertType.INFORMATION);
                 btnExportar.setVisible(false);
