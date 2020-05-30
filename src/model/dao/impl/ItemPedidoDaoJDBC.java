@@ -7,10 +7,8 @@ import model.entities.*;
 import model.util.Utils;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 public class ItemPedidoDaoJDBC implements ItemPedidoDao {
 
@@ -194,10 +192,10 @@ public class ItemPedidoDaoJDBC implements ItemPedidoDao {
     }
 
     @Override
-    public List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate) {
+    public Set<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        List<ItemPedido> list = new ArrayList<>();
+        Set<ItemPedido> list = new LinkedHashSet<>();
         Endereco endereco;
         Estabelecimento estabelecimento;
         Categoria categoria;

@@ -15,13 +15,11 @@ import model.entities.ItemPedido;
 import model.entities.Pedido;
 import model.services.ItemPedidoServico;
 import model.services.PedidoServico;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class RelatorioPedidoController implements Initializable {
 
@@ -46,8 +44,8 @@ public class RelatorioPedidoController implements Initializable {
     @FXML
     private TableColumn<Pedido, Cliente> tbcClienteNome;
     private List<Pedido> pedidoList;
-    private List<ItemPedido> itemPedidoList;
-    private List<ItemPedido> itemPedidoListFinal = new ArrayList<>();
+    private Set<ItemPedido> itemPedidoList;
+    private Set<ItemPedido> itemPedidoListFinal = new LinkedHashSet<>();
 
     @FXML
     public void onBtnGerarRelatorioAction(){
@@ -82,6 +80,8 @@ public class RelatorioPedidoController implements Initializable {
         } catch (DBException e){
             Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
             btnExportar.setVisible(false);
+        } finally {
+            pedidoList.clear();
         }
     }
 

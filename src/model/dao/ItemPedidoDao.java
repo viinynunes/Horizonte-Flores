@@ -7,6 +7,7 @@ import model.entities.Produto;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 public interface ItemPedidoDao {
     void insert (ItemPedido item);
@@ -15,5 +16,5 @@ public interface ItemPedidoDao {
     List<ItemPedido> findAll();
     List<ItemPedido> findAllPedido(Pedido pedido);
     List<ItemPedido> findByProduto(Produto produto);
-    List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate);
+    Set<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate);
 }

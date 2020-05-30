@@ -1,8 +1,9 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 
-public class ItemPedido implements Serializable {
+public class ItemPedido implements Serializable, Comparable<ItemPedido>{
 
     private Integer id;
     private Integer quantidade;
@@ -50,5 +51,41 @@ public class ItemPedido implements Serializable {
 
     public void setProduto(Produto produto) {
         this.produto = produto;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((produto == null) ? 0 : produto.hashCode());
+        result = prime * result + ((quantidade == null) ? 0 : quantidade.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ItemPedido other = (ItemPedido) obj;
+        if (produto == null) {
+            if (other.produto != null)
+                return false;
+        } else if (!produto.equals(other.produto))
+            return false;
+        if (quantidade == null) {
+            if (other.quantidade != null)
+                return false;
+        } else if (!quantidade.equals(other.quantidade))
+            return false;
+        return true;
+    }
+
+    @Override
+    public int compareTo(ItemPedido o) {
+        return id.compareTo(o.id);
     }
 }

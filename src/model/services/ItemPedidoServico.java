@@ -9,6 +9,7 @@ import model.entities.Produto;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 public class ItemPedidoServico {
 
@@ -32,7 +33,7 @@ public class ItemPedidoServico {
 
     public List<ItemPedido> findByProduto(Produto produto){return dao.findByProduto(produto); }
 
-    public List<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate){
+    public Set<ItemPedido> findByData(Cliente cliente, Date iniDate, Date endDate){
         return dao.findByData(cliente, iniDate, endDate);
     }
 }

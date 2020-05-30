@@ -12,7 +12,7 @@ public class Utils {
 
     public static Endereco createEndereco(ResultSet rs) throws SQLException {
         Endereco endereco = new Endereco();
-        endereco.setId(rs.getInt("endereco_id"));
+        endereco.setId(rs.getInt("endereco.id"));
         endereco.setLogadouro(rs.getString("endereco.logadouro"));
         endereco.setNumero(rs.getString("endereco.numero"));
         endereco.setBairro(rs.getString("endereco.bairro"));
@@ -28,8 +28,8 @@ public class Utils {
 
         Estabelecimento estabelecimento = new Estabelecimento();
 
-        estabelecimento.setId(rs.getInt("id"));
-        estabelecimento.setNome(rs.getString("nome"));
+        estabelecimento.setId(rs.getInt("estabelecimento.id"));
+        estabelecimento.setNome(rs.getString("estabelecimento.nome"));
 
         if (endereco == null) {
             return estabelecimento;
