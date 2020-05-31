@@ -27,15 +27,32 @@ public class ExportExcel {
 
         int rowNumb = 0;
 
+        Map<String, String> fornecedorMap = new HashMap<>();
+
+
         for (Relatorio r : list) {
+
+            String fornecedor = r.getFornecedor();
+
             Row row = sheetRelatorio.createRow(rowNumb++);
+
             int cellNumb = 0;
+
+            fornecedor = fornecedorMap.get(r.getFornecedor());
+
+            if (fornecedor == null){
+                Cell cellProdutoFornecedor = row.createCell(cellNumb++);
+                cellProdutoFornecedor.setCellValue(r.getFornecedor());
+                row = sheetRelatorio.createRow(rowNumb++);
+                fornecedorMap.put(r.getFornecedor(), fornecedor);
+            }
+
+            cellNumb = 0;
             Cell cellProdutoNome = row.createCell(cellNumb++);
             cellProdutoNome.setCellValue(r.getNome());
             Cell cellProdutoQuantidade = row.createCell(cellNumb++);
             cellProdutoQuantidade.setCellValue(r.getQuantidade());
-            Cell cellProdutoFornecedor = row.createCell(cellNumb++);
-            cellProdutoFornecedor.setCellValue(r.getFornecedor());
+
         }
 
         try {
@@ -57,8 +74,6 @@ public class ExportExcel {
 
 
         Map<Integer, Cliente> clienteMap = new HashMap<>();
-        Map<Integer, Integer> produtoMap = new LinkedHashMap<>();
-        Produto produto;
         Cliente cliente;
 
         int rowNumb = 0;
@@ -78,7 +93,6 @@ public class ExportExcel {
                 row = sheetRelatorio.createRow(rowNumb++);
             }
 
-            produtoMap.put(i.getProduto().getId(), count);
             cellNumb = 0;
             Cell cellItemQuantidade = row.createCell(cellNumb);
             cellItemQuantidade.setCellValue(i.getQuantidade() + " " + i.getProduto().getCategoria().getAbreviacao() + " " + i.getProduto().getNome());

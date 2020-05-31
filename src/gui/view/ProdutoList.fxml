@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.ProdutoListController">
+<VBox fx:id="vBox" prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.ProdutoListController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
+      <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
          <top>
             <Label alignment="CENTER" contentDisplay="CENTER" text="Produto" BorderPane.alignment="CENTER">
                <font>
@@ -15,7 +15,7 @@
             </Label>
          </top>
          <right>
-            <AnchorPane prefHeight="61.0" prefWidth="784.0" BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="anchorPane" prefHeight="61.0" prefWidth="784.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets bottom="11.0" top="11.0" />
                </BorderPane.margin>
@@ -32,7 +32,7 @@
             </AnchorPane>
          </right>
          <left>
-            <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="62.0" prefWidth="702.0" spacing="30.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="hBox" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="62.0" prefWidth="702.0" spacing="30.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="5.0" />
                </BorderPane.margin>

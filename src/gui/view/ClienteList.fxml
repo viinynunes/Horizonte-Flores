@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 <VBox fx:id="vBox" prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.ClienteListController">
     <children>
-        <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
+        <BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="86.0" prefWidth="1530.0">
             <top>
                 <Label alignment="CENTER" contentDisplay="CENTER" text="Cliente" BorderPane.alignment="CENTER">
                     <font>

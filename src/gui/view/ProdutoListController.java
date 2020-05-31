@@ -20,8 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
@@ -45,6 +44,12 @@ public class ProdutoListController implements Initializable, DataChangeListener,
     private EventHandler<KeyEvent> keyEventEventHandler;
     private Node node;
 
+    @FXML
+    private VBox vBox;
+    @FXML
+    private BorderPane borderPane;
+    @FXML
+    private HBox hBox;
     @FXML
     private Button btnNovo;
 
@@ -122,8 +127,7 @@ public class ProdutoListController implements Initializable, DataChangeListener,
 
         node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
-
+        borderPane.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
         tbvListaProduto.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
     }
 
@@ -260,8 +264,8 @@ public class ProdutoListController implements Initializable, DataChangeListener,
 
     @Override
     public void removeEventHandler() {
-        if (node != null || tbvListaProduto != null){
-            node.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+        if (borderPane != null || tbvListaProduto != null){
+            borderPane.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
             tbvListaProduto.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
         }
     }

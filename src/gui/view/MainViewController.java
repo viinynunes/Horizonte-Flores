@@ -314,6 +314,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
         eventHandler.removeEventHandler();
 
+
+
         try {
             FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
             VBox novoVBox = load.load();

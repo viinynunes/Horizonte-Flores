@@ -20,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -35,16 +36,18 @@ import java.util.ResourceBundle;
 
 public class ClienteListController implements Initializable, DataChangeListener, KeyEventHandler {
 
-    Stage parentStage;
+    private Stage parentStage;
 
     private ClienteServico servico;
     private Cliente cliente;
     private EventHandler<KeyEvent> keyEventEventHandler;
     private Node node;
-    FilteredList<Cliente> filteredClienteList;
+    private FilteredList<Cliente> filteredClienteList;
 
     @FXML
     private VBox vBox;
+    @FXML
+    private BorderPane borderPane;
     @FXML
     private Button btnNovo;
     @FXML
@@ -121,7 +124,7 @@ public class ClienteListController implements Initializable, DataChangeListener,
 
         node = Main.getScene().getRoot();
 
-        node.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
+        borderPane.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
 
         tbvListar.addEventFilter(KeyEvent.KEY_PRESSED, addEventHandler());
     }
@@ -249,8 +252,8 @@ public class ClienteListController implements Initializable, DataChangeListener,
 
     @Override
     public void removeEventHandler() {
-        if (node != null || tbvListar != null){
-            node.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+        if (borderPane != null || tbvListar != null){
+            borderPane.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
             tbvListar.removeEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
         }
     }

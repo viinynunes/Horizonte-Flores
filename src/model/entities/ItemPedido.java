@@ -3,7 +3,7 @@ package model.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ItemPedido implements Serializable, Comparable<ItemPedido>{
+public class ItemPedido implements Serializable{
 
     private Integer id;
     private Integer quantidade;
@@ -87,10 +87,5 @@ public class ItemPedido implements Serializable, Comparable<ItemPedido>{
         } else if (!quantidade.equals(other.quantidade))
             return false;
         return true;
-    }
-
-    @Override
-    public int compareTo(ItemPedido o) {
-        return id.compareTo(o.id);
     }
 }

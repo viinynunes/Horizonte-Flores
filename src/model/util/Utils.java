@@ -132,6 +132,7 @@ public class Utils {
 
     public static Relatorio createRelatorioProduto(ResultSet rs) throws SQLException{
         Relatorio rp = new Relatorio();
+        rp.setId(rs.getInt("id"));
         rp.setNome(rs.getString("nome"));
         rp.setQuantidade(rs.getInt("total"));
         rp.setFornecedor(rs.getString("fornecedor"));
