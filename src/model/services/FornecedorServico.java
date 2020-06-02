@@ -4,6 +4,7 @@ import model.dao.DaoFactory;
 import model.dao.FornecedorDao;
 import model.entities.Fornecedor;
 
+import java.sql.Date;
 import java.util.List;
 
 public class FornecedorServico {
@@ -12,6 +13,10 @@ public class FornecedorServico {
 
     public List<Fornecedor> findAll(){
         return dao.findAll();
+    }
+
+    public List<Fornecedor> findByData(Date iniDate, Date endDate) {
+        return dao.findByData(iniDate, endDate);
     }
 
     public void saveOrUpdate(Fornecedor fornecedor){

@@ -238,7 +238,6 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         carregaView("/gui/relatorio/Relatorio.fxml", (RelatorioController controller) -> {
             controller.setFornecedorServico(new FornecedorServico());
             controller.setRelatorioServico(new RelatorioServico());
-            controller.updateFormData();
         });
     }
 

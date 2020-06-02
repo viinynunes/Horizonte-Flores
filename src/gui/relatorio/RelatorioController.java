@@ -1,5 +1,6 @@
 package gui.relatorio;
 
+import db.DBException;
 import gui.util.Alerts;
 import gui.util.ExportExcel;
 import javafx.collections.FXCollections;
@@ -23,6 +24,7 @@ public class RelatorioController implements Initializable {
     private FornecedorServico fornecedorServico;
     private RelatorioServico relatorioServico;
     private List<Relatorio> relatorioList;
+    private ObservableList<Relatorio> obbRelatorio;
     private Fornecedor fornecedor;
     private Date iniDate, endDate;
 
@@ -32,6 +34,8 @@ public class RelatorioController implements Initializable {
     private DatePicker datePicker1 = new DatePicker();
     @FXML
     private DatePicker datePicker2 = new DatePicker();
+    @FXML
+    private Button btnGerarFornecedor;
     @FXML
     private Button btnGerarRelatorio;
     @FXML
@@ -43,6 +47,41 @@ public class RelatorioController implements Initializable {
     @FXML
     private TableColumn<Integer, Relatorio> tbcQuantidade;
 
+    public void onBtnGerarFornecedorAction() {
+        iniDate = Date.valueOf(datePicker1.getValue());
+        endDate = Date.valueOf(datePicker2.getValue());
+
+        if (fornecedorServico == null) {
+            throw new IllegalStateException("fornecedor servico null");
+        }
+
+        try {
+            ObservableList<Fornecedor> obbFornecedor = FXCollections.observableArrayList(fornecedorServico.findByData(iniDate, endDate));
+
+            if (obbFornecedor.isEmpty()) {
+                cbbFornecedor.setVisible(false);
+                btnGerarRelatorio.setVisible(false);
+                btnExportar.setVisible(false);
+                Alerts.showAlert("Nenhum fornecedor encontrado", null, "Nenhum fornecedor encontrado", Alert.AlertType.INFORMATION);
+            } else {
+                cbbFornecedor.setItems(obbFornecedor);
+                cbbFornecedor.getSelectionModel().select(0);
+                if (obbRelatorio != null){
+                    obbRelatorio.clear();
+                }
+                cbbFornecedor.setVisible(true);
+                btnGerarRelatorio.setVisible(true);
+                tbvListaRelatorio.setItems(obbRelatorio);
+            }
+
+
+
+
+        } catch (DBException e) {
+            Alerts.showAlert("Erro ao buscar fornecedores", null, e.getMessage(), Alert.AlertType.INFORMATION);
+        }
+    }
+
     public void onBtnGerarRelatorioAction() {
         fornecedor = getFormData();
 
@@ -50,11 +89,16 @@ public class RelatorioController implements Initializable {
         endDate = Date.valueOf(datePicker2.getValue());
 
         relatorioList = relatorioServico.findByFornecedor(fornecedor, iniDate, endDate);
-        ObservableList<Relatorio> obbRelatorio = FXCollections.observableArrayList(relatorioList);
+        obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();
         if (obbRelatorio.isEmpty()) {
+            btnExportar.setVisible(false);
             Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+        } else {
+            btnExportar.setVisible(true);
+            cbbFornecedor.setVisible(true);
+            btnGerarRelatorio.setVisible(true);
         }
     }
 
@@ -76,20 +120,6 @@ public class RelatorioController implements Initializable {
         this.relatorioServico = relatorioServico;
     }
 
-    public void updateFormData() {
-        if (fornecedorServico == null) {
-            throw new IllegalStateException("fornecedor servico null");
-        }
-
-        if (relatorioServico == null) {
-            throw new IllegalStateException("relatorio servico null");
-        }
-
-        ObservableList<Fornecedor> obbFornecedor = FXCollections.observableArrayList(fornecedorServico.findAll());
-        cbbFornecedor.setItems(obbFornecedor);
-        cbbFornecedor.getSelectionModel().select(0);
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -98,6 +128,10 @@ public class RelatorioController implements Initializable {
 
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
+
+        btnExportar.setVisible(false);
+        cbbFornecedor.setVisible(false);
+        btnGerarRelatorio.setVisible(false);
 
     }
 

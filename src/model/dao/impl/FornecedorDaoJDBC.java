@@ -8,10 +8,7 @@ import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.util.Utils;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -108,10 +105,9 @@ public class FornecedorDaoJDBC implements FornecedorDao {
                     estabelecimentoMap.put(rs.getInt("fornecedor.estabelecimento_id"), estabelecimento);
                 }
 
-                Fornecedor fornecedor = createFornecedor(rs, estabelecimento);
+                Fornecedor fornecedor = Utils.createFornecedor(rs, estabelecimento);
                 list.add(fornecedor);
             }
-
 
             return list;
 
@@ -123,15 +119,58 @@ public class FornecedorDaoJDBC implements FornecedorDao {
         }
     }
 
-    private Fornecedor createFornecedor(ResultSet rs, Estabelecimento estabelecimento) throws SQLException{
+    @Override
+    public List<Fornecedor> findByData(Date iniDate, Date endDate) {
+        List<Fornecedor> list = new ArrayList<>();
+        ResultSet rs = null;
 
-        Fornecedor fornecedor = new Fornecedor();
+        try {
+            st = conn.prepareStatement("select * from fornecedor inner join estabelecimento " +
+                    "on fornecedor.estabelecimento_id = estabelecimento.id " +
+                    "inner join endereco " +
+                    "on estabelecimento.endereco_id = endereco.id " +
+                    "inner join produto " +
+                    "on produto.FORNECEDOR_ID = fornecedor.id " +
+                    "inner join itens_do_pedido " +
+                    "on itens_do_pedido.PRODUTO_ID = produto.id " +
+                    "inner join pedido " +
+                    "on itens_do_pedido.PEDIDO_ID = pedido.id " +
+                    "where pedido.data between ? and ? " +
+                    "group by fornecedor.nome " +
+                    "order by fornecedor.id");
 
-        fornecedor.setId(rs.getInt("id"));
-        fornecedor.setNome(rs.getString("nome"));
-        fornecedor.setEstabelecimento(estabelecimento);
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
 
-        return fornecedor;
+            rs = st.executeQuery();
 
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
+
+            while (rs.next()){
+                Endereco endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
+                if (endereco == null){
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
+                }
+
+                Estabelecimento estabelecimento = estabelecimentoMap.get(rs.getInt("fornecedor.estabelecimento_id"));
+                if (estabelecimento == null){
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    estabelecimentoMap.put(rs.getInt("fornecedor.estabelecimento_id"), estabelecimento);
+                }
+
+                Fornecedor fornecedor = Utils.createFornecedor(rs, estabelecimento);
+                list.add(fornecedor);
+            }
+
+            return list;
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
     }
 }

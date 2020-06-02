@@ -2,6 +2,7 @@ package model.dao;
 
 import model.entities.Fornecedor;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface FornecedorDao {
@@ -9,4 +10,5 @@ public interface FornecedorDao {
     void update (Fornecedor fornecedor);
     void deleteById (Integer id);
     List<Fornecedor> findAll();
+    List<Fornecedor> findByData(Date iniDate, Date endDate);
 }

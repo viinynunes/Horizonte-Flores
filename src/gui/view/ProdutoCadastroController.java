@@ -193,10 +193,6 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
 
     public void updateFormData() {
 
-        if (produto == null) {
-            throw new IllegalStateException("Produto estava vazio");
-        }
-
         if (produto.getId() == null) {
             lblId.setText("");
         } else {
