@@ -147,8 +147,8 @@ public class Utils {
         sobra.setData(rs.getDate("data"));
         sobra.setProduto(produto);
         sobra.setTotalPedido(rs.getInt("sumTotal"));
-        sobra.setTotalPedidoAtualizado(rs.getInt("totalPedidoAtualizado"));
-        sobra.setSobra(rs.getInt("sobra"));
+        sobra.setTotalPedidoAtualizado(rs.getInt("sumTAtualizado"));
+        sobra.setSobra(rs.getInt("sumSobra"));
 
         return sobra;
     }

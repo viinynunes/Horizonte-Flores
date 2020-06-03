@@ -24,8 +24,8 @@
       <HBox prefHeight="61.0" prefWidth="1620.0" spacing="30.0">
          <children>
             <ComboBox fx:id="cbbFornecedor" prefWidth="150.0" />
-            <DatePicker fx:id="datePicker1" />
-            <DatePicker fx:id="datePicker2" />
+            <DatePicker fx:id="datePicker1" editable="false" />
+            <DatePicker fx:id="datePicker2" editable="false" />
             <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="26.0" prefWidth="132.0" text="Gerar Relatório" />
          </children>
          <VBox.margin>

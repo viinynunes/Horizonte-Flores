@@ -203,7 +203,8 @@ public class ClienteDaoJDBC implements ClienteDao {
                     "inner join pedido on pedido.cliente_id = cliente.id " +
                     "inner join itens_do_pedido on itens_do_pedido.pedido_id = pedido.id " +
                     "where pedido.data = ? " +
-                    "group by cliente.nome");
+                    "group by cliente.nome " +
+                    "order by pedido.id desc");
 
             st.setDate(1, iniDate);
             rs = st.executeQuery();
@@ -231,7 +232,8 @@ public class ClienteDaoJDBC implements ClienteDao {
                     "inner join pedido on pedido.cliente_id = cliente.id " +
                     "inner join itens_do_pedido on itens_do_pedido.pedido_id = pedido.id " +
                     "where pedido.data = ? " +
-                    "group by cliente.nome");
+                    "group by cliente.nome " +
+                    "order by pedido.id desc");
 
             st.setDate(1, iniDate);
             rs = st.executeQuery();

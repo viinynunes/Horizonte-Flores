@@ -109,7 +109,9 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            st = conn.prepareStatement("select * from sobra where data between ? and ?");
+            st = conn.prepareStatement("select *, sum(totalPedido) as sumTotal, sum(totalPedidoAtualizado) as sum from sobra " +
+                    "where data between ? and ? " +
+                    "group by produto_id");
 
             st.setDate(1, data);
             st.setDate(2, data2);
@@ -254,7 +256,8 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            st = conn.prepareStatement("select *, sum(totalPedido) as sumTotal, totalPedidoAtualizado from sobra inner join produto " +
+            st = conn.prepareStatement("select *, sum(totalPedido) as sumTotal, sum(totalPedidoAtualizado) as sumTAtualizado, " +
+                    "sum(sobra) as sumSobra from sobra inner join produto " +
                     "on sobra.produto_id = produto.id " +
                     "inner join categoria " +
                     "on produto.categoria_id = categoria.id " +

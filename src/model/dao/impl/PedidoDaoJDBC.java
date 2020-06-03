@@ -116,7 +116,8 @@ public class PedidoDaoJDBC implements PedidoDao {
                     "on CLIENTE_ID = cliente.id " +
                     "inner join endereco " +
                     "on cliente.endereco_id = endereco.id " +
-                    "where data = ?");
+                    "where data = ? " +
+                    "order by pedido.id");
 
             st.setDate(1, date);
             rs = st.executeQuery();
@@ -150,7 +151,8 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st = conn.prepareStatement("select * from pedido inner join cliente " +
                     "on pedido.CLIENTE_ID = cliente.id " +
-                    "where data = ?");
+                    "where data = ? " +
+                    "order by pedido.id");
 
             st.setDate(1, date);
 
