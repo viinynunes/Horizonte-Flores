@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.entities.Cliente;
 import model.entities.Fornecedor;
 
 import java.sql.Date;
@@ -11,4 +12,5 @@ public interface FornecedorDao {
     void deleteById (Integer id);
     List<Fornecedor> findAll();
     List<Fornecedor> findByData(Date iniDate, Date endDate);
+    List<Fornecedor> findByClienteAndData(Cliente cliente, Date date);
 }

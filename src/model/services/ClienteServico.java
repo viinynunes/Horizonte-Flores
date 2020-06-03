@@ -4,6 +4,7 @@ import model.dao.ClienteDao;
 import model.dao.DaoFactory;
 import model.entities.Cliente;
 
+import java.sql.Date;
 import java.util.List;
 
 public class ClienteServico {
@@ -15,6 +16,10 @@ public class ClienteServico {
         List<Cliente> list = dao.findAll();
 
         return list;
+    }
+
+    public List<Cliente> findByData(Date date){
+        return dao.findByData(date);
     }
 
     public void saveOrUpdate(Cliente cliente){

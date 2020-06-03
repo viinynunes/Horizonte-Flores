@@ -2,6 +2,7 @@ package model.services;
 
 import model.dao.DaoFactory;
 import model.dao.FornecedorDao;
+import model.entities.Cliente;
 import model.entities.Fornecedor;
 
 import java.sql.Date;
@@ -17,6 +18,10 @@ public class FornecedorServico {
 
     public List<Fornecedor> findByData(Date iniDate, Date endDate) {
         return dao.findByData(iniDate, endDate);
+    }
+
+    public List<Fornecedor> findByClienteAndData(Cliente cliente, Date date){
+        return dao.findByClienteAndData(cliente, date);
     }
 
     public void saveOrUpdate(Fornecedor fornecedor){

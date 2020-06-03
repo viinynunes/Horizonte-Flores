@@ -191,6 +191,70 @@ public class ClienteDaoJDBC implements ClienteDao {
     }
 
     @Override
+    public List<Cliente> findByData(Date iniDate) {
+        List<Cliente> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Cliente cliente;
+        Endereco endereco;
+
+        try {
+            st = conn.prepareStatement("select * from cliente inner join endereco on cliente.endereco_id = endereco.id " +
+                    "inner join pedido on pedido.cliente_id = cliente.id " +
+                    "inner join itens_do_pedido on itens_do_pedido.pedido_id = pedido.id " +
+                    "where pedido.data = ? " +
+                    "group by cliente.nome");
+
+            st.setDate(1, iniDate);
+            rs = st.executeQuery();
+
+            Map<Integer, Cliente> clienteMap = new HashMap<>();
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+
+            while (rs.next()) {
+
+                cliente = clienteMap.get(rs.getInt("id"));
+                endereco = enderecoMap.get(rs.getInt("endereco_id"));
+
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("endereco_id"), endereco);
+                }
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs, endereco);
+                    clienteMap.put(rs.getInt("id"), cliente);
+                }
+                list.add(cliente);
+            }
+
+            st = conn.prepareStatement("select * from cliente  " +
+                    "inner join pedido on pedido.cliente_id = cliente.id " +
+                    "inner join itens_do_pedido on itens_do_pedido.pedido_id = pedido.id " +
+                    "where pedido.data = ? " +
+                    "group by cliente.nome");
+
+            st.setDate(1, iniDate);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                cliente = clienteMap.get(rs.getInt("id"));
+
+                if (cliente == null) {
+                    cliente = Utils.createCliente(rs);
+                    list.add(cliente);
+                }
+            }
+
+            return list;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
     public List<Cliente> findAll() {
 
         List<Cliente> list = new ArrayList<>();

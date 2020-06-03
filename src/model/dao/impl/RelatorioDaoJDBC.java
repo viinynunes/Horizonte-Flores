@@ -3,6 +3,7 @@ package model.dao.impl;
 import db.DB;
 import db.DBException;
 import model.dao.RelatorioDao;
+import model.entities.Cliente;
 import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Relatorio;
@@ -20,6 +21,36 @@ public class RelatorioDaoJDBC implements RelatorioDao {
         this.conn = conn;
     }
 
+
+    @Override
+    public List<Relatorio> findByFornecedorAndCliente(Fornecedor fornecedor, Cliente cliente, Date date) {
+        List<Relatorio> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+
+            st = conn.prepareStatement("call spRelFindByFornecedorAndCliente(?, ?, ?)");
+            st.setInt(1, fornecedor.getId());
+            st.setInt(2, cliente.getId());
+            st.setDate(3, date);
+
+            rs = st.executeQuery();
+
+            while (rs.next()){
+                Relatorio rp = Utils.createRelatorioProduto(rs);
+                list.add(rp);
+            }
+
+            return list;
+
+        }catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
 
     @Override
     public List<Relatorio> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate) {

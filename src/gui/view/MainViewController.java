@@ -4,10 +4,7 @@ import application.Main;
 import db.DBException;
 import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
-import gui.relatorio.RelatorioCaixariaController;
-import gui.relatorio.RelatorioController;
-import gui.relatorio.RelatorioPedidoController;
-import gui.relatorio.SobraCaixariaController;
+import gui.relatorio.*;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -74,6 +71,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     private MenuItem miRelCeaflor;
     @FXML
     private MenuItem miRelGeral;
+    @FXML
+    private MenuItem miRelGeralPorCliente;
     @FXML
     private MenuItem miSobrasCaixaria;
     @FXML
@@ -240,6 +239,16 @@ public class MainViewController implements Initializable, PedidoChangeListener {
             controller.setRelatorioServico(new RelatorioServico());
         });
     }
+
+    @FXML
+    public void onMiRelGeralPorClienteAction(){
+        carregaView("/gui/relatorio/RelatorioGeralPorCliente.fxml", (RelatorioGeralPorClienteController controller) -> {
+            controller.setClienteServico(new ClienteServico());
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setRelatorioServico(new RelatorioServico());
+        });
+    }
+
 
     @FXML
     public void onMiSobrasCaixariaAction(){
