@@ -268,17 +268,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             hyperlinkSelecionarCliente.setText(pedido.getCliente().toString());
         }
 
-
         obbList = FXCollections.observableArrayList(itemPedidoList);
         tbvItemsPedidoPorduto.setItems(obbList);
         tbvItemsPedidoPorduto.refresh();
         quantidadeItens = obbList.size();
 
         lblQuantidadeItens.setText(String.valueOf(quantidadeItens));
-
-
-
-
     }
 
     public synchronized void carregaDialog(Stage parentStage, String caminho) {

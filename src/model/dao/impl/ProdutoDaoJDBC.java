@@ -217,7 +217,8 @@ public class ProdutoDaoJDBC implements ProdutoDao {
                     "inner join estabelecimento " +
                     "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join endereco " +
-                    "on estabelecimento.ENDERECO_ID = endereco.id");
+                    "on estabelecimento.ENDERECO_ID = endereco.id " +
+                    "order by produto.nome asc");
 
             rs = st.executeQuery();
             Map<Integer, Categoria> categoriaMap = new HashMap<>();
