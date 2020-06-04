@@ -216,6 +216,11 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                 tbvItemsPedidoPorduto.setFocusTraversable(false);
                 tbvLocalizaProduto.requestFocus();
             }
+            if (event.getCode() == KeyCode.BACK_SPACE){
+                if (txtLocalizaProduto.getText().isEmpty()){
+                    txtQuantidade.requestFocus();
+                }
+            }
         });
     }
 
