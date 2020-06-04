@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="878.0" prefWidth="1620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioGeralEstabelecimentoController">
+   <children>
+      <Label text="Selecione a data do relatorio e o estabelecimento">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="15.0" top="15.0" />
+         </VBox.margin>
+      </Label>
+      <HBox prefHeight="47.0" prefWidth="1590.0" spacing="30.0">
+         <children>
+            <DatePicker fx:id="dpInicial" editable="false" />
+            <DatePicker fx:id="dpFinal" editable="false" />
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="61.0" prefWidth="1620.0" spacing="30.0">
+         <children>
+            <ComboBox fx:id="cbbEstabelecimento" prefHeight="26.0" prefWidth="178.0" />
+            <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="26.0" prefWidth="177.0" text="Gerar Relatório" />
+            <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#onBtnExportarAction" prefHeight="26.0" prefWidth="186.0" text="Exportar" />
+         </children>
+         <VBox.margin>
+            <Insets left="15.0" right="15.0" top="10.0" />
+         </VBox.margin>
+         <padding>
+            <Insets top="15.0" />
+         </padding>
+      </HBox>
+      <HBox prefHeight="710.0" prefWidth="1176.0" spacing="50.0">
+         <children>
+            <TableView fx:id="tbvRelatorio" editable="true" prefHeight="699.0" prefWidth="981.0">
+              <columns>
+                  <TableColumn fx:id="tbcNomeFornecedor" prefWidth="232.00000017881393" text="Fornecedor" />
+                  <TableColumn fx:id="tbcNomeProduto" prefWidth="218.4000244140625" text="Produto" />
+                  <TableColumn fx:id="tbcTotalPedido" prefWidth="176.79998779296875" text="Total Pedido" />
+                  <TableColumn fx:id="tbcTotalPedidoAtualizado" prefWidth="204.0" text="Total Atualizado" />
+                  <TableColumn fx:id="tbcTotalSobra" prefWidth="144.79998779296875" text="Sobra" />
+              </columns>
+            </TableView>
+         </children>
+         <VBox.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

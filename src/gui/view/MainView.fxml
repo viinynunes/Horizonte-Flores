@@ -41,21 +41,21 @@
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#onMenuCadastroAction" text="Cadastros" />
                      </items></Menu>
-                <Menu mnemonicParsing="false" text="Relatório">
-                  <items>
-                        <MenuItem fx:id="miRelPedido" mnemonicParsing="false" onAction="#onMiRelPedidosAction" text="Pedidos" />
-                    <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Caixaria" />
-                        <MenuItem fx:id="miRelVeiling" mnemonicParsing="false" onAction="#onMiRelVeilingAction" text="Veiling" />
-                        <MenuItem fx:id="miRelCeaflor" mnemonicParsing="false" onAction="#onMiRelCeaflorAction" text="Ceaflor" />
-                        <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
-                        <MenuItem fx:id="miRelGeralPorCliente" mnemonicParsing="false" onAction="#onMiRelGeralPorClienteAction" text="Geral por Cliente" />
-                  </items>
-                </Menu>
                   <Menu mnemonicParsing="false" text="Sobra">
                     <items>
                         <MenuItem fx:id="miSobrasCaixaria" mnemonicParsing="false" onAction="#onMiSobrasCaixariaAction" text="Sobra Caixaria" />
                     </items>
                   </Menu>
+                <Menu mnemonicParsing="false" text="Relatório">
+                  <items>
+                        <MenuItem fx:id="miRelPedido" mnemonicParsing="false" onAction="#onMiRelPedidosAction" text="Pedidos" />
+                    <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Caixaria" />
+                        <MenuItem fx:id="miRelEstabelecimento" mnemonicParsing="false" onAction="#onMiRelEstabelecimentoAction" text="Estabelecimento" />
+                        <MenuItem fx:id="miRelCeaflor" mnemonicParsing="false" onAction="#onMiRelCeaflorAction" text="Ceaflor" />
+                        <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
+                        <MenuItem fx:id="miRelGeralPorCliente" mnemonicParsing="false" onAction="#onMiRelGeralPorClienteAction" text="Geral por Cliente" />
+                  </items>
+                </Menu>
                   <Menu mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações">
                      <items>
                         <MenuItem fx:id="miTransacoes" mnemonicParsing="false" text="Transações Produto" />

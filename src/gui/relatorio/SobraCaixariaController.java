@@ -60,20 +60,20 @@ public class SobraCaixariaController implements Initializable {
     private Button btnGerarRelatorio;
 
     @FXML
-    public void onBtnGerarFornecedoresAction(){
+    public void onBtnGerarFornecedoresAction() {
         iniDate = java.sql.Date.valueOf(datePicker1.getValue());
         endDate = java.sql.Date.valueOf(datePicker2.getValue());
 
         try {
             ObservableList<Fornecedor> obbList = FXCollections.observableArrayList(fornecedorServico.findByData(iniDate, endDate));
 
-            if (obbList.isEmpty()){
+            if (obbList.isEmpty()) {
                 Alerts.showAlert("Nenhum fornecedor encontrado", null, "Nenhum fornecedor encontrado", Alert.AlertType.INFORMATION);
             } else {
                 cbbFornecedor.setItems(obbList);
                 cbbFornecedor.getSelectionModel().select(0);
             }
-        } catch (DBException e){
+        } catch (DBException e) {
             Alerts.showAlert("Erro ao encontrar os fornecedores", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
@@ -141,7 +141,9 @@ public class SobraCaixariaController implements Initializable {
     }
 
     private void initTextFieldTotal() {
+
         tbcTotalPedido.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue()));
+
         tbcTotalPedido.setCellFactory(cell -> new TableCell<>() {
 
             TextField txtTotal = new TextField();
@@ -158,7 +160,7 @@ public class SobraCaixariaController implements Initializable {
 
                     txtTotal.setOnAction(event -> {
 
-                        if (!iniDate.toString().contentEquals(endDate.toString())){
+                        if (!iniDate.toString().contentEquals(endDate.toString())) {
                             Alerts.showAlert("Erro ao cadastrar sobra", null, "Não é possivel cadastrar sobras para datas diferentes", Alert.AlertType.ERROR);
                             return;
                         }
@@ -177,6 +179,33 @@ public class SobraCaixariaController implements Initializable {
                 }
             }
         });
+
+        /*tbcSobra.setCellFactory(cell -> new TableCell<>() {
+
+            @Override
+            protected void updateItem(Sobra sobra, boolean empty) {
+                super.updateItem(sobra, empty);
+                if (sobra == null) {
+                    setGraphic(null);
+                    return;
+                } else {
+
+                    if (!iniDate.toString().contentEquals(endDate.toString())) {
+                        int result = sobra.getTotalPedidoAtualizado() - sobra.getTotalPedido();
+
+                        //label.setText((String.valueOf(result)));
+                        label.setText(sobra.getSobra().toString());
+                        setGraphic(label);
+                    } else {
+                        label.setText(sobra.getSobra().toString());
+                        setGraphic(label);
+                    }
+                }
+            }
+        });
+
+
+         */
 
     }
 }

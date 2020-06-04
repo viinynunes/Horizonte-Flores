@@ -1,5 +1,6 @@
 package model.dao;
 
+import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Sobra;
 
@@ -13,4 +14,5 @@ public interface SobraDao {
     List<Sobra> findAll();
     List<Sobra> findByData(Date data, Date data2);
     List<Sobra> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate);
+    List<Sobra> findByEstabelecimento(Estabelecimento estabelecimento, Date iniDate, Date endDate);
 }

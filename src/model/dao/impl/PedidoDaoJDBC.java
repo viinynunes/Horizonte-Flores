@@ -10,6 +10,7 @@ import model.entities.Pedido;
 import model.util.Utils;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -312,14 +313,14 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
-                        "values (?, ?, 0, ?, ?, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido) " +
+                        "values (?, ?, 0, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
                 st.setInt(3, pedido.getId());
                 st.setInt(4, item.getQuantidade());
-                st.setInt(5 , item.getQuantidade());
+
 
                 st.executeUpdate();
             }
@@ -366,15 +367,13 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
-                        "values (?, ?, 0, ?, ?, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido) " +
+                        "values (?, ?, 0, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
                 st.setInt(3, pedido.getId());
                 st.setInt(4, item.getQuantidade());
-                st.setInt(5, item.getQuantidade());
-
                 st.executeUpdate();
             }
 

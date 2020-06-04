@@ -66,7 +66,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     @FXML
     private MenuItem miRelCaixaria;
     @FXML
-    private MenuItem miRelVeiling;
+    private MenuItem miRelEstabelecimento;
     @FXML
     private MenuItem miRelCeaflor;
     @FXML
@@ -223,8 +223,12 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     }
 
     @FXML
-    public void onMiRelVeilingAction() {
-        System.out.println("Relat�rio Veiling");
+    public void onMiRelEstabelecimentoAction() {
+        carregaView("/gui/relatorio/RelatorioGeralEstabelecimento.fxml", (RelatorioGeralEstabelecimentoController controller) ->{
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.setSobraServico(new SobraServico());
+            controller.updateFormData();
+        });
     }
 
     @FXML
@@ -248,7 +252,6 @@ public class MainViewController implements Initializable, PedidoChangeListener {
             controller.setRelatorioServico(new RelatorioServico());
         });
     }
-
 
     @FXML
     public void onMiSobrasCaixariaAction(){

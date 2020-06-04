@@ -256,20 +256,7 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            st = conn.prepareStatement("select *, sum(totalPedido) as sumTotal, sum(totalPedidoAtualizado) as sumTAtualizado, " +
-                    "sum(sobra) as sumSobra from sobra inner join produto " +
-                    "on sobra.produto_id = produto.id " +
-                    "inner join categoria " +
-                    "on produto.categoria_id = categoria.id " +
-                    "inner join fornecedor " +
-                    "on produto.fornecedor_id = fornecedor.id " +
-                    "inner join estabelecimento " +
-                    "on fornecedor.estabelecimento_id = estabelecimento.id " +
-                    "inner join endereco " +
-                    "on estabelecimento.endereco_id = endereco.id " +
-                    "where fornecedor.id = ? and data between ? and ? " +
-                    "group by produto.nome " +
-                    "order by produto.nome");
+            st = conn.prepareStatement("call spSelectSobraEntreDataByFornecedor(?, ?, ?)");
 
             st.setInt(1, fornecedor.getId());
             st.setDate(2, iniDate);
@@ -313,8 +300,74 @@ public class SobraDaoJDBC implements SobraDao {
                 sobra = Utils.createSobra(rs, produto);
 
                 list.add(sobra);
+            }
+            return list;
 
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
 
+    @Override
+    public List<Sobra> findByEstabelecimento(Estabelecimento estabelecimento, Date iniDate, Date endDate) {
+        List<Sobra> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        Endereco endereco;
+        Categoria categoria;
+        Fornecedor fornecedor;
+        Produto produto;
+        Sobra sobra;
+
+        try {
+
+            st = conn.prepareStatement("call spSelectSobraEntreDataByEstabelecimento(?, ?, ?)");
+
+            st.setInt(1, estabelecimento.getId());
+            st.setDate(2, iniDate);
+            st.setDate(3, endDate);
+
+            rs = st.executeQuery();
+
+            Map<Integer, Categoria> categoriaMap = new HashMap<>();
+            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
+            Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+
+            while (rs.next()) {
+
+                categoria = categoriaMap.get(rs.getInt("categoria_id"));
+                if (categoria == null) {
+                    categoria = Utils.createCategoria(rs);
+                    categoriaMap.put(rs.getInt("categoria_id"), categoria);
+                }
+
+                endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
+                }
+
+                estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento_id"));
+                if (estabelecimento == null) {
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    estabelecimentoMap.put(rs.getInt("estabelecimento_id"), estabelecimento);
+                }
+
+                fornecedor = fornecedorMap.get(rs.getInt("fornecedor_id"));
+                if (fornecedor == null) {
+                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
+                    fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
+                }
+
+                produto = Utils.createProduto(rs, categoria, fornecedor);
+
+                sobra = Utils.createSobra(rs, produto);
+
+                list.add(sobra);
             }
             return list;
 

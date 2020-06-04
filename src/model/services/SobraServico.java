@@ -2,6 +2,7 @@ package model.services;
 
 import model.dao.DaoFactory;
 import model.dao.SobraDao;
+import model.entities.Estabelecimento;
 import model.entities.Fornecedor;
 import model.entities.Sobra;
 
@@ -30,5 +31,9 @@ public class SobraServico {
 
     public List<Sobra> findByFornecedor(Fornecedor fornecedor, Date iniDate, Date endDate) {
         return dao.findByFornecedor(fornecedor, iniDate, endDate);
+    }
+
+    public List<Sobra> findByEstabelecimento(Estabelecimento estabelecimento, Date iniDate, Date endDate) {
+        return dao.findByEstabelecimento(estabelecimento, iniDate, endDate);
     }
 }

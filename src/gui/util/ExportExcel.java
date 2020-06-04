@@ -108,4 +108,55 @@ public class ExportExcel {
             e.printStackTrace();
         }
     }
+
+    public static void createExcelByEstabelecimento(List<Sobra> list, String name) {
+
+        fileName = "D:/Documentos/Resumo " + name + ".xls";
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
+
+
+        Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
+        Fornecedor fornecedor;
+
+        int rowNumb = 0;
+
+        for (Sobra sobra : list) {
+
+            fornecedor = fornecedorMap.get(sobra.getProduto().getFornecedor().getId());
+            Row row = sheetRelatorio.createRow(rowNumb++);
+            int cellNumb = 0;
+
+            if (fornecedor == null) {
+                row = sheetRelatorio.createRow(rowNumb++);
+                Cell cellFornecedorNome = row.createCell(cellNumb);
+                cellFornecedorNome.setCellValue(sobra.getProduto().getFornecedor().getNome());
+                row = sheetRelatorio.createRow(rowNumb++);
+                fornecedorMap.put(sobra.getProduto().getFornecedor().getId(), sobra.getProduto().getFornecedor());
+            }
+
+            cellNumb = 0;
+            Cell cellProdutoNome = row.createCell(cellNumb++);
+            cellProdutoNome.setCellValue(sobra.getProduto().getNome());
+            Cell cellLocalFornecedor = row.createCell(cellNumb++);
+            cellLocalFornecedor.setCellValue(sobra.getProduto().getFornecedor().getNome());
+            Cell cellTotalPedido = row.createCell(cellNumb++);
+            cellTotalPedido.setCellValue(sobra.getProduto().getCategoria().getAbreviacao() + "   " + sobra.getTotalPedido());
+            Cell cellTotalPedidoAtualizado = row.createCell(cellNumb++);
+            cellTotalPedidoAtualizado.setCellValue(sobra.getProduto().getCategoria().getAbreviacao() + "   " + sobra.getTotalPedidoAtualizado());
+            Cell cellTotalSobra = row.createCell(cellNumb++);
+            cellTotalSobra.setCellValue(sobra.getSobra());
+
+        }
+
+        try {
+            FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
+            workbook.write(out);
+            out.close();
+            Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
