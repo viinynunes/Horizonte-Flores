@@ -45,6 +45,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
+    private int quantidadeItens;
 
     @FXML
     private VBox vBox;
@@ -60,6 +61,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private TextField txtQuantidade;
     @FXML
     private TextField txtLocalizaProduto;
+    @FXML
+    private Label lblQuantidadeItens;
     @FXML
     private TableView<ItemPedido> tbvItemsPedidoPorduto;
     @FXML
@@ -120,11 +123,14 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private void apagarItem() {
         itemPedidoList.remove(tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem());
         updateFormProdutosPedido();
+        txtQuantidade.requestFocus();
+        txtQuantidade.setText(String.valueOf(1));
     }
 
     private void selecionarCliente(Event event) {
         Stage parentStage = Utils.atualStage(event);
         carregaDialog(parentStage, "/gui/view/ClienteListDialog.fxml");
+        txtQuantidade.requestFocus();
     }
 
     private void notifyDataChanged() {
@@ -168,6 +174,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+        txtQuantidade.setText(String.valueOf(1));
 
 
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -205,9 +212,11 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                 Produto p = tbvLocalizaProduto.getItems().get(0);
                 addItemPedido(p);
             }
+            if (event.getCode() == KeyCode.TAB){
+                tbvItemsPedidoPorduto.setFocusTraversable(false);
+                tbvLocalizaProduto.requestFocus();
+            }
         });
-
-
     }
 
     private void addItemPedido(Produto produto) {
@@ -223,7 +232,11 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             updateFormProdutosPedido();
             txtLocalizaProduto.clear();
             txtQuantidade.clear();
+            txtQuantidade.setText(String.valueOf(1));
+            quantidadeItens = itemPedidoList.size();
+            lblQuantidadeItens.setText(String.valueOf(quantidadeItens));
             txtQuantidade.requestFocus();
+
         }
     }
 
@@ -259,6 +272,11 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         obbList = FXCollections.observableArrayList(itemPedidoList);
         tbvItemsPedidoPorduto.setItems(obbList);
         tbvItemsPedidoPorduto.refresh();
+        quantidadeItens = obbList.size();
+
+        lblQuantidadeItens.setText(String.valueOf(quantidadeItens));
+
+
 
 
     }
