@@ -71,7 +71,7 @@
       </HBox>
       <HBox prefHeight="710.0" prefWidth="1176.0" spacing="50.0">
          <children>
-            <TableView fx:id="tbvRelatorio" editable="true" prefHeight="699.0" prefWidth="981.0">
+            <TableView fx:id="tbvRelatorio" editable="true" prefHeight="699.0" prefWidth="981.0" style="-fx-background-color: #454461;">
               <columns>
                   <TableColumn fx:id="tbcNomeFornecedor" prefWidth="223.20001238584518" text="Fornecedor" />
                   <TableColumn fx:id="tbcNomeProduto" prefWidth="228.79998779296875" text="Produto" />
@@ -85,7 +85,7 @@
             </TableView>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="tbvListaPedido" prefHeight="699.0" prefWidth="558.0">
+                  <TableView fx:id="tbvListaPedido" prefHeight="699.0" prefWidth="558.0" style="-fx-background-color: #454461;">
                     <columns>
                       <TableColumn fx:id="tbcPedidoId" prefWidth="78.39990234375" text="ID" />
                       <TableColumn fx:id="tbcPedidoData" prefWidth="92.0" text="Data" />

@@ -126,6 +126,7 @@ public class RelatorioGeralPorClienteController implements Initializable {
         obbRelatorio = FXCollections.observableArrayList(relatorioList);
         tbvListaRelatorio.setItems(obbRelatorio);
         tbvListaRelatorio.refresh();
+
         if (obbRelatorio.isEmpty()) {
             btnExportar.setVisible(false);
             Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);

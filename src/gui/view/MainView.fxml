@@ -17,7 +17,7 @@
 
 <ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #555866;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.MainViewController">
    <content>
-      <VBox prefHeight="850.0" prefWidth="1530.0" style="-fx-background-color: #555866;">
+      <VBox prefHeight="850.0" prefWidth="1530.0" style="-fx-background-color: #454461;">
          <children>
             <MenuBar>
               <menus>
@@ -95,7 +95,7 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView fx:id="tbvListaPedidos" prefHeight="714.0" prefWidth="1521.0" style="-fx-background-color: #555866;">
+            <TableView fx:id="tbvListaPedidos" prefHeight="714.0" prefWidth="1521.0" style="-fx-background-color: #454461;">
               <columns>
                   <TableColumn fx:id="tbcPedidoId" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="tbcPedidoData" prefWidth="208.80003106594086" text="Data" />
