@@ -70,11 +70,32 @@ public class TransacoesProdutoController implements Initializable {
 
         txtLocalizaProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER){
-                Produto produto = tbvListaProduto.getItems().get(0);
-                tbvListaProduto.setVisible(false);
-                updatePedidoFormData(produto);
+                selecionaPrimeiroProduto();
             }
         });
+
+        tbvListaProduto.setOnMouseClicked(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                selecionaProdutoSelecionado();
+            }
+        });
+        txtLocalizaProduto.setOnMouseClicked(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                selecionaProdutoSelecionado();
+            }
+        });
+    }
+
+    private void selecionaPrimeiroProduto(){
+        Produto produto = tbvListaProduto.getItems().get(0);
+        tbvListaProduto.setVisible(false);
+        updatePedidoFormData(produto);
+    }
+
+    private void selecionaProdutoSelecionado(){
+        Produto produto = tbvListaProduto.getSelectionModel().getSelectedItem();
+        updatePedidoFormData(produto);
+        tbvListaProduto.setVisible(false);
     }
 
     public void setProdutoServico(ProdutoServico produtoServico) {
@@ -137,9 +158,7 @@ public class TransacoesProdutoController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER){
-                    Produto produto = tbvListaProduto.getSelectionModel().getSelectedItem();
-                    updatePedidoFormData(produto);
-                    tbvListaProduto.setVisible(false);
+                    selecionaProdutoSelecionado();
                 }
             }
         };
