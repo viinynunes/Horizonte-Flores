@@ -15,32 +15,59 @@
 
 <VBox fx:id="vBox" minHeight="830.0" minWidth="1530.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.PedidoCadastroController">
    <children>
-      <HBox prefHeight="52.0" prefWidth="640.0" spacing="15.0">
+      <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button fx:id="btnSalvar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnSalvarAction" text="Salvar [F2]">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnCancelar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnCancelarAction" text="Cancelar [F3]">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnApagarItem" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnApagarItemAction" text="Apagar Item [F4]">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnNovoProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnNovoProdutoAction" text="Novo Produto [F10]">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Button>
+            <HBox prefHeight="50.0" prefWidth="876.0" spacing="15.0">
+               <children>
+                  <Button fx:id="btnSalvar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnSalvarAction" text="Salvar [F2]">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnCancelar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnCancelarAction" text="Cancelar [F3]">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnApagarItem" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnApagarItemAction" text="Apagar Item [F4]">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnNovoProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnNovoProdutoAction" text="Novo Produto [F10]">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="62.0" prefWidth="608.0" spacing="15.0">
+               <children>
+                  <Label text="Quantidade Padrão:">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="txtQuantidadePadrao" onAction="#onTxtQuantidadePadraoAction" prefHeight="32.0" prefWidth="50.0">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <padding>
+                  <Insets right="10.0" top="10.0" />
+               </padding>
+            </HBox>
          </children>
-         <padding>
-            <Insets left="10.0" top="10.0" />
-         </padding>
       </HBox>
       <Hyperlink fx:id="hyperlinkSelecionarCliente" onAction="#onHyperlinkSelecionarCliente" prefHeight="46.0" prefWidth="268.0" text="Selecionar Cliente [F5]">
          <VBox.margin>

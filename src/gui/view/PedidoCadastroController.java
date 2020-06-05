@@ -47,7 +47,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
-    private int quantidadeItens;
+    private int quantidadeItens, quantidadePadrao;
 
     @FXML
     private VBox vBox;
@@ -59,6 +59,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private Button btnApagarItem;
     @FXML
     private Button btnNovoProduto;
+    @FXML
+    private TextField txtQuantidadePadrao;
     @FXML
     private Hyperlink hyperlinkSelecionarCliente;
     @FXML
@@ -102,6 +104,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     public void onBtnNovoProdutoAction(Event event){
         cadastrarProduto(event);
+    }
+
+    public void onTxtQuantidadePadraoAction(){
+        quantidadePadrao = Integer.parseInt(txtQuantidadePadrao.getText());
+        txtQuantidade.setText(String.valueOf(quantidadePadrao));
+        txtQuantidade.requestFocus();
     }
 
     private void salvarPedido(Event event) {
@@ -269,7 +277,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             updateFormProdutosPedido();
             txtLocalizaProduto.clear();
             txtQuantidade.clear();
-            txtQuantidade.setText(String.valueOf(1));
+            txtQuantidade.setText(String.valueOf(quantidadePadrao));
             quantidadeItens = itemPedidoList.size();
             lblQuantidadeItens.setText(String.valueOf(quantidadeItens));
             txtQuantidade.requestFocus();
