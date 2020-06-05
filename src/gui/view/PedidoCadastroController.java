@@ -3,6 +3,7 @@ package gui.view;
 import application.Main;
 import db.DBException;
 import gui.listeners.ClienteChangeListener;
+import gui.listeners.DataChangeListener;
 import gui.listeners.PedidoChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
@@ -24,10 +25,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.entities.*;
-import model.services.ClienteServico;
-import model.services.PedidoServico;
-import model.services.ProdutoServico;
+import model.services.*;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,8 +36,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-public class PedidoCadastroController implements Initializable, ClienteChangeListener {
+public class PedidoCadastroController implements Initializable, ClienteChangeListener, DataChangeListener {
 
     private PedidoServico pedidoServico;
     private ProdutoServico produtoServico;
@@ -55,6 +57,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private Button btnCancelar;
     @FXML
     private Button btnApagarItem;
+    @FXML
+    private Button btnNovoProduto;
     @FXML
     private Hyperlink hyperlinkSelecionarCliente;
     @FXML
@@ -76,6 +80,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     @FXML
     private TableColumn<String, Produto> tbcLocalizaProdutoNome;
     @FXML
+    private TableColumn<Produto, Categoria  > tbcLocalizaProdutoCategoria;
+    @FXML
     private TableColumn<Produto, Fornecedor> tbcLocalizaProdutoFornecedor;
 
     public void onBtnSalvarAction(ActionEvent event) {
@@ -92,6 +98,10 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     public void onHyperlinkSelecionarCliente(ActionEvent event) {
         selecionarCliente(event);
+    }
+
+    public void onBtnNovoProdutoAction(Event event){
+        cadastrarProduto(event);
     }
 
     private void salvarPedido(Event event) {
@@ -129,8 +139,26 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
     private void selecionarCliente(Event event) {
         Stage parentStage = Utils.atualStage(event);
-        carregaDialog(parentStage, "/gui/view/ClienteListDialog.fxml");
+        carregaDialog(parentStage, "/gui/view/ClienteListDialog.fxml", (ClienteListDialogController controller) ->{
+            controller.setServico(new ClienteServico());
+            controller.subscribeDataChangeListener(this);
+            controller.updateDataForm();
+        });
         txtQuantidade.requestFocus();
+    }
+
+    private void cadastrarProduto(Event event){
+        Stage parentStage = Utils.atualStage(event);
+        Produto produto = new Produto();
+        carregaDialog(parentStage, "/gui/view/ProdutoCadastro.fxml", (ProdutoCadastroController controller) -> {
+            controller.setProduto(produto);
+            controller.setProdutoServico(new ProdutoServico());
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.subscribeDataChangeListener(this);
+            controller.updateFormData();
+        });
     }
 
     private void notifyDataChanged() {
@@ -167,7 +195,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         //tabela da busca de produtos
         tbcLocalizaProdutoNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        tbcLocalizaProdutoFornecedor.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
+        tbcLocalizaProdutoCategoria.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getCategoria().getNome()));
+        tbcLocalizaProdutoFornecedor.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getFornecedor().getNome()));
 
         //tabela de itens do pedido selecionados
         tbcProdutoId.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getId()));
@@ -189,6 +218,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             }
             if (event.getCode() == KeyCode.F5) {
                 selecionarCliente(event);
+            }
+            if (event.getCode() == KeyCode.F10){
+                cadastrarProduto(event);
             }
         });
 
@@ -281,22 +313,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         lblQuantidadeItens.setText(String.valueOf(quantidadeItens));
     }
 
-    public synchronized void carregaDialog(Stage parentStage, String caminho) {
+    public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> initConsumer) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
-            BorderPane vBox = loader.load();
+            VBox vBox = loader.load();
 
             Stage dialog = new Stage();
 
-            ClienteListDialogController controller = loader.getController();
-            controller.setServico(new ClienteServico());
-            controller.subscribeDataChangeListener(this);
-            controller.updateDataForm();
+            T controller = loader.getController();
+            initConsumer.accept(controller);
 
-            dialog.setTitle("Selecionar Cliente");
             dialog.setScene(new Scene(vBox));
             dialog.initOwner(parentStage);
+            dialog.initStyle(StageStyle.UTILITY);
             dialog.initModality(Modality.WINDOW_MODAL);
             dialog.setResizable(false);
             dialog.showAndWait();
@@ -311,7 +341,6 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> this.filteredList.setPredicate(produto -> {
             if (newValue == null || newValue.isEmpty()) {
-                tbvLocalizaProduto.setVisible(false);
                 return true;
             }
 
@@ -356,5 +385,10 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     public void onClienteChanged(Cliente cliente) {
         this.cliente = cliente;
         hyperlinkSelecionarCliente.setText(cliente.getNome());
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateFormLocalizaProduto();
     }
 }

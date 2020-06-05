@@ -179,7 +179,6 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
             }
         }
 
-
     }
 
     private void limpaTela() {
