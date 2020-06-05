@@ -47,7 +47,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private List<ItemPedido> itemPedidoList;
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
-    private int quantidadeItens, quantidadePadrao;
+    private int quantidadeItens, quantidadePadrao = 1;
 
     @FXML
     private VBox vBox;
@@ -268,6 +268,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         if (txtQuantidade.getText().isEmpty() || txtQuantidade.getText() == null) {
             Alerts.showAlert("Digite a quantidade do produto", null, "Digite a quantidade do produto", Alert.AlertType.INFORMATION);
+        } else if (produto == null) {
+            Alerts.showAlert("Selecione um produto", null, "Selecione um produto", Alert.AlertType.INFORMATION);
         } else {
             ItemPedido item = new ItemPedido();
             item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
