@@ -33,4 +33,6 @@ public class DaoFactory {
     public static SobraDao createSobraDao() {
         return new SobraDaoJDBC((Connection) DB.getConnection());
     }
+
+    public static SobraProdutoPadraoDao createSobraPadraoDao(){return new SobraProdutoPadraoDaoJDBC(DB.getConnection());}
 }

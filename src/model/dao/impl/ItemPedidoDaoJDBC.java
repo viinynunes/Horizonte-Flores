@@ -95,7 +95,8 @@ public class ItemPedidoDaoJDBC implements ItemPedidoDao {
                     "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
                     "inner join endereco " +
                     "on estabelecimento.ENDERECO_ID = endereco.id " +
-                    "where pedido.id = ?");
+                    "where pedido.id = ? " +
+                    "order by itens_do_pedido.id desc");
 
             st.setInt(1, pedido.getId());
 
@@ -103,7 +104,6 @@ public class ItemPedidoDaoJDBC implements ItemPedidoDao {
 
             Map<Integer, Endereco> enderecoMap = new HashMap<>();
             Map<Integer, Cliente> clienteMap = new HashMap<>();
-            Map<Integer, Pedido> pedidoMap = new HashMap<>();
             Map<Integer, Produto> produtoMap = new HashMap<>();
             Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
             Map<Integer, Categoria> categoriaMap = new HashMap<>();
@@ -113,7 +113,6 @@ public class ItemPedidoDaoJDBC implements ItemPedidoDao {
 
                 endereco = enderecoMap.get(rs.getInt("endereco.id"));
                 cliente = clienteMap.get(rs.getInt("cliente.id"));
-                //pedido = pedidoMap.get(rs.getInt("pedido.id"));
                 categoria = categoriaMap.get(rs.getInt("categoria.id"));
                 estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento.id"));
                 fornecedor = fornecedorMap.get(rs.getInt("fornecedor.id"));

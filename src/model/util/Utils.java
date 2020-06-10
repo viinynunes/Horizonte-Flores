@@ -152,4 +152,12 @@ public class Utils {
 
         return sobra;
     }
+
+    public static SobraProdutoPadrao createSobraProdutoPadrao(ResultSet rs, Produto produto) throws SQLException{
+        SobraProdutoPadrao padrao = new SobraProdutoPadrao();
+        padrao.setId(rs.getInt("sobraprodutopadrao.id"));
+        padrao.setProduto(produto);
+
+        return padrao;
+    }
 }

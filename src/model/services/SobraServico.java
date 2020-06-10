@@ -21,6 +21,10 @@ public class SobraServico {
         }
     }
 
+    public void deleteById(Integer id){
+        dao.deleteById(id);
+    }
+
     public List<Sobra> findByDate(Date date, Date date1){
         return dao.findByData(date, date1);
     }

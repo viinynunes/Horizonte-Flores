@@ -6,6 +6,7 @@ import gui.listeners.ClienteChangeListener;
 import gui.listeners.DataChangeListener;
 import gui.listeners.PedidoChangeListener;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -32,10 +33,7 @@ import org.apache.poi.ss.formula.functions.T;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class PedidoCadastroController implements Initializable, ClienteChangeListener, DataChangeListener {
@@ -211,8 +209,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         tbcProdutoNome.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 
+        Constraints.setTextFieldInteger(txtQuantidadePadrao);
+        Constraints.setTextFieldInteger(txtQuantidade);
         txtQuantidade.setText(String.valueOf(1));
-
 
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F2) {
@@ -275,6 +274,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             item.setQuantidade(Utils.converterInteiro(txtQuantidade.getText()));
             item.setProduto(produto);
             itemPedidoList.add(item);
+            ordenaItemPedidoListDesc();
             tbvLocalizaProduto.setVisible(false);
             updateFormProdutosPedido();
             txtLocalizaProduto.clear();
@@ -285,6 +285,10 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             txtQuantidade.requestFocus();
 
         }
+    }
+
+    private void ordenaItemPedidoListDesc(){
+        Collections.reverse(itemPedidoList);
     }
 
     public void updateFormLocalizaProduto() {
@@ -351,6 +355,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
         txtLocalizaProduto.textProperty().addListener(((observable, oldValue, newValue) -> this.filteredList.setPredicate(produto -> {
             if (newValue == null || newValue.isEmpty()) {
+                tbvLocalizaProduto.setVisible(false);
                 return true;
             }
 

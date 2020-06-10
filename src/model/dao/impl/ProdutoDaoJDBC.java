@@ -202,6 +202,71 @@ public class ProdutoDaoJDBC implements ProdutoDao {
     }
 
     @Override
+    public List<Produto> findByFornecedor(Fornecedor fornecedor) {
+        List<Produto> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("select * from produto inner join categoria " +
+                    "on produto.CATEGORIA_ID = categoria.id " +
+                    "inner join fornecedor " +
+                    "on produto.FORNECEDOR_ID = fornecedor.id " +
+                    "inner join estabelecimento " +
+                    "on fornecedor.ESTABELECIMENTO_ID = estabelecimento.id " +
+                    "inner join endereco " +
+                    "on estabelecimento.ENDERECO_ID = endereco.id " +
+                    "where produto.fornecedor_id = ? " +
+                    "order by produto.nome asc");
+
+            st.setInt(1, fornecedor.getId());
+
+            rs = st.executeQuery();
+
+            Map<Integer, Categoria> categoriaMap = new HashMap<>();
+            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
+            Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+
+            while (rs.next()) {
+                Categoria categoria = categoriaMap.get(rs.getInt("categoria_id"));
+                if (categoria == null) {
+                    categoria = Utils.createCategoria(rs);
+                    categoriaMap.put(rs.getInt("categoria_id"), categoria);
+                }
+
+                Endereco endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
+                }
+
+                Estabelecimento estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento_id"));
+                if (estabelecimento == null) {
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    estabelecimentoMap.put(rs.getInt("estabelecimento_id"), estabelecimento);
+                }
+
+                fornecedor = fornecedorMap.get(rs.getInt("fornecedor_id"));
+                if (fornecedor == null) {
+                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
+                    fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
+                }
+
+                Produto produto = Utils.createProduto(rs, categoria, fornecedor);
+                list.add(produto);
+            }
+
+            return list;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
     public List<Produto> findAll() {
 
 
@@ -267,9 +332,6 @@ public class ProdutoDaoJDBC implements ProdutoDao {
         }
 
     }
-
-
-
 
 
 }

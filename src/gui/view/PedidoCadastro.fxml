@@ -50,6 +50,9 @@
                      <font>
                         <Font size="22.0" />
                      </font>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
                   </Label>
                   <TextField fx:id="txtQuantidadePadrao" onAction="#onTxtQuantidadePadraoAction" prefHeight="32.0" prefWidth="50.0" text="1">
                      <font>

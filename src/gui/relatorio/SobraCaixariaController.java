@@ -2,25 +2,37 @@ package gui.relatorio;
 
 import db.DBException;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.entities.Sobra;
 import model.services.FornecedorServico;
+import model.services.ProdutoServico;
+import model.services.SobraProdutoPadraoServico;
 import model.services.SobraServico;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 public class SobraCaixariaController implements Initializable {
 
@@ -58,6 +70,8 @@ public class SobraCaixariaController implements Initializable {
     private Button btnGerarFornecedores;
     @FXML
     private Button btnGerarRelatorio;
+    @FXML
+    private Button btnProdutosPadrao;
 
     @FXML
     public void onBtnGerarFornecedoresAction() {
@@ -109,10 +123,23 @@ public class SobraCaixariaController implements Initializable {
         }
     }
 
+
+    @FXML
+    public void onBtnProdutosPadraoAction(Event event){
+        Stage parentStage = Utils.atualStage(event);
+        carregaDialog(parentStage, "/gui/relatorio/SobraPadraoPorFornecedor.fxml", (SobraPadraoPorFornecedorController controller) ->{
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setProdutoServico(new ProdutoServico());
+            controller.setSobraProdutoPadraoServico(new SobraProdutoPadraoServico());
+            controller.updateCbbFornecedorFormData();
+        });
+    }
+
     @FXML
     public void onCbbFornecedorAction() {
 
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -155,15 +182,11 @@ public class SobraCaixariaController implements Initializable {
                     setGraphic(null);
                     return;
                 } else {
+                    Constraints.setTextFieldInteger(txtTotal);
                     txtTotal.setText(sobra.getTotalPedido().toString());
                     setGraphic(txtTotal);
 
                     txtTotal.setOnAction(event -> {
-
-                        if (!iniDate.toString().contentEquals(endDate.toString())) {
-                            Alerts.showAlert("Erro ao cadastrar sobra", null, "Não é possivel cadastrar sobras para datas diferentes", Alert.AlertType.ERROR);
-                            return;
-                        }
 
                         System.out.println(txtTotal.getText());
                         Integer totalPedido = sobra.getTotalPedido();
@@ -179,33 +202,28 @@ public class SobraCaixariaController implements Initializable {
                 }
             }
         });
+    }
 
-        /*tbcSobra.setCellFactory(cell -> new TableCell<>() {
+    public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> initConsumer) {
 
-            @Override
-            protected void updateItem(Sobra sobra, boolean empty) {
-                super.updateItem(sobra, empty);
-                if (sobra == null) {
-                    setGraphic(null);
-                    return;
-                } else {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            VBox vBox = loader.load();
 
-                    if (!iniDate.toString().contentEquals(endDate.toString())) {
-                        int result = sobra.getTotalPedidoAtualizado() - sobra.getTotalPedido();
+            Stage dialog = new Stage();
 
-                        //label.setText((String.valueOf(result)));
-                        label.setText(sobra.getSobra().toString());
-                        setGraphic(label);
-                    } else {
-                        label.setText(sobra.getSobra().toString());
-                        setGraphic(label);
-                    }
-                }
-            }
-        });
+            T controller = loader.getController();
+            initConsumer.accept(controller);
 
+            dialog.setScene(new Scene(vBox));
+            dialog.initOwner(parentStage);
+            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.setResizable(false);
+            dialog.showAndWait();
 
-         */
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -118,7 +118,7 @@ public class PedidoDaoJDBC implements PedidoDao {
                     "inner join endereco " +
                     "on cliente.endereco_id = endereco.id " +
                     "where data = ? " +
-                    "order by pedido.id");
+                    "order by pedido.id desc");
 
             st.setDate(1, date);
             rs = st.executeQuery();
@@ -153,7 +153,7 @@ public class PedidoDaoJDBC implements PedidoDao {
             st = conn.prepareStatement("select * from pedido inner join cliente " +
                     "on pedido.CLIENTE_ID = cliente.id " +
                     "where data = ? " +
-                    "order by pedido.id");
+                    "order by pedido.id desc");
 
             st.setDate(1, date);
 
@@ -200,7 +200,8 @@ public class PedidoDaoJDBC implements PedidoDao {
                     "on CLIENTE_ID = cliente.id " +
                     "inner join endereco " +
                     "on cliente.endereco_id = endereco.id " +
-                    "where data between ? and ?");
+                    "where data between ? and ? " +
+                    "order by pedido.id desc");
 
             st.setDate(1, iniDate);
             st.setDate(2, endDate);
@@ -313,14 +314,14 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido) " +
-                        "values (?, ?, 0, ?, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                        "values (?, ?, 0, ?, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
                 st.setInt(3, pedido.getId());
                 st.setInt(4, item.getQuantidade());
-
+                st.setInt(5, item.getQuantidade());
 
                 st.executeUpdate();
             }
@@ -367,13 +368,15 @@ public class PedidoDaoJDBC implements PedidoDao {
             }
 
             for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido) " +
-                        "values (?, ?, 0, ?, ?)");
+                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                        "values (?, ?, 0, ?, ?, ?)");
 
                 st.setDate(1, new Date(pedido.getData().getTime()));
                 st.setInt(2, item.getProduto().getId());
                 st.setInt(3, pedido.getId());
                 st.setInt(4, item.getQuantidade());
+                st.setInt(5, item.getQuantidade());
+
                 st.executeUpdate();
             }
 

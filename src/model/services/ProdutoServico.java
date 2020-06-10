@@ -2,6 +2,7 @@ package model.services;
 
 import model.dao.DaoFactory;
 import model.dao.ProdutoDao;
+import model.entities.Fornecedor;
 import model.entities.Produto;
 
 import java.util.List;
@@ -15,6 +16,10 @@ public class ProdutoServico {
         List<Produto> list = dao.findAll();
 
         return list;
+    }
+
+    public List<Produto> findByFornecedor(Fornecedor fornecedor){
+        return dao.findByFornecedor(fornecedor);
     }
 
     public void saveOrUpdate(Produto produto){
