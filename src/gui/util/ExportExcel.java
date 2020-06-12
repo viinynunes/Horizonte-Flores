@@ -2,13 +2,12 @@ package gui.util;
 
 import javafx.scene.control.Alert;
 import model.entities.*;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.formula.functions.T;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -129,6 +128,10 @@ public class ExportExcel {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
 
+        HSSFCellStyle styleBorderThin = createBorderThin(workbook);
+        HSSFCellStyle styleCellCenterBorderThin = createAlignCenterBorderThin(workbook);
+
+
 
         Map<Integer, Cliente> clienteMap = new HashMap<>();
         Cliente cliente;
@@ -162,9 +165,7 @@ public class ExportExcel {
 
             row = sheetRelatorio.getRow(rowNumb);
 
-
             cliente = clienteMap.get(i.getPedido().getCliente().getId());
-           
 
             cellNumb = cellAux;
 
@@ -174,6 +175,7 @@ public class ExportExcel {
                 rowNumb++;
                 row = sheetRelatorio.getRow(rowNumb);
                 Cell cellPedidoCliente = row.createCell(cellNumb);
+                cellPedidoCliente.setCellStyle(styleCellCenterBorderThin);
                 cellPedidoCliente.setCellValue(i.getPedido().getCliente().getNome());
                 clienteMap.put(i.getPedido().getCliente().getId(), i.getPedido().getCliente());
                 rowNumb++;
@@ -182,6 +184,7 @@ public class ExportExcel {
 
             cellNumb = cellAux;
             Cell cellItemQuantidade = row.createCell(cellNumb);
+            cellItemQuantidade.setCellStyle(styleBorderThin);
             cellItemQuantidade.setCellValue(i.getQuantidade() + " " + i.getProduto().getCategoria().getAbreviacao() + " " + i.getProduto().getNome());
             rowNumb++;
         }
@@ -193,6 +196,8 @@ public class ExportExcel {
             Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            list.clear();
         }
     }
 
@@ -203,6 +208,8 @@ public class ExportExcel {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
 
+        HSSFCellStyle styleBorderThin = createBorderThin(workbook);
+        HSSFCellStyle styleCellCenterBorderThin = createAlignCenterBorderThin(workbook);
 
         Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
         Fornecedor fornecedor;
@@ -218,6 +225,7 @@ public class ExportExcel {
             if (fornecedor == null) {
                 row = sheetRelatorio.createRow(rowNumb++);
                 Cell cellFornecedorNome = row.createCell(cellNumb);
+                cellFornecedorNome.setCellStyle(styleCellCenterBorderThin);
                 cellFornecedorNome.setCellValue(sobra.getProduto().getFornecedor().getNome());
                 row = sheetRelatorio.createRow(rowNumb++);
                 fornecedorMap.put(sobra.getProduto().getFornecedor().getId(), sobra.getProduto().getFornecedor());
@@ -246,4 +254,28 @@ public class ExportExcel {
             e.printStackTrace();
         }
     }
+
+    private static HSSFCellStyle createBorderThin(HSSFWorkbook workbook) {
+        HSSFCellStyle style = workbook.createCellStyle();
+
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+
+        return style;
+    }
+
+    private static HSSFCellStyle createAlignCenterBorderThin(HSSFWorkbook workbook){
+        HSSFCellStyle style = workbook.createCellStyle();
+
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setAlignment(HorizontalAlignment.CENTER);
+
+        return style;
+    }
+
 }
