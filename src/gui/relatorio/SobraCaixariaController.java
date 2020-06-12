@@ -197,7 +197,10 @@ public class SobraCaixariaController implements Initializable {
                         sobraServico.insertOrUpdate(sobra);
                         tbvSobraCadastro.refresh();
                         tbvSobraFinal.refresh();
-                        txtTotal.requestFocus();
+
+                        ObservableList<Sobra> obb = tbvSobraCadastro.getItems();
+
+
                     });
                 }
             }

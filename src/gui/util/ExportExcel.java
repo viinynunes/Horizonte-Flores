@@ -40,7 +40,7 @@ public class ExportExcel {
 
             fornecedor = fornecedorMap.get(r.getFornecedor());
 
-            if (fornecedor == null){
+            if (fornecedor == null) {
                 Cell cellProdutoFornecedor = row.createCell(cellNumb++);
                 cellProdutoFornecedor.setCellValue(r.getFornecedor());
                 row = sheetRelatorio.createRow(rowNumb++);
@@ -77,26 +77,113 @@ public class ExportExcel {
         Cliente cliente;
 
         int rowNumb = 0;
+        int cellAux = 0;
+        int iterator = 0;
+        int maxRow = 5;
+        int cellNumb;
 
         for (ItemPedido i : list) {
+/*
+            if (iterator == maxRow){
+                System.out.println("mais que 5");
+                rowNumb = 0;
+                cellAux += 2;
+            }
+ */
 
             cliente = clienteMap.get(i.getPedido().getCliente().getId());
             Row row = sheetRelatorio.createRow(rowNumb++);
-            int cellNumb = 0;
-            int count = i.getQuantidade();
+
+            cellNumb = cellAux;
 
             if (cliente == null) {
+                Cell space = row.createCell(rowNumb++);
+                space.setCellValue("ESPACO VAZIO");
                 row = sheetRelatorio.createRow(rowNumb++);
-                Cell cellPedidoCliente = row.createCell(cellNumb++);
+                Cell cellPedidoCliente = row.createCell(cellNumb);
                 cellPedidoCliente.setCellValue(i.getPedido().getCliente().getNome());
                 clienteMap.put(i.getPedido().getCliente().getId(), i.getPedido().getCliente());
                 row = sheetRelatorio.createRow(rowNumb++);
             }
 
-            cellNumb = 0;
+            cellNumb = cellAux;
             Cell cellItemQuantidade = row.createCell(cellNumb);
             cellItemQuantidade.setCellValue(i.getQuantidade() + " " + i.getProduto().getCategoria().getAbreviacao() + " " + i.getProduto().getNome());
+            iterator++;
+        }
 
+        try {
+            FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
+            workbook.write(out);
+            out.close();
+            Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createExcelPedido2(Set<ItemPedido> list, String name) {
+
+        fileName = "D:/Documentos/Pedido " + name + ".xls";
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
+
+
+        Map<Integer, Cliente> clienteMap = new HashMap<>();
+        Cliente cliente;
+        Row row = null;
+        
+        int rowNumb = 0;
+        int cellAux = 0;
+        int maxRow = 60;
+        int cellNumb;
+        int aux = 0;
+        
+        // cria todas as linhas da pagina com um numero maximo de linhas
+        while (aux < maxRow){
+            row = sheetRelatorio.createRow(rowNumb++);
+            aux++;
+        }
+
+        rowNumb = 0;
+
+        //percorre toda a lista de itens do pedido
+        for (ItemPedido i : list) {
+
+            //checa se o numero de linhas foi atingido, caso sim, volta para a primeira linha e aumenta a posicao da celula
+            if (rowNumb == maxRow){
+                System.out.println("mais que o maximo de linhas");
+                rowNumb = 0;
+                row = sheetRelatorio.getRow(0);
+                rowNumb = 0;
+                cellAux += 2;
+            }
+
+            row = sheetRelatorio.getRow(rowNumb);
+
+
+            cliente = clienteMap.get(i.getPedido().getCliente().getId());
+           
+
+            cellNumb = cellAux;
+
+            if (cliente == null) {
+                Cell space = row.createCell(cellNumb);
+                space.setCellValue("         ");
+                rowNumb++;
+                row = sheetRelatorio.getRow(rowNumb);
+                Cell cellPedidoCliente = row.createCell(cellNumb);
+                cellPedidoCliente.setCellValue(i.getPedido().getCliente().getNome());
+                clienteMap.put(i.getPedido().getCliente().getId(), i.getPedido().getCliente());
+                rowNumb++;
+                row = sheetRelatorio.getRow(rowNumb);
+            }
+
+            cellNumb = cellAux;
+            Cell cellItemQuantidade = row.createCell(cellNumb);
+            cellItemQuantidade.setCellValue(i.getQuantidade() + " " + i.getProduto().getCategoria().getAbreviacao() + " " + i.getProduto().getNome());
+            rowNumb++;
         }
 
         try {

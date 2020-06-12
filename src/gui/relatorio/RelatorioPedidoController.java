@@ -86,7 +86,7 @@ public class RelatorioPedidoController implements Initializable {
 
     @FXML
     private void onBtnExportarAction(){
-        ExportExcel.createExcelPedido(itemPedidoListFinal, iniDate.toString());
+        ExportExcel.createExcelPedido2(itemPedidoListFinal, iniDate.toString());
     }
 
     @Override
