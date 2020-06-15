@@ -15,7 +15,6 @@ import model.entities.ItemPedido;
 import model.entities.Pedido;
 import model.services.ItemPedidoServico;
 import model.services.PedidoServico;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -86,7 +85,7 @@ public class RelatorioPedidoController implements Initializable {
 
     @FXML
     private void onBtnExportarAction(){
-        ExportExcel.createExcelPedido2(itemPedidoListFinal, iniDate.toString());
+        ExportExcel.createExcelPedido(itemPedidoListFinal, iniDate.toString());
     }
 
     @Override
