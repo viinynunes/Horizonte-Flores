@@ -85,7 +85,7 @@ public class ExportExcel {
         Row row = null;
 
         // cria todas as linhas da pagina com um numero maximo de linhas
-        while (aux < 63) {
+        while (aux < 60) {
             row = sheetRelatorio.createRow(rowNumb++);
             aux++;
         }
@@ -137,7 +137,6 @@ public class ExportExcel {
             checaLimiteLinhas(sheetRelatorio);
             calculaRestaRow();
         }
-
 
         try {
             FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));

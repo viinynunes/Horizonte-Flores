@@ -58,6 +58,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     @FXML
     private Button btnNovoProduto;
     @FXML
+    private Button btnEditarProduto;
+    @FXML
     private TextField txtQuantidadePadrao;
     @FXML
     private Hyperlink hyperlinkSelecionarCliente;
@@ -104,6 +106,10 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         cadastrarProduto(event);
     }
 
+    public void onBtnEditarProdutoAction(Event event){
+        editarProduto(event);
+    }
+
     public void onTxtQuantidadePadraoAction(){
         quantidadePadrao = Integer.parseInt(txtQuantidadePadrao.getText());
         txtQuantidade.setText(String.valueOf(quantidadePadrao));
@@ -116,7 +122,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
 
             if (pedido.getCliente() == null) {
                 Alerts.showAlert("Cliente não selecionado", null, "Selecione um cliente", Alert.AlertType.INFORMATION);
-
+                hyperlinkSelecionarCliente.requestFocus();
             } else if (pedido.getItemPedidoList().isEmpty() || pedido.getItemPedidoList() == null) {
                 Alerts.showAlert("Nenhum produto selecionado", null, "Nenhum produto no pedido", Alert.AlertType.INFORMATION);
             } else {
@@ -165,6 +171,27 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             controller.subscribeDataChangeListener(this);
             controller.updateFormData();
         });
+    }
+
+    private void editarProduto(Event event) {
+        Stage parentStage = Utils.atualStage(event);
+        if (tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem() == null){
+            Alerts.showAlert("Selecione um Produto", null, "Selecione um Produto", Alert.AlertType.ERROR);
+        } else {
+            ItemPedido item = tbvItemsPedidoPorduto.getSelectionModel().getSelectedItem();
+            Produto produto = item.getProduto();
+
+            carregaDialog(parentStage, "/gui/view/ProdutoCadastro.fxml", (ProdutoCadastroController controller) -> {
+                controller.setProduto(produto);
+                controller.setProdutoServico(new ProdutoServico());
+                controller.setFornecedorServico(new FornecedorServico());
+                controller.setEstabelecimentoServico(new EstabelecimentoServico());
+                controller.setCategoriaServico(new CategoriaServico());
+                controller.subscribeDataChangeListener(this);
+                controller.updateFormData();
+                tbvItemsPedidoPorduto.refresh();
+            });
+        }
     }
 
     private void notifyDataChanged() {
@@ -228,6 +255,9 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             }
             if (event.getCode() == KeyCode.F10){
                 cadastrarProduto(event);
+            }
+            if (event.getCode() == KeyCode.F11){
+                editarProduto(event);
             }
         });
 
