@@ -1,28 +1,37 @@
 package gui.view;
 
 import gui.listeners.ClienteChangeListener;
+import gui.listeners.DataChangeListener;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.entities.Cliente;
 import model.services.ClienteServico;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-public class ClienteListDialogController implements Initializable {
+public class ClienteListDialogController implements Initializable, DataChangeListener {
 
     private ClienteServico servico;
     private Cliente cliente;
@@ -46,7 +55,13 @@ public class ClienteListDialogController implements Initializable {
 
 
     public void onBtnNovoAction(ActionEvent event) {
-
+        Stage parentStage = Utils.atualStage(event);
+        Cliente cliente = new Cliente();
+        carregaDialog(parentStage, "/gui/view/ClienteCadastro.fxml", (ClienteCadastroController controller) ->{
+            controller.setCliente(cliente);
+            controller.setServico(new ClienteServico());
+            controller.subscribeDataChangeListener(this);
+        });
     }
 
     public void setServico(ClienteServico servico) {
@@ -118,6 +133,29 @@ public class ClienteListDialogController implements Initializable {
         tbvListaCliente.refresh();
     }
 
+    public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> initConsumer) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+            VBox vBox = loader.load();
+
+            Stage dialog = new Stage();
+
+            T controller = loader.getController();
+            initConsumer.accept(controller);
+
+            dialog.setScene(new Scene(vBox));
+            dialog.initOwner(parentStage);
+            dialog.initStyle(StageStyle.UTILITY);
+            dialog.initModality(Modality.WINDOW_MODAL);
+            dialog.setResizable(false);
+            dialog.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private FilteredList<Cliente> filteredTableView(ObservableList<Cliente> obbClienteList) {
         FilteredList<Cliente> filteredClienteList = new FilteredList<>(obbClienteList);
 
@@ -143,5 +181,10 @@ public class ClienteListDialogController implements Initializable {
         }));
 
         return filteredClienteList;
+    }
+
+    @Override
+    public void onDataChanged() {
+        updateDataForm();
     }
 }
