@@ -20,6 +20,7 @@ public class ExportExcel {
     private static int cellAux = 0;
     private static int maxRow = 60;
     private static int cellNumb;
+    private static int restaRow = maxRow;
     private static int aux = 0;
     private static Row row;
 
@@ -69,7 +70,7 @@ public class ExportExcel {
         }
     }
 
-    public static void createExcelPedido(Set<ItemPedido> list, String name) {
+    public static void createExcelPedido(Set<ItemPedido> list, List<Integer> countList, String name) {
 
         fileName = "D:/Documentos/Pedido " + name + ".xls";
 
@@ -82,25 +83,29 @@ public class ExportExcel {
         Map<Integer, Cliente> clienteMap = new HashMap<>();
         Cliente cliente;
         Row row = null;
-        
 
-        
         // cria todas as linhas da pagina com um numero maximo de linhas
-        while (aux < 80){
+        while (aux < 63) {
             row = sheetRelatorio.createRow(rowNumb++);
             aux++;
         }
 
+        int itaratorCountList = 0;
+        int linhas = countList.get(itaratorCountList);
         rowNumb = 0;
 
         //percorre toda a lista de itens do pedido
         for (ItemPedido i : list) {
 
-            checaLimiteLinhas(sheetRelatorio);
+            cliente = clienteMap.get(i.getPedido().getCliente().getId());
+            if (cliente == null){
+                linhas = countList.get(itaratorCountList++);
+            }
+            if (linhas > restaRow) {
+                addColumn(sheetRelatorio);
+            }
 
             row = sheetRelatorio.getRow(rowNumb);
-
-            cliente = clienteMap.get(i.getPedido().getCliente().getId());
 
             cellNumb = cellAux;
 
@@ -108,14 +113,18 @@ public class ExportExcel {
                 Cell space = row.createCell(cellNumb);
                 space.setCellValue("         ");
                 rowNumb++;
+                linhas--;
                 checaLimiteLinhas(sheetRelatorio);
+                calculaRestaRow();
                 row = sheetRelatorio.getRow(rowNumb);
                 Cell cellPedidoCliente = row.createCell(cellNumb);
                 cellPedidoCliente.setCellStyle(styleCellCenterBorderThin);
                 cellPedidoCliente.setCellValue(i.getPedido().getCliente().getNome());
                 clienteMap.put(i.getPedido().getCliente().getId(), i.getPedido().getCliente());
                 rowNumb++;
+                linhas--;
                 checaLimiteLinhas(sheetRelatorio);
+                calculaRestaRow();
                 row = sheetRelatorio.getRow(rowNumb);
             }
 
@@ -123,8 +132,12 @@ public class ExportExcel {
             Cell cellItemQuantidade = row.createCell(cellNumb);
             cellItemQuantidade.setCellStyle(styleBorderThin);
             cellItemQuantidade.setCellValue(i.getQuantidade() + " " + i.getProduto().getCategoria().getAbreviacao() + " " + i.getProduto().getNome());
-                rowNumb++;
+            rowNumb++;
+            linhas--;
+            checaLimiteLinhas(sheetRelatorio);
+            calculaRestaRow();
         }
+
 
         try {
             FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
@@ -138,14 +151,22 @@ public class ExportExcel {
         }
     }
 
-    private static void checaLimiteLinhas(HSSFSheet sheetRelatorio){
+    private static void calculaRestaRow() {
+        restaRow = maxRow - rowNumb;
+    }
+
+    private static void checaLimiteLinhas(HSSFSheet sheetRelatorio) {
         //checa se o numero de linhas foi atingido, caso sim, volta para a primeira linha e aumenta a posicao da celula
-        if (rowNumb == maxRow){
-            System.out.println("mais que o maximo de linhas");
-            row = sheetRelatorio.getRow(0);
-            rowNumb = 0;
-            cellAux += 2;
+        if (rowNumb == maxRow) {
+            addColumn(sheetRelatorio);
         }
+    }
+
+    private static void addColumn(HSSFSheet sheetRelatorio) {
+        System.out.println("Proxima coluna");
+        row = sheetRelatorio.getRow(0);
+        rowNumb = 0;
+        cellAux += 2;
     }
 
     public static void createExcelByEstabelecimento(List<Sobra> list, String name) {
@@ -222,7 +243,7 @@ public class ExportExcel {
         return style;
     }
 
-    private static HSSFCellStyle createAlignCenterBorderThin(HSSFWorkbook workbook){
+    private static HSSFCellStyle createAlignCenterBorderThin(HSSFWorkbook workbook) {
         HSSFCellStyle style = workbook.createCellStyle();
 
         style.setBorderBottom(BorderStyle.THIN);

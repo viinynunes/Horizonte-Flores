@@ -45,6 +45,7 @@ public class RelatorioPedidoController implements Initializable {
     private List<Pedido> pedidoList;
     private Set<ItemPedido> itemPedidoList;
     private Set<ItemPedido> itemPedidoListFinal = new LinkedHashSet<>();
+    private List<Integer> countList = new ArrayList<>();
 
     @FXML
     public void onBtnGerarRelatorioAction(){
@@ -61,11 +62,17 @@ public class RelatorioPedidoController implements Initializable {
             tbvPedido.setItems(obbList);
             tbvPedido.refresh();
 
+            int count = 0;
+
             for (Pedido p : pedidoList){
+
                 itemPedidoList = itemServico.findByData(p.getCliente(), iniDate, endDate);
                 for (ItemPedido i : itemPedidoList){
                     itemPedidoListFinal.add(i);
+                    count++;
                 }
+                countList.add(count);
+                count = 0;
             }
 
             if (obbList.isEmpty()){
@@ -85,7 +92,7 @@ public class RelatorioPedidoController implements Initializable {
 
     @FXML
     private void onBtnExportarAction(){
-        ExportExcel.createExcelPedido(itemPedidoListFinal, iniDate.toString());
+        ExportExcel.createExcelPedido(itemPedidoListFinal, countList, iniDate.toString());
     }
 
     @Override
