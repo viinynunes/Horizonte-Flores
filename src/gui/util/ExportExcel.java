@@ -147,6 +147,8 @@ public class ExportExcel {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            aux = 0;
+            rowNumb = 0;
             list.clear();
         }
     }
