@@ -130,8 +130,12 @@ public class MainViewController implements Initializable, PedidoChangeListener {
             } else {
                 itemPedidoList = itemServico.findAllPedidos(pedido);
                 Stage parentStage = Utils.atualStage(event);
-                carregaViewPedido(pedido, itemPedidoList, parentStage, "/gui/view/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
-                });
+                carregaViewPedido(pedido,
+                        itemPedidoList,
+                        parentStage,
+                        "/gui/view/PedidoCadastro.fxml",
+                        (PedidoCadastroController controller) -> {
+                        });
             }
 
         } catch (DBException e) {

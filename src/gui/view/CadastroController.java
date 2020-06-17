@@ -86,12 +86,19 @@ public class CadastroController implements Initializable {
 
     public void onBtnFornecedorAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialog(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) ->{
+        carregaDialogVBox(parentStage, "/gui/view/FornecedorListDialog.fxml", (FornecedorListDialogController controller) ->{
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.updateFormData();
+        });
+
+
+        /*carregaDialog(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) ->{
             controller.setServico(new FornecedorServico());
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.setFornecedor(fornecedor);
             controller.updateFormData();
         });
+         */
     }
 
     public void onBtnProdutoActio(ActionEvent event){

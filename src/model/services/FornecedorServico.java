@@ -31,4 +31,8 @@ public class FornecedorServico {
             dao.update(fornecedor);
         }
     }
+
+    public void deleteById(Integer id){
+        dao.deleteById(id);
+    }
 }

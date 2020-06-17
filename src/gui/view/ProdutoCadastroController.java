@@ -105,7 +105,7 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
         Stage parentStage = Utils.atualStage(event);
         Fornecedor fornecedor = new Fornecedor();
         carregaDialog(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
-            controller.setServico(new FornecedorServico());
+            controller.setFornecedorServico(new FornecedorServico());
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.setFornecedor(fornecedor);
             controller.subscribeDataChangeListener(this);

@@ -27,9 +27,8 @@ import java.util.ResourceBundle;
 public class FornecedorCadastroController implements Initializable {
 
     private Fornecedor fornecedor;
-    private FornecedorServico servico;
+    private FornecedorServico fornecedorServico;
     private EstabelecimentoServico estabelecimentoServico;
-    private Estabelecimento estabelecimento;
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     @FXML
@@ -69,16 +68,12 @@ public class FornecedorCadastroController implements Initializable {
         this.fornecedor = fornecedor;
     }
 
-    public void setServico(FornecedorServico servico) {
-        this.servico = servico;
+    public void setFornecedorServico(FornecedorServico fornecedorServico) {
+        this.fornecedorServico = fornecedorServico;
     }
 
     public void setEstabelecimentoServico(EstabelecimentoServico estabelecimentoServico) {
         this.estabelecimentoServico = estabelecimentoServico;
-    }
-
-    public void setEstabelecimento(Estabelecimento estabelecimento) {
-        this.estabelecimento = estabelecimento;
     }
 
     public void subscribeDataChangeListener(DataChangeListener listener) {
@@ -116,7 +111,7 @@ public class FornecedorCadastroController implements Initializable {
             try {
                 fornecedor = getFormData();
 
-                servico.saveOrUpdate(fornecedor);
+                fornecedorServico.saveOrUpdate(fornecedor);
                 Alerts.showAlert("Fornecedor Salvo com sucesso", null, "Fornecedor " + fornecedor.getNome() + " cadastrado com sucesso", Alert.AlertType.CONFIRMATION);
                 notifyDataChanged();
                 Utils.atualStage(event).close();
