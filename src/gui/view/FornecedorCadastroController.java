@@ -130,12 +130,13 @@ public class FornecedorCadastroController implements Initializable {
 
     public void updateFormData() {
 
-        if (fornecedor == null) {
+        if (fornecedorServico == null) {
             throw new IllegalStateException("fornecedor estava null");
         }
 
         lblId.setText(String.valueOf(fornecedor.getId()));
         txtNome.setText(fornecedor.getNome());
+        cbbEstabelecimento.getSelectionModel().select(fornecedor.getEstabelecimento());
 
         List<Estabelecimento> estabelecimentoList = estabelecimentoServico.findAll();
         obbEstabelecimento = FXCollections.observableArrayList(estabelecimentoList);
@@ -146,8 +147,6 @@ public class FornecedorCadastroController implements Initializable {
     private Fornecedor getFormData() {
 
         Fornecedor fornecedor = new Fornecedor();
-
-        Estabelecimento est = cbbEstabelecimento.getSelectionModel().getSelectedItem();
 
         fornecedor.setId(Utils.converterInteiro(lblId.getText()));
         fornecedor.setNome(txtNome.getText());

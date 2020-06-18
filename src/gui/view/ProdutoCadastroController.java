@@ -200,7 +200,6 @@ public class ProdutoCadastroController implements Initializable, DataChangeListe
 
         txtNome.setText(produto.getNome());
 
-
         updateCbbCategoria();
         cbbCategoria.getSelectionModel().select(produto.getCategoria());
         updateCbbFornecedor();
