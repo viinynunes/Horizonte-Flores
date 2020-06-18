@@ -6,6 +6,7 @@ import gui.listeners.KeyEventHandler;
 import gui.listeners.PedidoChangeListener;
 import gui.relatorio.*;
 import gui.util.Alerts;
+import gui.util.LoadPage;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +30,6 @@ import javafx.stage.StageStyle;
 import model.entities.Cliente;
 import model.entities.ItemPedido;
 import model.entities.Pedido;
-import model.entities.Produto;
 import model.services.*;
 
 import java.io.IOException;
@@ -47,9 +47,10 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     private PedidoServico pedidoServico = new PedidoServico();
     private List<ItemPedido> itemPedidoList = new ArrayList<>();
     private static EventHandler<KeyEvent> keyEventEventHandler;
-    KeyEventHandler eventHandler = new ClienteListController();
-    LocalDate localDateDataPedido;
-    java.sql.Date dataPedido;
+    private KeyEventHandler eventHandler = new ClienteListController();
+    private LocalDate localDateDataPedido;
+    private java.sql.Date dataPedido;
+    private Stage parentStage;
 
     @FXML
     private ScrollPane scrollPane;
@@ -58,9 +59,15 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     @FXML
     private MenuItem miPedido;
     @FXML
-    private MenuItem miAbasProduto;
+    private MenuItem miCadastroProduto;
     @FXML
-    private MenuItem miAbasCliente;
+    private MenuItem miCadastroCliente;
+    @FXML
+    private MenuItem miCadastroFornecedor;
+    @FXML
+    private MenuItem miCadastroCategoria;
+    @FXML
+    private MenuItem miCadastroEstabelecimento;
     @FXML
     private MenuItem miRelPedido;
     @FXML
@@ -182,7 +189,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     }
 
     @FXML
-    public void onMiAbasProdutoAction() {
+    public void onMiCadastroProdutoAction() {
         carregaView("/gui/view/ProdutoList.fxml", (ProdutoListController controller) -> {
             controller.setProdutoServico(new ProdutoServico());
             controller.updateTableView();
@@ -192,7 +199,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     }
 
     @FXML
-    public void onMiAbasClienteAction() {
+    public void onMiCadastroClienteAction() {
         carregaView("/gui/view/ClienteList.fxml", (ClienteListController controller) -> {
             controller.setClienteServico(new ClienteServico());
             controller.updateTableView();
@@ -201,11 +208,26 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     }
 
     @FXML
-    public void onMenuCadastroAction() {
-        System.out.println("Cadastro");
-        carregaView("/gui/view/Cadastro.fxml", (CadastroController controller) -> {
-            controller.setProduto(new Produto());
-            controller.setCliente(new Cliente());
+    public void onMiCadastroFornecedorAction(){
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/FornecedorListDialog.fxml", (FornecedorListDialogController controller)->{
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.updateFormData();
+        });
+    }
+
+    @FXML
+    public void onMiCadastroCategoriaAction(){
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/CategoriaListDialog.fxml", (CategoriaListDialogController controller)->{
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.updateFormData();
+        });
+    }
+
+    @FXML
+    public void onMiCadastroEstabelecimentoAction(){
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/EstabelecimentoListDialog.fxml", (EstabelecimentoListDialogController controller)->{
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.updateFormData();
         });
     }
 
@@ -297,6 +319,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
 
     private EventHandler<KeyEvent> getEventHandler() {
         keyEventEventHandler = event -> {
+
+            parentStage = Utils.atualStage(event);
 
             if (event.getCode() == KeyCode.F2) {
                 novoPedido(event);

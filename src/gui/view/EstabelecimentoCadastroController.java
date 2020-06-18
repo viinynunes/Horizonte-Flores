@@ -148,9 +148,12 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
             throw new IllegalStateException("Estabelecimento estava null");
         }
 
-        lblId.setText(String.valueOf(estabelecimento.getId()));
-        txtNome.setText(estabelecimento.getNome());
-        txaEndereco.setText(estabelecimento.getEndereco().toString());
+        if (estabelecimento.getId() != null){
+            lblId.setText(String.valueOf(estabelecimento.getId()));
+            txtNome.setText(estabelecimento.getNome());
+            txaEndereco.setText(estabelecimento.getEndereco().toString());
+        }
+
     }
 
     private Estabelecimento getFormData() {

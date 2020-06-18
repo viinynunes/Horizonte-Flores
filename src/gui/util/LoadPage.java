@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 public class LoadPage {
+
     public static synchronized <T> void carregaDialogTittledPane(Stage parentStage, String caminho, Consumer<T> init) {
 
         try {

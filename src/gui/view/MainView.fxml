@@ -31,16 +31,15 @@
                       <MenuItem fx:id="miPedido" mnemonicParsing="false" onAction="#onMiPedidoAction" text="Pedidos" />
                     </items>
                   </Menu>
-                  <Menu mnemonicParsing="false" text="Abas">
+                  <Menu mnemonicParsing="false" text="Cadastro">
                     <items>
-                    <MenuItem fx:id="miAbasProduto" mnemonicParsing="false" onAction="#onMiAbasProdutoAction" text="Produto" />
-                        <MenuItem fx:id="miAbasCliente" mnemonicParsing="false" onAction="#onMiAbasClienteAction" text="Cliente" />
+                    <MenuItem fx:id="miCadastroProduto" mnemonicParsing="false" onAction="#onMiCadastroProdutoAction" text="Produto" />
+                        <MenuItem fx:id="miCadastroCliente" mnemonicParsing="false" onAction="#onMiCadastroClienteAction" text="Cliente" />
+                        <MenuItem fx:id="miCadastroFornecedor" mnemonicParsing="false" onAction="#onMiCadastroFornecedorAction" text="Fornecedor" />
+                        <MenuItem fx:id="miCadastroCategoria" mnemonicParsing="false" onAction="#onMiCadastroCategoriaAction" text="Categoria" />
+                        <MenuItem fx:id="miCadastroEstabelecimento" mnemonicParsing="false" onAction="#onMiCadastroEstabelecimentoAction" text="Estabelecimento" />
                     </items>
                   </Menu>
-                <Menu mnemonicParsing="false" onAction="#onMenuCadastroAction" text="Cadastro">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuCadastroAction" text="Cadastros" />
-                     </items></Menu>
                   <Menu mnemonicParsing="false" text="Sobra">
                     <items>
                         <MenuItem fx:id="miSobrasCaixaria" mnemonicParsing="false" onAction="#onMiSobrasCaixariaAction" text="Sobra Caixaria" />

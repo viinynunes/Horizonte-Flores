@@ -10,7 +10,6 @@ public class Utils {
         return (Stage) ((Node) event.getSource()).getScene().getWindow();
     }
 
-
     public static Integer converterInteiro(String msg) {
         try {
             return Integer.parseInt(msg);
