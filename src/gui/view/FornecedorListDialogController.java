@@ -3,6 +3,7 @@ package gui.view;
 import db.DBException;
 import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
+import gui.util.LoadPage;
 import gui.util.Utils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -60,7 +61,7 @@ public class FornecedorListDialogController implements Initializable, DataChange
         Fornecedor fornecedor = new Fornecedor();
         Stage parentStage = Utils.atualStage(event);
 
-        carregaDialogTittledPane(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
+        LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
             controller.setFornecedor(fornecedor);
             controller.setFornecedorServico(new FornecedorServico());
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
@@ -79,7 +80,7 @@ public class FornecedorListDialogController implements Initializable, DataChange
         if (fornecedor == null) {
             Alerts.showAlert("Selecione um fornecedor", null, "Selecione um fornecedor", Alert.AlertType.INFORMATION);
         } else {
-            carregaDialogTittledPane(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
+            LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) -> {
                 controller.setFornecedor(fornecedor);
                 controller.setFornecedorServico(new FornecedorServico());
                 controller.setEstabelecimentoServico(new EstabelecimentoServico());
@@ -137,27 +138,6 @@ public class FornecedorListDialogController implements Initializable, DataChange
         tbvListaFornecedor.setItems(filteredFornecedorList);
         tbvListaFornecedor.refresh();
         txtLocaliza.requestFocus();
-    }
-
-    public synchronized <T> void carregaDialogTittledPane(Stage parentStage, String caminho, Consumer<T> init) {
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
-            TitledPane pane = loader.load();
-            Stage dialog = new Stage();
-
-            T controller = loader.getController();
-            init.accept(controller);
-
-            dialog.setTitle("Cadastro");
-            dialog.setScene(new Scene(pane));
-            dialog.setResizable(false);
-            dialog.initOwner(parentStage);
-            dialog.initModality(Modality.WINDOW_MODAL);
-            dialog.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private FilteredList<Fornecedor> filteredTableView(ObservableList<Fornecedor> obbFornecedorList) {

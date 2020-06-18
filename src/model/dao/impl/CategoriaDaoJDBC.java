@@ -72,7 +72,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 
             st.setInt(1, id);
 
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         } finally {

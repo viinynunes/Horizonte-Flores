@@ -52,9 +52,17 @@ public class CadastroController implements Initializable {
     public void onBtnCategoriaAction(ActionEvent event){
 
         Stage parentStage = Utils.atualStage(event);
+
+        carregaDialogVBox(parentStage, "/gui/view/CategoriaListDialog.fxml", (CategoriaListDialogController controller) ->{
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.updateFormData();
+        });
+        /*
         carregaDialog(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller)->{
             controller.setCategoriaServico(new CategoriaServico());
         });
+
+         */
     }
 
     public void onBtnClienteAction(ActionEvent event){

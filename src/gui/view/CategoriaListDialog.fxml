@@ -10,18 +10,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.ClienteListDialogController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.CategoriaListDialogController">
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
             <padding>
                 <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
             </padding>
             <center>
-                <TableView fx:id="tbvListaCliente" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="tbvListaCategoria" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
-                        <TableColumn fx:id="tbcClienteId" prefWidth="75.0" text="ID" />
-                        <TableColumn fx:id="tbcClienteNome" prefWidth="397.59999084472656" text="Nome" />
-                        <TableColumn fx:id="tbcClienteTelefone" prefWidth="116.79996337890623" text="Telefone" />
+                        <TableColumn fx:id="tbcCategoriaId" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="tbcCategoriaNome" prefWidth="364.00001525878906" text="Nome" />
+                        <TableColumn fx:id="tbcCategoriaAbreviacao" prefWidth="150.39996337890625" text="Abreviação" />
                     </columns>
                     <BorderPane.margin>
                         <Insets top="10.0" />
@@ -33,22 +33,22 @@
                     <children>
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                             <children>
-                                <Button minWidth="130.0" mnemonicParsing="false" text="Novo">
+                                <Button fx:id="btnNovo" minWidth="130.0" mnemonicParsing="false" onAction="#onBtnNovoAction" text="Novo">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Button>
-                                <Button minWidth="130.0" mnemonicParsing="false" text="Editar">
+                                <Button fx:id="btnEditar" minWidth="130.0" mnemonicParsing="false" onAction="#onBtnEditarAction" text="Editar">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Button>
-                                <Button minWidth="130.0" mnemonicParsing="false" text="Apagar">
+                                <Button fx:id="btnApagar" minWidth="130.0" mnemonicParsing="false" onAction="#onBtnApagarAction" text="Apagar">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </Button>
-                                <Button minWidth="130.0" mnemonicParsing="false" text="Cancelar">
+                                <Button fx:id="btnCancelar" minWidth="130.0" mnemonicParsing="false" onAction="#onBtnCancelarAction" text="Cancelar">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
@@ -60,7 +60,7 @@
                         </HBox>
                         <HBox prefHeight="52.0" prefWidth="600.0" spacing="15.0">
                             <children>
-                                <TextField fx:id="txtProcura" minHeight="30.0" prefHeight="40.0" prefWidth="590.0" />
+                                <TextField fx:id="txtLocaliza" minHeight="30.0" prefHeight="40.0" prefWidth="590.0" />
                             </children>
                         </HBox>
                     </children>

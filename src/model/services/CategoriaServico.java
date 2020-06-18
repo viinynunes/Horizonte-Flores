@@ -22,5 +22,9 @@ public class CategoriaServico {
         }
     }
 
+    public void deleteById(Integer id){
+        dao.deleteById(id);
+    }
+
 
 }
