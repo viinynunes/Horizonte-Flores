@@ -10,22 +10,15 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Categoria;
-import model.entities.Estabelecimento;
-import model.entities.Fornecedor;
 import model.services.CategoriaServico;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 public class CategoriaListDialogController implements Initializable, DataChangeListener {
 
@@ -51,10 +44,10 @@ public class CategoriaListDialogController implements Initializable, DataChangeL
     @FXML
     private TableColumn<String, Categoria> tbcCategoriaAbreviacao;
 
-    public void onBtnNovoAction(Event event){
+    public void onBtnNovoAction(Event event) {
         Stage parentStage = Utils.atualStage(event);
         Categoria categoria = new Categoria();
-        LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller) ->{
+        LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller) -> {
             controller.setCategoria(categoria);
             controller.setCategoriaServico(new CategoriaServico());
             controller.updateTableView();
@@ -62,14 +55,14 @@ public class CategoriaListDialogController implements Initializable, DataChangeL
         });
     }
 
-    public void onBtnEditarAction(Event event){
+    public void onBtnEditarAction(Event event) {
         Stage parentStage = Utils.atualStage(event);
         Categoria categoria = tbvListaCategoria.getSelectionModel().getSelectedItem();
 
-        if (categoria == null){
+        if (categoria == null) {
             Alerts.showAlert("Selecione uma categoria", null, "Selecione uma categoria", Alert.AlertType.INFORMATION);
         } else {
-            LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller) ->{
+            LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller) -> {
                 controller.setCategoria(categoria);
                 controller.setCategoriaServico(new CategoriaServico());
                 controller.updateTableView();
@@ -78,20 +71,21 @@ public class CategoriaListDialogController implements Initializable, DataChangeL
         }
     }
 
-    public void onBtnApagarAction(){
+    public void onBtnApagarAction() {
         Categoria categoria = tbvListaCategoria.getSelectionModel().getSelectedItem();
-        if (categoria == null){
+        if (categoria == null) {
             Alerts.showAlert("Selecione uma categoria", null, "Selecione uma categoria", Alert.AlertType.INFORMATION);
-        }
-        try {
-            categoriaServico.deleteById(categoria.getId());
-            updateFormData();
-        } catch (DBException e){
-            Alerts.showAlert("Erro ao apagar categoria", null,e.getMessage(), Alert.AlertType.ERROR);
+        } else {
+            try {
+                categoriaServico.deleteById(categoria.getId());
+                updateFormData();
+            } catch (DBException e) {
+                Alerts.showAlert("Erro ao apagar categoria", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
         }
     }
 
-    public void onBtnCancelarAction(Event event){
+    public void onBtnCancelarAction(Event event) {
         Stage parentStage = Utils.atualStage(event);
         parentStage.close();
     }
@@ -107,8 +101,8 @@ public class CategoriaListDialogController implements Initializable, DataChangeL
         tbcCategoriaAbreviacao.setCellValueFactory(new PropertyValueFactory<>("abreviacao"));
     }
 
-    public void updateFormData(){
-        if (categoriaServico == null){
+    public void updateFormData() {
+        if (categoriaServico == null) {
             throw new IllegalStateException("categoria servico null");
         }
 
@@ -124,28 +118,24 @@ public class CategoriaListDialogController implements Initializable, DataChangeL
     private FilteredList<Categoria> filteredTableView(ObservableList<Categoria> obbCategoriaList) {
         FilteredList<Categoria> filteredCategoriaList = new FilteredList<>(obbCategoriaList);
 
-        txtLocaliza.textProperty().addListener(((observable, oldValue, newValue) -> {
+        txtLocaliza.textProperty().addListener(((observable, oldValue, newValue) -> filteredCategoriaList.setPredicate(categoria -> {
 
-            filteredCategoriaList.setPredicate(categoria -> {
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
 
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
+            String lowerCaseFilter = newValue.toLowerCase();
 
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                if (categoria.getNome().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else if (categoria.getAbreviacao().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                } else if (categoria.getId().toString().contains(lowerCaseFilter)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-        }));
+            if (categoria.getNome().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (categoria.getAbreviacao().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else if (categoria.getId().toString().contains(lowerCaseFilter)) {
+                return true;
+            } else {
+                return false;
+            }
+        })));
 
         return filteredCategoriaList;
     }

@@ -1,6 +1,7 @@
 package gui.view;
 
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.listeners.EnderecoChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
@@ -24,13 +25,16 @@ import model.services.EstabelecimentoServico;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class EstabelecimentoCadastroController implements Initializable, EnderecoChangeListener {
 
     private Estabelecimento estabelecimento;
-    private EstabelecimentoServico servico;
+    private EstabelecimentoServico estabelecimentoServico;
     private Endereco endereco;
+    private List<DataChangeListener> dataChangeListenerList = new ArrayList<>();
 
     @FXML
     private VBox box;
@@ -63,13 +67,20 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
             try {
                 estabelecimento = getFormData();
 
-                servico.saveOrUpdate(estabelecimento);
+                estabelecimentoServico.saveOrUpdate(estabelecimento);
                 Alerts.showAlert("Estabelecimento cadastrado com sucesso", null, "Estabelecimento " + estabelecimento.getNome() +
                         " cadastrado com sucesso !", Alert.AlertType.CONFIRMATION);
+                notifyDataChanged();
                 Utils.atualStage(event).close();
             } catch (DBException e){
                 Alerts.showAlert("Erro ao cadastrar estabelecimento", null, e.getMessage(), Alert.AlertType.ERROR);
             }
+        }
+    }
+
+    private void notifyDataChanged(){
+        for (DataChangeListener listener : dataChangeListenerList){
+            listener.onDataChanged();
         }
     }
 
@@ -96,13 +107,17 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
         this.estabelecimento = estabelecimento;
     }
 
-    public void setServico(EstabelecimentoServico servico) {
-        this.servico = servico;
+    public void setEstabelecimentoServico(EstabelecimentoServico estabelecimentoServico) {
+        this.estabelecimentoServico = estabelecimentoServico;
     }
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
         txaEndereco.setText(endereco.toString());
+    }
+
+    public void subscribeChangeListener(DataChangeListener listener){
+        dataChangeListenerList.add(listener);
     }
 
     @Override
@@ -129,13 +144,13 @@ public class EstabelecimentoCadastroController implements Initializable, Enderec
     }
 
     public void updateFormData() {
-        if (estabelecimento == null) {
+        if (estabelecimentoServico == null) {
             throw new IllegalStateException("Estabelecimento estava null");
         }
 
         lblId.setText(String.valueOf(estabelecimento.getId()));
         txtNome.setText(estabelecimento.getNome());
-
+        txaEndereco.setText(estabelecimento.getEndereco().toString());
     }
 
     private Estabelecimento getFormData() {

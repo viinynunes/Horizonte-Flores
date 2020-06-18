@@ -62,7 +62,7 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
             st.setInt(2, estabelecimento.getEndereco().getId());
             st.setInt(3, estabelecimento.getId());
 
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e){
             throw new DBException(e.getMessage());
         } finally {
@@ -78,7 +78,7 @@ public class EstabelecimentoDaoJDBC implements EstabelecimentoDao {
             st = conn.prepareStatement("delete from estabelecimento where id = ?");
             st.setInt(1, id);
 
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e){
             throw new DBException(e.getMessage());
         }

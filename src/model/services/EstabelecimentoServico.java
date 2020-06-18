@@ -25,4 +25,8 @@ public class EstabelecimentoServico {
     public Estabelecimento findById(Integer id){
         return dao.findById(id);
     }
+
+    public void deleteById(Integer id){
+        dao.deleteById(id);
+    }
 }

@@ -1,5 +1,6 @@
 package gui.view;
 
+import gui.util.LoadPage;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,21 +54,15 @@ public class CadastroController implements Initializable {
 
         Stage parentStage = Utils.atualStage(event);
 
-        carregaDialogVBox(parentStage, "/gui/view/CategoriaListDialog.fxml", (CategoriaListDialogController controller) ->{
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/CategoriaListDialog.fxml", (CategoriaListDialogController controller) ->{
             controller.setCategoriaServico(new CategoriaServico());
             controller.updateFormData();
         });
-        /*
-        carregaDialog(parentStage, "/gui/view/CategoriaCadastro.fxml", (CategoriaCadastroController controller)->{
-            controller.setCategoriaServico(new CategoriaServico());
-        });
-
-         */
     }
 
     public void onBtnClienteAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialogVBox(parentStage, "/gui/view/ClienteCadastro.fxml", (ClienteCadastroController controller) ->{
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/ClienteCadastro.fxml", (ClienteCadastroController controller) ->{
             controller.setServico(new ClienteServico());
             controller.setCliente(cliente);
             controller.updateFormData();
@@ -76,7 +71,7 @@ public class CadastroController implements Initializable {
 
     public void onBtnEnderecoAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialog(parentStage, "/gui/view/EnderecoCadastro.fxml", (EnderecoCadastroController controller)->{
+        LoadPage.carregaDialogTittledPane(parentStage, "/gui/view/EnderecoCadastro.fxml", (EnderecoCadastroController controller)->{
             controller.setEndereco(endereco);
             controller.setServico(new EnderecoServico());
             controller.updateDataForm();
@@ -85,33 +80,24 @@ public class CadastroController implements Initializable {
 
     public void onBtnEstabelecimentoAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialogVBox(parentStage, "/gui/view/EstabelecimentoCadastro.fxml", (EstabelecimentoCadastroController controller) ->{
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/EstabelecimentoListDialog.fxml", (EstabelecimentoListDialogController controller) ->{
 
-            controller.setServico(new EstabelecimentoServico());
-
+           controller.setEstabelecimentoServico(new EstabelecimentoServico());
+           controller.updateFormData();
         });
     }
 
     public void onBtnFornecedorAction(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialogVBox(parentStage, "/gui/view/FornecedorListDialog.fxml", (FornecedorListDialogController controller) ->{
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/FornecedorListDialog.fxml", (FornecedorListDialogController controller) ->{
             controller.setFornecedorServico(new FornecedorServico());
             controller.updateFormData();
         });
-
-
-        /*carregaDialog(parentStage, "/gui/view/FornecedorCadastro.fxml", (FornecedorCadastroController controller) ->{
-            controller.setServico(new FornecedorServico());
-            controller.setEstabelecimentoServico(new EstabelecimentoServico());
-            controller.setFornecedor(fornecedor);
-            controller.updateFormData();
-        });
-         */
     }
 
     public void onBtnProdutoActio(ActionEvent event){
         Stage parentStage = Utils.atualStage(event);
-        carregaDialogVBox(parentStage, "/gui/view/ProdutoCadastro.fxml", (ProdutoCadastroController controller)->{
+        LoadPage.carregaDialogVBox(parentStage, "/gui/view/ProdutoCadastro.fxml", (ProdutoCadastroController controller)->{
             controller.setEstabelecimentoServico(new EstabelecimentoServico());
             controller.setCategoriaServico(new CategoriaServico());
             controller.setFornecedorServico(new FornecedorServico());
@@ -125,47 +111,5 @@ public class CadastroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    }
-
-    public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> init){
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
-            TitledPane pane = loader.load();
-            Stage dialog = new Stage();
-
-            T controller = loader.getController();
-            init.accept(controller);
-
-            dialog.setTitle("Cadastro");
-            dialog.setScene(new Scene(pane));
-            dialog.setResizable(false);
-            dialog.initOwner(parentStage);
-            dialog.initModality(Modality.WINDOW_MODAL);
-            dialog.showAndWait();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public synchronized <T> void carregaDialogVBox(Stage parentStage, String caminho, Consumer<T> init){
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
-            VBox pane = loader.load();
-            Stage dialog = new Stage();
-
-            T controller = loader.getController();
-            init.accept(controller);
-
-            dialog.setTitle("Cadastro");
-            dialog.setScene(new Scene(pane));
-            dialog.setResizable(false);
-            dialog.initOwner(parentStage);
-            dialog.initModality(Modality.WINDOW_MODAL);
-            dialog.showAndWait();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 }
