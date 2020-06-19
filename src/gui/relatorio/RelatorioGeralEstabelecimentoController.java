@@ -98,7 +98,7 @@ public class RelatorioGeralEstabelecimentoController implements Initializable {
 
     @FXML
     public void onBtnExportarAction(){
-        Sobra sobra = sobraList.get(1);
+        Sobra sobra = sobraList.get(0);
         String nome = sobra.getProduto().getFornecedor().getEstabelecimento().getNome() + " " + sobra.getData().toString();
         ExportExcel.createExcelByEstabelecimento(sobraList, nome);
     }

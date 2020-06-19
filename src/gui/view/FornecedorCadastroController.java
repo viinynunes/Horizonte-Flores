@@ -127,7 +127,6 @@ public class FornecedorCadastroController implements Initializable {
         }
     }
 
-
     public void updateFormData() {
 
         if (fornecedorServico == null) {

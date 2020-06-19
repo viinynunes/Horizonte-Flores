@@ -1,12 +1,11 @@
 package gui.util;
 
 import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
 import model.entities.*;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
@@ -26,7 +25,7 @@ public class ExportExcel {
 
     public static void createExcelRelatorio(List<Relatorio> list, String name) {
 
-        fileName = "D:/Documentos/" + name + ".xls";
+        fileName = "C:/HFP/" + name + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
@@ -60,6 +59,8 @@ public class ExportExcel {
             cellProdutoQuantidade.setCellValue(r.getQuantidade());
         }
 
+        saveFile(workbook);
+        /*
         try {
             FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
             workbook.write(out);
@@ -68,11 +69,13 @@ public class ExportExcel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
 
     public static void createExcelPedido(Set<ItemPedido> list, List<Integer> countList, String name) {
 
-        fileName = "D:/Documentos/Pedido " + name + ".xls";
+        fileName = "C:/HFP/Pedido" + name + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
@@ -98,7 +101,7 @@ public class ExportExcel {
         for (ItemPedido i : list) {
 
             cliente = clienteMap.get(i.getPedido().getCliente().getId());
-            if (cliente == null){
+            if (cliente == null) {
                 linhas = countList.get(itaratorCountList++);
             }
             if (linhas > restaRow) {
@@ -138,18 +141,16 @@ public class ExportExcel {
             calculaRestaRow();
         }
 
-        try {
-            FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
-            workbook.write(out);
-            out.close();
-            Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            aux = 0;
-            rowNumb = 0;
-            list.clear();
-        }
+        saveFile(workbook);
+
+        //workbook.write(out);
+        //out.close();
+        //Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
+
+        aux = 0;
+        rowNumb = 0;
+        list.clear();
+
     }
 
     private static void calculaRestaRow() {
@@ -172,7 +173,7 @@ public class ExportExcel {
 
     public static void createExcelByEstabelecimento(List<Sobra> list, String name) {
 
-        fileName = "D:/Documentos/Resumo " + name + ".xls";
+        fileName = "C:/HFP/Resumo " + name + ".xls";
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
@@ -223,6 +224,8 @@ public class ExportExcel {
 
         }
 
+        saveFile(workbook);
+        /*
         try {
             FileOutputStream out = new FileOutputStream(new File(ExportExcel.fileName));
             workbook.write(out);
@@ -231,6 +234,8 @@ public class ExportExcel {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
     }
 
     private static HSSFCellStyle createBorderThin(HSSFWorkbook workbook) {
@@ -254,6 +259,24 @@ public class ExportExcel {
         style.setAlignment(HorizontalAlignment.CENTER);
 
         return style;
+    }
+
+    private static void saveFile(HSSFWorkbook workbook) {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xls");
+        fileChooser.getExtensionFilters().add(extensionFilter);
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try (FileOutputStream out = new FileOutputStream(file.getAbsolutePath())) {
+                workbook.write(out);
+                Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
