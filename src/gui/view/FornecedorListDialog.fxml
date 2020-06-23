@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.FornecedorListDialogController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #1d1d1d;" stylesheets="@../css/dialog-cadastros-list.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.FornecedorListDialogController">
     <children>
         <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
             <padding>
@@ -20,8 +20,8 @@
                 <TableView fx:id="tbvListaFornecedor" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="tbcFornecedorId" prefWidth="75.0" text="ID" />
-                        <TableColumn fx:id="tbcFornecedorNome" prefWidth="319.20008850097656" text="Nome" />
-                        <TableColumn fx:id="tbcFornecedorEstabelecimento" prefWidth="195.19989013671875" text="Estabelecimento" />
+                        <TableColumn fx:id="tbcFornecedorNome" prefWidth="295.2000274658203" text="Nome" />
+                        <TableColumn fx:id="tbcFornecedorEstabelecimento" prefWidth="220.0" text="Estabelecimento" />
                     </columns>
                     <BorderPane.margin>
                         <Insets top="10.0" />

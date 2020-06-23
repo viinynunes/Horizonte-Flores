@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,6 +41,8 @@ public class ClienteListDialogController implements Initializable, DataChangeLis
     private List<ClienteChangeListener> clienteChangeListeners = new ArrayList<>();
 
     @FXML
+    private VBox vBox;
+    @FXML
     private TextField txtProcura;
     @FXML
     private Button btnNovo;
@@ -54,7 +58,11 @@ public class ClienteListDialogController implements Initializable, DataChangeLis
     private ObservableList<Cliente> obbList;
 
 
-    public void onBtnNovoAction(ActionEvent event) {
+    public void onBtnNovoAction(Event event) {
+        novoCliente(event);
+    }
+
+    private void novoCliente(Event event) {
         Stage parentStage = Utils.atualStage(event);
         Cliente cliente = new Cliente();
         carregaDialog(parentStage, "/gui/view/ClienteCadastro.fxml", (ClienteCadastroController controller) ->{
@@ -108,6 +116,12 @@ public class ClienteListDialogController implements Initializable, DataChangeLis
                 setCliente(tbvListaCliente.getSelectionModel().getSelectedItem());
                 notifyDataChanged();
                 Utils.atualStage(event).close();
+            }
+        });
+
+        vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F5){
+                novoCliente(event);
             }
         });
     }

@@ -15,53 +15,57 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #555866;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.MainViewController">
+<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #1d1d1d;;" stylesheets="@../css/dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.MainViewController">
    <content>
-      <VBox prefHeight="850.0" prefWidth="1530.0" style="-fx-background-color: #454461;">
+      <VBox prefHeight="850.0" prefWidth="1530.0" style="-fx-background-color: #1d1d1d;" stylesheets="@../css/dark-theme.css">
          <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="Arquivo">
-                  <items>
-                    <MenuItem fx:id="miFechar" mnemonicParsing="false" onAction="#onMiFecharAction" text="Fechar" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="Pedido">
-                    <items>
-                      <MenuItem fx:id="miPedido" mnemonicParsing="false" onAction="#onMiPedidoAction" text="Pedidos" />
-                    </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Cadastro">
-                    <items>
-                    <MenuItem fx:id="miCadastroProduto" mnemonicParsing="false" onAction="#onMiCadastroProdutoAction" text="Produto" />
-                        <MenuItem fx:id="miCadastroCliente" mnemonicParsing="false" onAction="#onMiCadastroClienteAction" text="Cliente" />
-                        <MenuItem fx:id="miCadastroFornecedor" mnemonicParsing="false" onAction="#onMiCadastroFornecedorAction" text="Fornecedor" />
-                        <MenuItem fx:id="miCadastroCategoria" mnemonicParsing="false" onAction="#onMiCadastroCategoriaAction" text="Categoria" />
-                        <MenuItem fx:id="miCadastroEstabelecimento" mnemonicParsing="false" onAction="#onMiCadastroEstabelecimentoAction" text="Estabelecimento" />
-                    </items>
-                  </Menu>
-                  <Menu mnemonicParsing="false" text="Sobra">
-                    <items>
-                        <MenuItem fx:id="miSobrasCaixaria" mnemonicParsing="false" onAction="#onMiSobrasCaixariaAction" text="Sobra Caixaria" />
-                    </items>
-                  </Menu>
-                <Menu mnemonicParsing="false" text="Relatório">
-                  <items>
-                        <MenuItem fx:id="miRelPedido" mnemonicParsing="false" onAction="#onMiRelPedidosAction" text="Pedidos" />
-                    <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Caixaria" />
-                        <MenuItem fx:id="miRelEstabelecimento" mnemonicParsing="false" onAction="#onMiRelEstabelecimentoAction" text="Estabelecimento" />
-                        <MenuItem fx:id="miRelCeaflor" mnemonicParsing="false" onAction="#onMiRelCeaflorAction" text="Ceaflor" />
-                        <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
-                        <MenuItem fx:id="miRelGeralPorCliente" mnemonicParsing="false" onAction="#onMiRelGeralPorClienteAction" text="Geral por Cliente" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações">
-                     <items>
-                        <MenuItem fx:id="miTransacoes" mnemonicParsing="false" text="Transações Produto" />
-                     </items></Menu>
-              </menus>
-            </MenuBar>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+            <HBox prefHeight="100.0" prefWidth="200.0" stylesheets="@../css/menu-bar-dark.css">
+               <children>
+                  <MenuBar stylesheets="@../css/menu-bar-dark.css">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Arquivo">
+                        <items>
+                          <MenuItem fx:id="miFechar" mnemonicParsing="false" onAction="#onMiFecharAction" text="Fechar" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Pedido">
+                          <items>
+                            <MenuItem fx:id="miPedido" mnemonicParsing="false" onAction="#onMiPedidoAction" text="Pedidos" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Cadastro">
+                          <items>
+                          <MenuItem fx:id="miCadastroProduto" mnemonicParsing="false" onAction="#onMiCadastroProdutoAction" text="Produto" />
+                              <MenuItem fx:id="miCadastroCliente" mnemonicParsing="false" onAction="#onMiCadastroClienteAction" text="Cliente" />
+                              <MenuItem fx:id="miCadastroFornecedor" mnemonicParsing="false" onAction="#onMiCadastroFornecedorAction" text="Fornecedor" />
+                              <MenuItem fx:id="miCadastroCategoria" mnemonicParsing="false" onAction="#onMiCadastroCategoriaAction" text="Categoria" />
+                              <MenuItem fx:id="miCadastroEstabelecimento" mnemonicParsing="false" onAction="#onMiCadastroEstabelecimentoAction" text="Estabelecimento" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Sobra">
+                          <items>
+                              <MenuItem fx:id="miSobrasCaixaria" mnemonicParsing="false" onAction="#onMiSobrasCaixariaAction" text="Sobra Caixaria" />
+                          </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Relatório">
+                        <items>
+                              <MenuItem fx:id="miRelPedido" mnemonicParsing="false" onAction="#onMiRelPedidosAction" text="Pedidos" />
+                              <MenuItem fx:id="miRelEstabelecimento" mnemonicParsing="false" onAction="#onMiRelEstabelecimentoAction" text="Estabelecimento" />
+                          <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Caixaria" />
+                              <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
+                              <MenuItem fx:id="miRelGeralPorCliente" mnemonicParsing="false" onAction="#onMiRelGeralPorClienteAction" text="Geral por Cliente" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" onAction="#onMiTransacoes" text="Transações">
+                           <items>
+                              <MenuItem fx:id="miTransacoes" mnemonicParsing="false" text="Transações Produto" />
+                           </items>
+                        </Menu>
+                    </menus>
+                  </MenuBar>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0" stylesheets="@../css/button.css">
                <children>
                   <Button fx:id="btnNovoPedido" minWidth="200.0" mnemonicParsing="false" onAction="#onBtnNovoPedidoAction" prefHeight="102.0" prefWidth="191.0" text="Novo Pedido [F2]">
                      <font>
@@ -94,7 +98,7 @@
                   <Insets left="10.0" top="10.0" />
                </padding>
             </HBox>
-            <TableView fx:id="tbvListaPedidos" prefHeight="714.0" prefWidth="1521.0" style="-fx-background-color: #454461;">
+            <TableView fx:id="tbvListaPedidos" prefHeight="714.0" prefWidth="1521.0" stylesheets="@../css/table-view-Main.css">
               <columns>
                   <TableColumn fx:id="tbcPedidoId" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="tbcPedidoData" prefWidth="208.80003106594086" text="Data" />

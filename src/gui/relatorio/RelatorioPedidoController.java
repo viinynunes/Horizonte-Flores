@@ -85,14 +85,14 @@ public class RelatorioPedidoController implements Initializable {
         } catch (DBException e){
             Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
             btnExportar.setVisible(false);
-        } finally {
-            pedidoList.clear();
         }
     }
 
     @FXML
     private void onBtnExportarAction(){
         ExportExcel.createExcelPedido(itemPedidoListFinal, countList, iniDate.toString());
+        countList.clear();
+        pedidoList.clear();
     }
 
     @Override

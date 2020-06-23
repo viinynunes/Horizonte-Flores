@@ -292,6 +292,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
                 }
             }
         });
+
+        hyperlinkSelecionarCliente.requestFocus();
     }
 
     private void addItemPedido(Produto produto) {

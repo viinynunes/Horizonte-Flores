@@ -1,0 +1,27 @@
+.pane {
+    -fx-background-color: #1d1d1d;
+}
+
+.button {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+}
+
+.text-input {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 15pt;
+}
+
+.text-area {
+    -fx-background-color: #2d445c;
+        -fx-text-fill: white;
+        -fx-font-family: "Segoe UI Light";
+        -fx-font-size: 15pt;
+}
+
+.label {
+    -fx-font-size: 18;
+    -fx-font-color: white;
+}

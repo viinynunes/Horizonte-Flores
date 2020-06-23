@@ -299,6 +299,11 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         });
     }
 
+    @FXML
+    public void onBtnCloseAction(Event event){
+        System.exit(0);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

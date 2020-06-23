@@ -13,7 +13,7 @@
 
 <VBox prefHeight="799.0" prefWidth="777.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioGeralPorClienteController">
    <children>
-      <Label prefHeight="27.0" prefWidth="428.0" text="Selecione o fornecedor e o período do relatório" textFill="WHITE">
+      <Label prefHeight="27.0" prefWidth="534.0" stylesheets="@../css/relatorio-dark-theme.css" text="Selecione o fornecedor e o período do relatório" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -21,13 +21,13 @@
             <Insets bottom="15.0" top="15.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+      <HBox maxHeight="33.0" prefHeight="33.0" prefWidth="758.0" spacing="15.0" stylesheets="@../css/relatorio-dark-theme.css">
          <children>
-            <DatePicker fx:id="dpSelecionaData" onAction="#onDpSelecionaDataAction" prefWidth="176.0" />
+            <DatePicker fx:id="dpSelecionaData" maxHeight="17.0" onAction="#onDpSelecionaDataAction" prefHeight="0.0" prefWidth="176.0" />
             <Button fx:id="btnGerarCliente" mnemonicParsing="false" onAction="#onBtnGerarClienteAction" prefHeight="26.0" prefWidth="174.0" text="Gerar Clientes" />
          </children>
       </HBox>
-      <HBox prefHeight="39.0" prefWidth="758.0" spacing="15.0">
+      <HBox prefHeight="39.0" prefWidth="758.0" spacing="15.0" stylesheets="@../css/relatorio-dark-theme.css">
          <children>
             <ComboBox fx:id="cbbCliente" prefHeight="26.0" prefWidth="176.0" />
             <Button fx:id="btnGerarFornecedor" mnemonicParsing="false" onAction="#onBtnGerarFornecedorAction" prefHeight="26.0" prefWidth="174.0" text="Gerar Fornecedores" />
@@ -36,7 +36,7 @@
             <Insets top="10.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="30.0" prefWidth="591.0" spacing="15.0">
+      <HBox prefHeight="30.0" prefWidth="591.0" spacing="15.0" stylesheets="@../css/relatorio-dark-theme.css">
          <children>
             <ComboBox fx:id="cbbFornecedor" prefHeight="26.0" prefWidth="176.0" />
             <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="26.0" prefWidth="174.0" text="Gerar Relatório" />
@@ -46,7 +46,7 @@
             <Insets bottom="15.0" top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="tbvListaRelatorio" maxWidth="532.0" minHeight="690.0" prefHeight="505.0" prefWidth="532.0">
+      <TableView fx:id="tbvListaRelatorio" maxWidth="532.0" minHeight="690.0" prefHeight="505.0" prefWidth="532.0" stylesheets="@../css/relatorio-dark-theme.css">
          <columns>
             <TableColumn fx:id="tbcProdutoNome" prefWidth="322.40002459287643" text="Nome" />
             <TableColumn fx:id="tbcQuantidade" prefWidth="206.39996337890625" text="Quantidade" />

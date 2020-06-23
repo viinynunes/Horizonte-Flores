@@ -13,33 +13,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vBox" minHeight="830.0" minWidth="1530.0" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.PedidoCadastroController">
+<VBox fx:id="vBox" minHeight="830.0" minWidth="1530.0" prefHeight="400.0" prefWidth="640.0" stylesheets="@../css/dark-theme-Pedido-Cadastro.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.PedidoCadastroController">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <HBox prefHeight="53.0" prefWidth="1276.0" spacing="15.0">
+            <HBox prefHeight="53.0" prefWidth="1276.0" spacing="15.0" stylesheets="@../css/button.css">
                <children>
-                  <Button fx:id="btnSalvar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnSalvarAction" text="Salvar [F2]">
+                  <Button fx:id="btnSalvar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnSalvarAction" text="Salvar [F2]" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnCancelar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnCancelarAction" text="Cancelar [F3]">
+                  <Button fx:id="btnCancelar" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnCancelarAction" text="Cancelar [F3]" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnApagarItem" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnApagarItemAction" text="Apagar Item [F4]">
+                  <Button fx:id="btnApagarItem" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnApagarItemAction" text="Apagar Item [F4]" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnNovoProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnNovoProdutoAction" text="Novo Produto [F10]">
+                  <Button fx:id="btnNovoProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnNovoProdutoAction" text="Novo Produto [F10]" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnEditarProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnEditarProdutoAction" prefWidth="184.0" text="Editar Produto [F11]">
+                  <Button fx:id="btnEditarProduto" minWidth="160.0" mnemonicParsing="false" onAction="#onBtnEditarProdutoAction" prefHeight="39.0" prefWidth="198.0" text="Editar Produto [F11]" textFill="WHITE">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -51,7 +51,7 @@
             </HBox>
             <HBox prefHeight="62.0" prefWidth="608.0" spacing="15.0">
                <children>
-                  <Label text="Quantidade Padrão:">
+                  <Label text="Quantidade Padrão:" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -77,19 +77,19 @@
             </HBox>
          </children>
       </HBox>
-      <Hyperlink fx:id="hyperlinkSelecionarCliente" onAction="#onHyperlinkSelecionarCliente" prefHeight="46.0" prefWidth="268.0" text="Selecionar Cliente [F5]">
+      <Hyperlink fx:id="hyperlinkSelecionarCliente" onAction="#onHyperlinkSelecionarCliente" prefHeight="46.0" prefWidth="268.0" text="Selecionar Cliente [F5]" textFill="WHITE">
          <VBox.margin>
             <Insets bottom="5.0" left="10.0" top="10.0" />
          </VBox.margin>
          <font>
-            <Font name="System Bold Italic" size="24.0" />
+            <Font name="System Italic" size="24.0" />
          </font>
       </Hyperlink>
       <VBox prefHeight="72.0" prefWidth="1530.0">
          <children>
             <HBox prefHeight="45.0" prefWidth="1520.0" spacing="15.0">
                <children>
-                  <TextField fx:id="txtQuantidade" alignment="TOP_CENTER" prefHeight="40.0" prefWidth="80.0">
+                  <TextField fx:id="txtQuantidade" alignment="TOP_CENTER" maxHeight="41.0" minHeight="41.0" prefHeight="41.0" prefWidth="80.0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -97,7 +97,7 @@
                         <Insets bottom="4.0" top="4.0" />
                      </padding>
                   </TextField>
-                  <TextField fx:id="txtLocalizaProduto" alignment="BASELINE_LEFT" prefHeight="40.0" prefWidth="1258.0">
+                  <TextField fx:id="txtLocalizaProduto" alignment="BASELINE_LEFT" maxHeight="41.0" minHeight="41.0" prefHeight="41.0" prefWidth="1258.0">
                      <padding>
                         <Insets bottom="4.0" left="5.0" />
                      </padding>
@@ -110,14 +110,14 @@
                   </TextField>
                </children>
                <VBox.margin>
-                  <Insets left="10.0" />
+                  <Insets bottom="5.0" left="10.0" />
                </VBox.margin>
             </HBox>
          </children>
       </VBox>
       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
          <children>
-            <Label text="Quantidade de Produtos:">
+            <Label text="Quantidade de Produtos:" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -125,7 +125,7 @@
                   <Insets top="5.0" />
                </HBox.margin>
             </Label>
-            <Label fx:id="lblQuantidadeItens" text="0">
+            <Label fx:id="lblQuantidadeItens" text="0" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>

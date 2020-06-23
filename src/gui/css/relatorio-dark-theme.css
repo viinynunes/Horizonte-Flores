@@ -1,0 +1,127 @@
+.root {
+    -fx-background-color:#1d1d1d;
+}
+
+.button {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.combo-box {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.combo-box .cell {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.date-picker .arrow-button{
+-fx-background-radius:0px ;
+-fx-background-color: #232323;
+
+}
+
+.date-picker .arrow-button .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: #1783CC;
+
+}
+
+.date-picker .arrow-button:hover .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: #40a9ef;
+ }
+
+ .date-picker .button {
+-fx-background-color: transparent;
+-fx-border-color:transparent;
+-fx-max-height: 15px;
+-fx-max-width: 15px;
+
+ }
+.date-picker {
+    -fx-font: 15px "Arial";
+}
+
+ .date-picker .cell {
+-fx-background-color: #232323;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+-fx-text-fill:white;
+ }
+
+.date-picker .cell:hover {
+-fx-background-color: #1783CC;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+}
+
+.date-picker .cell:focused {
+-fx-background-color:#11659e;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+ }
+
+.table-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color:
+        transparent
+        transparent
+        derive(-fx-base, 80%)
+        transparent;
+    -fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 15pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-opacity: 1;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color;
+}
+
+.text-input {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 15;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 18pt;
+}
+
+.list-view {
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill:white;
+}
+
+.list-view .cell{
+        -fx-background-color: #1d1d1d;
+        -fx-text-fill:white;
+}

@@ -13,8 +13,10 @@ public class DB {
 
         if (conn == null){
             try {
+
                 Properties props = loadProps();
                 String url = props.getProperty("dburl");
+
                 conn = DriverManager.getConnection(url, props);
                 return conn;
             } catch (SQLException e) {

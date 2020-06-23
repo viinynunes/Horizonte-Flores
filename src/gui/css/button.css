@@ -1,0 +1,51 @@
+.button {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+}
+
+.date-picker .arrow-button{
+-fx-background-radius:0px ;
+-fx-background-color: #232323;
+
+}
+
+.date-picker .arrow-button .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: #1783CC;
+
+}
+
+.date-picker .arrow-button:hover .arrow{
+-fx-background-radius:0px ;
+-fx-background-color: #40a9ef;
+ }
+
+ .date-picker .button {
+-fx-background-color: transparent;
+-fx-border-color:transparent;
+-fx-max-height: 15px;
+-fx-max-width: 15px;
+
+ }
+.date-picker {
+    -fx-font: 15px "Arial";
+}
+
+ .date-picker .cell {
+-fx-background-color: #232323;
+-fx-pref-width:40px ;
+-fx-pref-height:25px ;
+-fx-text-fill:white;
+ }
+
+.date-picker .cell:hover {
+-fx-background-color: #1783CC;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+}
+
+.date-picker .cell:focused {
+-fx-background-color:#11659e;
+-fx-pref-width:20px ;
+-fx-pref-height:25px ;
+ }

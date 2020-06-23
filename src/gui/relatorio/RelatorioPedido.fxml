@@ -10,15 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioPedidoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="713.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioPedidoController">
    <children>
-      <Label text="Selecione a data do pedido" textFill="WHITE">
+      <Label stylesheets="@../css/relatorio-dark-theme.css" text="Selecione a data do pedido" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <HBox prefHeight="58.0" prefWidth="600.0" spacing="15.0">
+      <HBox prefHeight="58.0" prefWidth="600.0" spacing="15.0" stylesheets="@../css/relatorio-dark-theme.css">
          <children>
             <DatePicker fx:id="datePicker1" />
             <DatePicker fx:id="datePicker2" />
@@ -29,7 +28,7 @@
             <Insets bottom="10.0" top="10.0" />
          </VBox.margin>
       </HBox>
-      <TableView fx:id="tbvPedido" prefHeight="326.0" prefWidth="600.0">
+      <TableView fx:id="tbvPedido" prefHeight="600.0" prefWidth="683.0" stylesheets="@../css/relatorio-dark-theme.css">
         <columns>
           <TableColumn fx:id="tbcId" prefWidth="110.39996337890625" text="Id" />
           <TableColumn fx:id="tbcData" prefWidth="152.800048828125" text="Data" />

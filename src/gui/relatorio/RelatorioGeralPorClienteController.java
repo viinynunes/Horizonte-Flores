@@ -151,7 +151,11 @@ public class RelatorioGeralPorClienteController implements Initializable {
         btnGerarFornecedor.setVisible(false);
         btnGerarRelatorio.setVisible(false);
         btnExportar.setVisible(false);
-        obbRelatorio.clear();
+
+        if (obbRelatorio != null){
+            obbRelatorio.clear();
+        }
+
         tbvListaRelatorio.refresh();
     }
 
