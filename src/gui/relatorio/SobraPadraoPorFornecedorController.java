@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -90,16 +91,53 @@ public class SobraPadraoPorFornecedorController implements Initializable {
 
         tbvProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER){
-                Produto p = tbvProduto.getSelectionModel().getSelectedItem();
+                addProdutoSobraPadrao();
+            }
+        });
 
-                SobraProdutoPadrao padrao = new SobraProdutoPadrao();
-                padrao.setProduto(p);
+        tbvProduto.setOnMousePressed(event ->{
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                addProdutoSobraPadrao();
+            }
+        });
 
-                sobraProdutoPadraoServico.insertOrUpdate(padrao);
-                updateListViewForData();
+        lvProduto.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                removeProdutoSobraPadrao();
+            }
+        });
+
+        lvProduto.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                removeProdutoSobraPadrao();
             }
         });
     }
+
+    private void addProdutoSobraPadrao(){
+        Produto p = tbvProduto.getSelectionModel().getSelectedItem();
+        SobraProdutoPadrao padrao = new SobraProdutoPadrao();
+        padrao.setProduto(p);
+
+        sobraProdutoPadraoServico.insertOrUpdate(padrao);
+        updateListViewForData();
+    }
+
+    private void removeProdutoSobraPadrao(){
+        SobraProdutoPadrao sobra = lvProduto.getSelectionModel().getSelectedItem();
+
+        if (sobra == null){
+              Alerts.showAlert("Erro", null, "Selecione um produto", Alert.AlertType.ERROR);
+        } else {
+            try {
+                sobraProdutoPadraoServico.deleteById(sobra.getId());
+                updateListViewForData();
+            }catch (DBException e){
+                Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
+    }
+
 
     public void updateCbbFornecedorFormData() {
         if (fornecedorServico == null) {

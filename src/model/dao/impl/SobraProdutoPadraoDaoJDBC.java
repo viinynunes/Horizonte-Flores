@@ -56,7 +56,36 @@ public class SobraProdutoPadraoDaoJDBC implements SobraProdutoPadraoDao {
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("delete from sobraprodutopadrao where id = ?");
+            st.setInt(1, id);
+
+            st.executeUpdate();
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
+    public void deleteByProduto(Produto produto) {
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("delete from sobraprodutopadrao where produto_id = ?");
+            st.setInt(1, produto.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override

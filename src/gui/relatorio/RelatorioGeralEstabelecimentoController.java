@@ -138,12 +138,12 @@ public class RelatorioGeralEstabelecimentoController implements Initializable {
             }
         });
 
-        tbvListaProduto.setOnMouseClicked(event -> {
+        tbvListaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
                 selecionaProdutoSelecionado();
             }
         });
-        txtLocalizaProduto.setOnMouseClicked(event -> {
+        txtLocalizaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
                 selecionaProdutoSelecionado();
             }

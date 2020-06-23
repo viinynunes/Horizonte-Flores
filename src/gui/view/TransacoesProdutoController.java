@@ -79,7 +79,7 @@ public class TransacoesProdutoController implements Initializable {
                 selecionaProdutoSelecionado();
             }
         });
-        txtLocalizaProduto.setOnMouseClicked(event -> {
+        txtLocalizaProduto.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2){
                 selecionaProdutoSelecionado();
             }

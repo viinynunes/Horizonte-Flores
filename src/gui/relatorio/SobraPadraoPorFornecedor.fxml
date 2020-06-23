@@ -17,7 +17,7 @@
             <Insets top="5.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="38.0" prefWidth="570.0" spacing="15.0" stylesheets="@../css/relatorio-dark-theme.css">
+      <HBox prefHeight="38.0" prefWidth="570.0" spacing="15.0">
          <children>
             <ComboBox fx:id="cbbFornecedor" prefWidth="150.0" />
             <Button fx:id="btnGerarProdutos" mnemonicParsing="false" onAction="#onBtnGerarProdutosAction" text="Gerar Produtos" />
@@ -26,7 +26,7 @@
             <Insets bottom="10.0" top="15.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="318.0" prefWidth="739.0" spacing="30.0" stylesheets="@../css/relatorio-dark-theme.css">
+      <HBox prefHeight="318.0" prefWidth="739.0" spacing="30.0">
          <children>
             <TableView fx:id="tbvProduto" prefHeight="317.0" prefWidth="504.0">
               <columns>

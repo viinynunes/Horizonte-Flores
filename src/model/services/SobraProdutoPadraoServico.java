@@ -3,6 +3,7 @@ package model.services;
 import model.dao.DaoFactory;
 import model.dao.SobraProdutoPadraoDao;
 import model.entities.Fornecedor;
+import model.entities.Produto;
 import model.entities.SobraProdutoPadrao;
 
 import java.util.List;
@@ -19,6 +20,14 @@ public class SobraProdutoPadraoServico {
         }
     }
 
+    public void deleteById (Integer id){
+        dao.deleteById(id);
+    }
+
+    public void deleteByProduto(Produto produto){
+        dao.deleteByProduto(produto);
+    }
+
     public List<SobraProdutoPadrao> findByFornecedor(Fornecedor fornecedor){
         return dao.findByFornecedor(fornecedor);
     }
@@ -27,3 +36,5 @@ public class SobraProdutoPadraoServico {
         return dao.findAll();
     }
 }
+
+
