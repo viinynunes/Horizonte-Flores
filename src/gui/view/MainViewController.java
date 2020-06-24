@@ -287,6 +287,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         carregaView("/gui/relatorio/SobraCaixaria.fxml", (SobraCaixariaController controller) -> {
             controller.setFornecedorServico(new FornecedorServico());
             controller.setSobraServico(new SobraServico());
+            controller.setPadraoServico(new SobraProdutoPadraoServico());
         });
     }
 

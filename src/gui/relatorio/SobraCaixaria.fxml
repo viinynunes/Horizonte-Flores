@@ -28,10 +28,11 @@
                   </Label>
                   <HBox prefHeight="47.0" prefWidth="1590.0" spacing="30.0" stylesheets="@../css/relatorio-dark-theme.css">
                      <children>
-                        <DatePicker fx:id="datePicker1" editable="false" />
-                        <DatePicker fx:id="datePicker2" editable="false" />
-                        <Button fx:id="btnGerarFornecedores" mnemonicParsing="false" onAction="#onBtnGerarFornecedoresAction" prefHeight="26.0" prefWidth="177.0" text="Gerar Fornecedores" />
-                        <Button fx:id="btnProdutosPadrao" mnemonicParsing="false" onAction="#onBtnProdutosPadraoAction" text="Produtos Padrão" />
+                        <DatePicker fx:id="datePicker1" editable="false" prefWidth="214.0" />
+                        <DatePicker fx:id="datePicker2" editable="false" prefWidth="214.0" />
+                        <Button fx:id="btnGerarFornecedores" mnemonicParsing="false" onAction="#onBtnGerarFornecedoresAction" prefHeight="26.0" prefWidth="214.0" text="Gerar Fornecedores" />
+                        <Button fx:id="btnCarregaProdutosPadrao" mnemonicParsing="false" onAction="#onBtnCarregaProdutosPadraoAction" prefWidth="214.0" text="Carregar Produtos Padrão" />
+                        <Button fx:id="btnProdutosPadrao" mnemonicParsing="false" onAction="#onBtnProdutosPadraoAction" prefWidth="214.0" text="Produtos Padrão" />
                      </children>
                      <VBox.margin>
                         <Insets left="15.0" right="15.0" top="10.0" />
@@ -39,8 +40,9 @@
                   </HBox>
                   <HBox prefHeight="61.0" prefWidth="1620.0" spacing="30.0" stylesheets="@../css/relatorio-dark-theme.css">
                      <children>
-                        <ComboBox fx:id="cbbFornecedor" prefHeight="26.0" prefWidth="178.0" />
-                        <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="26.0" prefWidth="177.0" text="Gerar Relatório" />
+                        <ComboBox fx:id="cbbFornecedor" prefHeight="31.0" prefWidth="214.0" />
+                        <Button fx:id="btnGerarRelatorio" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="31.0" prefWidth="214.0" text="Gerar Relatório" />
+                        <Button fx:id="btnRemoverProduto" mnemonicParsing="false" onAction="#onBtnRemoverProdutoAction" prefHeight="31.0" prefWidth="214.0" text="Remover Produto" />
                      </children>
                      <VBox.margin>
                         <Insets left="15.0" right="15.0" top="10.0" />

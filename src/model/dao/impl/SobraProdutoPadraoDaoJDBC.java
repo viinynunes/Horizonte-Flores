@@ -90,7 +90,71 @@ public class SobraProdutoPadraoDaoJDBC implements SobraProdutoPadraoDao {
 
     @Override
     public List<SobraProdutoPadrao> findAll() {
-        return null;
+        List<SobraProdutoPadrao> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        SobraProdutoPadrao padrao;
+
+        try {
+            st = conn.prepareStatement("select * from sobraprodutopadrao inner join produto " +
+                    "on sobraprodutopadrao.produto_id = produto.id " +
+                    "inner join categoria on produto.categoria_id = categoria.id " +
+                    "inner join fornecedor on produto.fornecedor_id = fornecedor.id " +
+                    "inner join estabelecimento on fornecedor.estabelecimento_id = estabelecimento.id " +
+                    "inner join endereco on estabelecimento.endereco_id = endereco.id " +
+                    "order by produto.nome");
+
+            rs = st.executeQuery();
+
+            Map<Integer, Categoria> categoriaMap = new HashMap<>();
+            Map<Integer, Estabelecimento> estabelecimentoMap = new HashMap<>();
+            Map<Integer, Fornecedor> fornecedorMap = new HashMap<>();
+            Map<Integer, Endereco> enderecoMap = new HashMap<>();
+            Map<Integer, Produto> produtoMap = new HashMap<>();
+
+            while (rs.next()) {
+                Categoria categoria = categoriaMap.get(rs.getInt("categoria_id"));
+                if (categoria == null) {
+                    categoria = Utils.createCategoria(rs);
+                    categoriaMap.put(rs.getInt("categoria_id"), categoria);
+                }
+
+                Endereco endereco = enderecoMap.get(rs.getInt("estabelecimento.endereco_id"));
+                if (endereco == null) {
+                    endereco = Utils.createEndereco(rs);
+                    enderecoMap.put(rs.getInt("estabelecimento.endereco_id"), endereco);
+                }
+
+                Estabelecimento estabelecimento = estabelecimentoMap.get(rs.getInt("estabelecimento_id"));
+                if (estabelecimento == null) {
+                    estabelecimento = Utils.createEstabelecimento(rs, endereco);
+                    estabelecimentoMap.put(rs.getInt("estabelecimento_id"), estabelecimento);
+                }
+
+                Fornecedor fornecedor = fornecedorMap.get(rs.getInt("fornecedor_id"));
+                if (fornecedor == null) {
+                    fornecedor = Utils.createFornecedor(rs, estabelecimento);
+                    fornecedorMap.put(rs.getInt("fornecedor_id"), fornecedor);
+                }
+
+                Produto produto = produtoMap.get(rs.getInt("produto.id"));
+                if (produto == null){
+                    produto = Utils.createProduto(rs, categoria, fornecedor);
+                    produtoMap.put(rs.getInt("produto.id"), produto);
+                }
+
+                padrao = Utils.createSobraProdutoPadrao(rs, produto);
+                list.add(padrao);
+            }
+
+            return list;
+
+        } catch (SQLException e){
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
     }
 
     @Override

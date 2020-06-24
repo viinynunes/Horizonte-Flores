@@ -30,10 +30,9 @@
          <children>
             <TableView fx:id="tbvProduto" prefHeight="317.0" prefWidth="504.0">
               <columns>
-                  <TableColumn fx:id="tbcSelecionaProduto" prefWidth="56.79999083280563" />
                 <TableColumn fx:id="tbcProdutoId" prefWidth="89.60004043579102" text="ID" />
                 <TableColumn fx:id="tbcProdutoNome" prefWidth="188.79995727539062" text="Nome" />
-                  <TableColumn fx:id="tbcProdutoCategoria" prefWidth="167.20001220703125" text="Categoria" />
+                  <TableColumn fx:id="tbcProdutoCategoria" prefWidth="204.0" text="Categoria" />
               </columns>
             </TableView>
             <ListView fx:id="lvProduto" prefHeight="200.0" prefWidth="200.0">

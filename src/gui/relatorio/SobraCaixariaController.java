@@ -4,6 +4,7 @@ import db.DBException;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,6 +23,7 @@ import javafx.stage.StageStyle;
 import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.entities.Sobra;
+import model.entities.SobraProdutoPadrao;
 import model.services.FornecedorServico;
 import model.services.ProdutoServico;
 import model.services.SobraProdutoPadraoServico;
@@ -29,6 +32,7 @@ import model.services.SobraServico;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -38,7 +42,9 @@ public class SobraCaixariaController implements Initializable {
 
     private FornecedorServico fornecedorServico;
     private SobraServico sobraServico;
+    private SobraProdutoPadraoServico padraoServico;
     private java.sql.Date iniDate, endDate;
+    private Fornecedor fornecedor;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
@@ -71,7 +77,11 @@ public class SobraCaixariaController implements Initializable {
     @FXML
     private Button btnGerarRelatorio;
     @FXML
+    private Button btnCarregaProdutosPadrao;
+    @FXML
     private Button btnProdutosPadrao;
+    @FXML
+    private Button btnRemoverProduto;
 
     @FXML
     public void onBtnGerarFornecedoresAction() {
@@ -95,34 +105,36 @@ public class SobraCaixariaController implements Initializable {
 
     @FXML
     public void onBtnGerarRelatorioAction() {
-        Fornecedor fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
+        fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
 
         if (fornecedor == null) {
             Alerts.showAlert("Selecione um fornecedor", null, "Selecione um fornecedor", Alert.AlertType.INFORMATION);
         } else {
-            try {
-
-                List<Sobra> list = sobraServico.findByFornecedor(fornecedor, iniDate, endDate);
-                ObservableList<Sobra> obbList = FXCollections.observableArrayList(list);
-                if (list.isEmpty()) {
-                    Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
-                    tbvSobraCadastro.setItems(obbList);
-                    tbvSobraCadastro.refresh();
-                } else {
-                    tbvSobraCadastro.setItems(obbList);
-                    tbvSobraCadastro.refresh();
-                    initTextFieldTotal();
-                }
-
-                tbvSobraFinal.setItems(obbList);
-                tbvSobraFinal.refresh();
-
-            } catch (DBException e) {
-                Alerts.showAlert("Erro ao encontrar os produtos", null, e.getMessage(), Alert.AlertType.ERROR);
-            }
+            atualizaTableView();
         }
     }
 
+    private void atualizaTableView(){
+        try {
+            List<Sobra> list = sobraServico.findByFornecedor(fornecedor, iniDate, endDate);
+            ObservableList<Sobra> obbList = FXCollections.observableArrayList(list);
+            if (list.isEmpty()) {
+                Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+                tbvSobraCadastro.setItems(obbList);
+                tbvSobraCadastro.refresh();
+            } else {
+                tbvSobraCadastro.setItems(obbList);
+                tbvSobraCadastro.refresh();
+                initTextFieldTotal();
+            }
+
+            tbvSobraFinal.setItems(obbList);
+            tbvSobraFinal.refresh();
+
+        } catch (DBException e) {
+            Alerts.showAlert("Erro ao encontrar os produtos", null, e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
 
     @FXML
     public void onBtnProdutosPadraoAction(Event event){
@@ -133,6 +145,45 @@ public class SobraCaixariaController implements Initializable {
             controller.setSobraProdutoPadraoServico(new SobraProdutoPadraoServico());
             controller.updateCbbFornecedorFormData();
         });
+    }
+
+    @FXML
+    public void onBtnCarregaProdutosPadraoAction(){
+        try {
+            ObservableList<SobraProdutoPadrao> obbProdutosPadrao = FXCollections.observableArrayList(
+                    padraoServico.findAll());
+
+            for (SobraProdutoPadrao padrao : obbProdutosPadrao){
+                    Sobra sobra = new Sobra();
+                    sobra.setData(new Date());
+                    sobra.setProduto(padrao.getProduto());
+                    sobra.setTotalPedido(0);
+                    sobra.setTotalPedidoAtualizado(0);
+                    sobra.setSobra(0);
+
+                    sobraServico.insertOrUpdate(sobra);
+                    atualizaTableView();
+            }
+
+        } catch (DBException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onBtnRemoverProdutoAction(){
+        Sobra sobra = tbvSobraCadastro.getSelectionModel().getSelectedItem();
+
+        if (sobra == null){
+            Alerts.showAlert("Selecione um produto", null, "Selecione um produto", Alert.AlertType.INFORMATION);
+        } else {
+            try {
+                sobraServico.deleteByDataAndProduto(iniDate, endDate, sobra.getProduto().getId());
+                atualizaTableView();
+            } catch (DBException e){
+                Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+            }
+        }
     }
 
     @FXML
@@ -167,6 +218,10 @@ public class SobraCaixariaController implements Initializable {
         this.sobraServico = sobraServico;
     }
 
+    public void setPadraoServico(SobraProdutoPadraoServico padraoServico) {
+        this.padraoServico = padraoServico;
+    }
+
     private void initTextFieldTotal() {
 
         tbcTotalPedido.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue()));
@@ -174,6 +229,8 @@ public class SobraCaixariaController implements Initializable {
         tbcTotalPedido.setCellFactory(cell -> new TableCell<>() {
 
             TextField txtTotal = new TextField();
+            List<Integer> iterator = new ArrayList<>();
+            int aux = 0;
 
             @Override
             protected void updateItem(Sobra sobra, boolean empty) {
@@ -182,13 +239,16 @@ public class SobraCaixariaController implements Initializable {
                     setGraphic(null);
                     return;
                 } else {
+
+                    aux += aux;
+                    iterator.add(aux);
+
                     Constraints.setTextFieldInteger(txtTotal);
                     txtTotal.setText(sobra.getTotalPedido().toString());
                     setGraphic(txtTotal);
 
                     txtTotal.setOnAction(event -> {
 
-                        System.out.println(txtTotal.getText());
                         Integer totalPedido = sobra.getTotalPedido();
                         Integer totalSobra = Utils.converterInteiro(txtTotal.getText()) - totalPedido;
 
@@ -197,13 +257,10 @@ public class SobraCaixariaController implements Initializable {
                         sobraServico.insertOrUpdate(sobra);
                         tbvSobraCadastro.refresh();
                         tbvSobraFinal.refresh();
-
-                        ObservableList<Sobra> obb = tbvSobraCadastro.getItems();
-
-
                     });
                 }
             }
+
         });
     }
 

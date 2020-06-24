@@ -27,13 +27,16 @@ public class SobraDaoJDBC implements SobraDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("insert into sobra (data, produto_id, total, sobra) values " +
-                    "(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                    "values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 
             st.setDate(1, new Date(sobra.getData().getTime()));
             st.setInt(2, sobra.getProduto().getId());
-            st.setInt(3, sobra.getTotalPedido());
-            st.setInt(4, sobra.getSobra());
+            st.setInt(3, sobra.getSobra());
+            st.setInt(4, 0);
+            st.setInt(5, sobra.getTotalPedido());
+            st.setInt(6, sobra.getTotalPedidoAtualizado());
+
 
             int row = st.executeUpdate();
 
@@ -86,6 +89,25 @@ public class SobraDaoJDBC implements SobraDao {
             st = conn.prepareStatement("delete from sobra where id = ?");
 
             st.setInt(1, id);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
+    public void deleteByDateAndProdutoId(Date iniDate, Date endDate, Integer id) {
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("delete from sobra where data between ? and ? and produto_id = ?");
+
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
+            st.setInt(3, id);
 
             st.executeUpdate();
         } catch (SQLException e) {
