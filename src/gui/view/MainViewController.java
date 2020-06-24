@@ -288,6 +288,8 @@ public class MainViewController implements Initializable, PedidoChangeListener {
             controller.setFornecedorServico(new FornecedorServico());
             controller.setSobraServico(new SobraServico());
             controller.setPadraoServico(new SobraProdutoPadraoServico());
+            controller.setProdutoServico(new ProdutoServico());
+            controller.updateFormData();
         });
     }
 

@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -40,11 +43,13 @@ import java.util.function.Consumer;
 
 public class SobraCaixariaController implements Initializable {
 
+    private ProdutoServico produtoServico;
     private FornecedorServico fornecedorServico;
     private SobraServico sobraServico;
     private SobraProdutoPadraoServico padraoServico;
     private java.sql.Date iniDate, endDate;
     private Fornecedor fornecedor;
+    private FilteredList<Produto> filteredProdutoList;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
@@ -82,6 +87,10 @@ public class SobraCaixariaController implements Initializable {
     private Button btnProdutosPadrao;
     @FXML
     private Button btnRemoverProduto;
+    @FXML
+    private TextField txtAdicionaProdutos;
+    @FXML
+    private ListView<Produto> lvAdicionaProdutos;
 
     @FXML
     public void onBtnGerarFornecedoresAction() {
@@ -205,9 +214,51 @@ public class SobraCaixariaController implements Initializable {
         tbcProdutoNomeFinal.setCellValueFactory(cell -> new ReadOnlyObjectWrapper(cell.getValue().getProduto().getNome()));
         tbcTotalFinal.setCellValueFactory(new PropertyValueFactory<>("totalPedidoAtualizado"));
 
+        txtAdicionaProdutos.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                adicionaProdutoSobra(event);
+            }
+        });
+
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
+    }
 
+        public void adicionaProdutoSobra(Event event){
+            Produto p = lvAdicionaProdutos.getItems().get(0);
+
+            if (p == null){
+                Alerts.showAlert("Selecione um produto", null, "Selecione um produto", Alert.AlertType.INFORMATION);
+            } else {
+                try {
+                    Sobra sobra = new Sobra();
+                    sobra.setData(new Date());
+                    sobra.setProduto(p);
+                    sobra.setTotalPedido(0);
+                    sobra.setTotalPedidoAtualizado(0);
+                    sobra.setSobra(0);
+                    sobraServico.insertOrUpdate(sobra);
+
+                    atualizaTableView();
+                } catch (DBException e){
+                    Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+                }
+            }
+
+        }
+
+    public void updateFormData(){
+        if (produtoServico == null){
+            throw new IllegalStateException("Produto servico null");
+        }
+
+        ObservableList<Produto> obbProduto = FXCollections.observableArrayList(
+                produtoServico.findAll()
+        );
+
+        filteredProdutoList = filteredTableView(obbProduto);
+        lvAdicionaProdutos.setItems(filteredProdutoList);
+        tbvSobraCadastro.refresh();
     }
 
     public void setFornecedorServico(FornecedorServico fornecedorServico) {
@@ -220,6 +271,10 @@ public class SobraCaixariaController implements Initializable {
 
     public void setPadraoServico(SobraProdutoPadraoServico padraoServico) {
         this.padraoServico = padraoServico;
+    }
+
+    public void setProdutoServico(ProdutoServico produtoServico) {
+        this.produtoServico = produtoServico;
     }
 
     private void initTextFieldTotal() {
@@ -260,8 +315,37 @@ public class SobraCaixariaController implements Initializable {
                     });
                 }
             }
-
         });
+    }
+
+    private FilteredList<Produto> filteredTableView(ObservableList<Produto> obbProdutoList){
+        FilteredList<Produto> filteredProdutoList = new FilteredList<>(obbProdutoList);
+
+        txtAdicionaProdutos.textProperty().addListener(((observable, oldValue, newValue) -> {
+
+            this.filteredProdutoList.setPredicate(produto -> {
+
+                if (newValue == null || newValue.isEmpty()){
+                    lvAdicionaProdutos.setVisible(false);
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (produto.getNome().toLowerCase().contains(lowerCaseFilter)){
+                    lvAdicionaProdutos.setVisible(true);
+                    return true;
+                } else if (produto.getFornecedor().getNome().toLowerCase().contains(lowerCaseFilter)){
+                    lvAdicionaProdutos.setVisible(false);
+                    return true;
+                }else {
+                    return false;
+                }
+            });
+
+        }));
+
+        return filteredProdutoList;
     }
 
     public synchronized <T> void carregaDialog(Stage parentStage, String caminho, Consumer<T> initConsumer) {

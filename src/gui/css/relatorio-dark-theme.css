@@ -74,6 +74,7 @@
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
     -fx-padding: 5;
+    -fx-font-size:20;
 }
 
 .table-view .column-header-background {
@@ -124,4 +125,5 @@
 .list-view .cell{
         -fx-background-color: #1d1d1d;
         -fx-text-fill:white;
+        -fx-font-size: 16;
 }
