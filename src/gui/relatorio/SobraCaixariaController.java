@@ -50,6 +50,7 @@ public class SobraCaixariaController implements Initializable {
     private java.sql.Date iniDate, endDate;
     private Fornecedor fornecedor;
     private FilteredList<Produto> filteredProdutoList;
+    private List<Sobra> sobraList;
 
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
@@ -91,9 +92,15 @@ public class SobraCaixariaController implements Initializable {
     private TextField txtAdicionaProdutos;
     @FXML
     private ListView<Produto> lvAdicionaProdutos;
+    @FXML
+    private TextField txtQuantidadeSobra;
 
     @FXML
     public void onBtnGerarFornecedoresAction() {
+        gerarfornecedores();
+    }
+
+    public void gerarfornecedores(){
         iniDate = java.sql.Date.valueOf(datePicker1.getValue());
         endDate = java.sql.Date.valueOf(datePicker2.getValue());
 
@@ -105,6 +112,7 @@ public class SobraCaixariaController implements Initializable {
             } else {
                 cbbFornecedor.setItems(obbList);
                 cbbFornecedor.getSelectionModel().select(0);
+                fornecedor = cbbFornecedor.getItems().get(0);
             }
         } catch (DBException e) {
             Alerts.showAlert("Erro ao encontrar os fornecedores", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -125,13 +133,17 @@ public class SobraCaixariaController implements Initializable {
 
     private void atualizaTableView(){
         try {
-            List<Sobra> list = sobraServico.findByFornecedor(fornecedor, iniDate, endDate);
-            ObservableList<Sobra> obbList = FXCollections.observableArrayList(list);
-            if (list.isEmpty()) {
-                Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+            sobraList = sobraServico.findByFornecedor(fornecedor, iniDate, endDate);
+            ObservableList<Sobra> obbList = FXCollections.observableArrayList(sobraList);
+            if (sobraList.isEmpty()) {
                 tbvSobraCadastro.setItems(obbList);
                 tbvSobraCadastro.refresh();
             } else {
+
+                //for (Sobra sobra : obbList){
+                  //  sobraServico.deleteBySobraAndDateLettingOneLine(sobra, iniDate, endDate);
+                //}
+
                 tbvSobraCadastro.setItems(obbList);
                 tbvSobraCadastro.refresh();
                 initTextFieldTotal();
@@ -158,6 +170,8 @@ public class SobraCaixariaController implements Initializable {
 
     @FXML
     public void onBtnCarregaProdutosPadraoAction(){
+        iniDate = java.sql.Date.valueOf(datePicker1.getValue());
+        endDate = java.sql.Date.valueOf(datePicker2.getValue());
         try {
             ObservableList<SobraProdutoPadrao> obbProdutosPadrao = FXCollections.observableArrayList(
                     padraoServico.findAll());
@@ -170,8 +184,9 @@ public class SobraCaixariaController implements Initializable {
                     sobra.setTotalPedidoAtualizado(0);
                     sobra.setSobra(0);
 
-                    sobraServico.insertOrUpdate(sobra);
+                    sobraServico.insertOrUpdate(sobra, iniDate, endDate);
                     atualizaTableView();
+                    gerarfornecedores();
             }
 
         } catch (DBException e){
@@ -189,6 +204,7 @@ public class SobraCaixariaController implements Initializable {
             try {
                 sobraServico.deleteByDataAndProduto(iniDate, endDate, sobra.getProduto().getId());
                 atualizaTableView();
+                gerarfornecedores();
             } catch (DBException e){
                 Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
             }
@@ -220,6 +236,26 @@ public class SobraCaixariaController implements Initializable {
             }
         });
 
+        txtQuantidadeSobra.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                for (Sobra sobra : sobraList){
+                    Integer totalPedido = sobra.getTotalPedido();
+                    Integer totalSobra = Utils.converterInteiro(txtQuantidadeSobra.getText());
+                    Integer sumSobra = sobra.getSobra();
+
+                    sobra.setTotalPedidoAtualizado(totalPedido+totalSobra);
+                    sobra.setSobra(totalSobra + sumSobra);
+                    sobraServico.insertOrUpdate(sobra, iniDate, endDate);
+                    try {
+                        sobraServico.insertOrUpdate(sobra, iniDate, endDate);
+                        atualizaTableView();
+                    } catch (DBException e){
+                        Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
+            }
+        });
+
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
     }
@@ -237,8 +273,8 @@ public class SobraCaixariaController implements Initializable {
                     sobra.setTotalPedido(0);
                     sobra.setTotalPedidoAtualizado(0);
                     sobra.setSobra(0);
-                    sobraServico.insertOrUpdate(sobra);
-
+                    sobraServico.insertOrUpdate(sobra, iniDate, endDate);
+                    gerarfornecedores();
                     atualizaTableView();
                 } catch (DBException e){
                     Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -307,9 +343,10 @@ public class SobraCaixariaController implements Initializable {
                         Integer totalPedido = sobra.getTotalPedido();
                         Integer totalSobra = Utils.converterInteiro(txtTotal.getText()) - totalPedido;
 
+                        sobra.setTotalPedido(totalPedido);
                         sobra.setTotalPedidoAtualizado(Utils.converterInteiro(txtTotal.getText()));
                         sobra.setSobra(totalSobra);
-                        sobraServico.insertOrUpdate(sobra);
+                        sobraServico.insertWithDate(sobra, iniDate, endDate);
                         tbvSobraCadastro.refresh();
                         tbvSobraFinal.refresh();
                     });

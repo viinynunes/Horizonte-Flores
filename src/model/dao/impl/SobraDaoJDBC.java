@@ -57,11 +57,57 @@ public class SobraDaoJDBC implements SobraDao {
     }
 
     @Override
-    public void update(Sobra sobra) {
+    public void insertWithDate(Sobra sobra, Date iniDate, Date endDate) {
         PreparedStatement st = null;
+        ResultSet rs = null;
 
         try {
 
+            conn.setAutoCommit(false);
+
+            st = conn.prepareStatement("delete from sobra where data between ? and ? and produto_id = ?");
+
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
+            st.setInt(3, sobra.getProduto().getId());
+
+            st.executeUpdate();
+
+            st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
+                    "values (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+
+            st.setDate(1, new Date(sobra.getData().getTime()));
+            st.setInt(2, sobra.getProduto().getId());
+            st.setInt(3, sobra.getSobra());
+            st.setInt(4, 0);
+            st.setInt(5, sobra.getTotalPedido());
+            st.setInt(6, sobra.getTotalPedidoAtualizado());
+
+
+            int row = st.executeUpdate();
+
+            if (row > 0) {
+                rs = st.getGeneratedKeys();
+                if (rs.next()) {
+                    int id = rs.getInt(1);
+                    sobra.setId(id);
+                }
+            }
+
+            conn.commit();
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
+    }
+
+    @Override
+    public void update(Sobra sobra, Date iniDate, Date endDate) {
+        PreparedStatement st = null;
+
+        try {
             conn.setAutoCommit(false);
             st = conn.prepareStatement("Update sobra set totalPedidoAtualizado = ?, sobra = ? where id = ?");
 
@@ -78,6 +124,28 @@ public class SobraDaoJDBC implements SobraDao {
             DB.closeStatement(st);
         }
 
+    }
+
+    @Override
+    public void deleteBySobraAndDateLettingOneLine(Sobra sobra, Date iniDate, Date endDate) {
+
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("delete from sobra " +
+                    "where data between ? and ? and produto_id = ? and sobra.id != ?");
+
+            st.setDate(1, iniDate);
+            st.setDate(2, endDate);
+            st.setInt(3, sobra.getProduto().getId());
+            st.setInt(4, sobra.getId());
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override

@@ -136,7 +136,9 @@ public class FornecedorDaoJDBC implements FornecedorDao {
                     "on itens_do_pedido.PRODUTO_ID = produto.id " +
                     "inner join pedido " +
                     "on itens_do_pedido.PEDIDO_ID = pedido.id " +
-                    "where pedido.data between ? and ? " +
+                    "inner join sobra " +
+                    "on sobra.produto_id = produto.id " +
+                    "where sobra.data between ? and ? " +
                     "group by fornecedor.nome " +
                     "order by fornecedor.id");
 

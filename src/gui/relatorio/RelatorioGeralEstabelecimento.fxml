@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="878.0" prefWidth="1620.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioGeralEstabelecimentoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="830.0" prefWidth="1530.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.RelatorioGeralEstabelecimentoController">
    <children>
       <Label stylesheets="@../css/relatorio-dark-theme.css" text="Selecione a data do relatorio e o estabelecimento" textFill="WHITE">
          <font>
@@ -69,29 +69,26 @@
             <Insets left="15.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="710.0" prefWidth="1176.0" spacing="50.0" stylesheets="@../css/relatorio-dark-theme.css">
+      <HBox maxHeight="-Infinity" prefHeight="640.0" prefWidth="1176.0" spacing="50.0" stylesheets="@../css/relatorio-dark-theme.css">
          <children>
-            <TableView fx:id="tbvRelatorio" editable="true" prefHeight="699.0" prefWidth="981.0">
+            <TableView fx:id="tbvRelatorio" editable="true" maxHeight="-Infinity" prefHeight="640.0" prefWidth="981.0">
               <columns>
-                  <TableColumn fx:id="tbcNomeFornecedor" prefWidth="223.20001238584518" text="Fornecedor" />
-                  <TableColumn fx:id="tbcNomeProduto" prefWidth="228.79998779296875" text="Produto" />
-                  <TableColumn fx:id="tbcTotalPedido" prefWidth="176.79998779296875" text="Total Pedido" />
-                  <TableColumn fx:id="tbcTotalPedidoAtualizado" prefWidth="204.0" text="Total Atualizado" />
-                  <TableColumn fx:id="tbcTotalSobra" prefWidth="144.79998779296875" text="Sobra" />
+                  <TableColumn fx:id="tbcNomeFornecedor" prefWidth="117.60003566741943" text="Fornecedor" />
+                  <TableColumn fx:id="tbcNomeProduto" prefWidth="309.5999755859375" text="Produto" />
+                  <TableColumn fx:id="tbcTotalPedido" prefWidth="164.0" text="Total Pedido" />
+                  <TableColumn fx:id="tbcTotalPedidoAtualizado" prefWidth="183.20001220703125" text="Total Atualizado" />
+                  <TableColumn fx:id="tbcTotalSobra" prefWidth="211.20001220703125" text="Sobra" />
               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
             </TableView>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane maxHeight="-Infinity" prefHeight="640.0" prefWidth="200.0">
                <children>
-                  <TableView fx:id="tbvListaPedido" prefHeight="699.0" prefWidth="558.0">
+                  <TableView fx:id="tbvListaPedido" maxHeight="-Infinity" prefHeight="640.0" prefWidth="558.0">
                     <columns>
-                      <TableColumn fx:id="tbcPedidoId" prefWidth="78.39990234375" text="ID" />
-                      <TableColumn fx:id="tbcPedidoData" prefWidth="92.0" text="Data" />
-                        <TableColumn fx:id="tbcPedidoCliente" prefWidth="104.0" text="Cliente" />
-                        <TableColumn fx:id="tbcPedidoProduto" prefWidth="179.9998779296875" text="Produto" />
-                        <TableColumn fx:id="tbcPedidoQuantidade" prefWidth="102.4000244140625" text="Quantidade" />
+                      <TableColumn fx:id="tbcPedidoId" prefWidth="60.000001430511475" text="ID" />
+                      <TableColumn fx:id="tbcPedidoData" prefWidth="73.60002899169922" text="Data" />
+                        <TableColumn fx:id="tbcPedidoCliente" prefWidth="141.5999755859375" text="Cliente" />
+                        <TableColumn fx:id="tbcPedidoProduto" prefWidth="162.39990234375" text="Produto" />
+                        <TableColumn fx:id="tbcPedidoQuantidade" prefWidth="120.80007934570312" text="Quantidade" />
                     </columns>
                   </TableView>
                   <TableView fx:id="tbvListaProduto" prefHeight="200.0" prefWidth="558.0" visible="false">

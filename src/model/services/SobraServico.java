@@ -13,12 +13,16 @@ public class SobraServico {
 
     private SobraDao dao = DaoFactory.createSobraDao();
 
-    public void insertOrUpdate(Sobra sobra){
+    public void insertOrUpdate(Sobra sobra, Date iniDate, Date endDate){
         if (sobra.getId() == null){
             dao.insert(sobra);
         } else {
-            dao.update(sobra);
+            dao.update(sobra, iniDate, endDate);
         }
+    }
+
+    public void insertWithDate(Sobra sobra, Date iniDate, Date endDate){
+        dao.insertWithDate(sobra, iniDate, endDate);
     }
 
     public void deleteById(Integer id){
@@ -27,6 +31,10 @@ public class SobraServico {
 
     public void deleteByDataAndProduto(Date iniDate, Date endDate, Integer id){
         dao.deleteByDateAndProdutoId(iniDate, endDate, id);
+    }
+
+    public void deleteBySobraAndDateLettingOneLine(Sobra sobra, Date iniDate, Date endDate){
+        dao.deleteBySobraAndDateLettingOneLine(sobra, iniDate, endDate);
     }
 
     public List<Sobra> findByDate(Date date, Date date1){
