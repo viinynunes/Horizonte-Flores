@@ -42,8 +42,8 @@
             <ComboBox fx:id="cbbFornecedor" minWidth="214.0" prefHeight="31.0" prefWidth="214.0" />
             <Button fx:id="btnGerarRelatorio" minWidth="214.0" mnemonicParsing="false" onAction="#onBtnGerarRelatorioAction" prefHeight="31.0" prefWidth="214.0" text="Gerar Relatório" />
             <Button fx:id="btnRemoverProduto" minWidth="214.0" mnemonicParsing="false" onAction="#onBtnRemoverProdutoAction" prefHeight="31.0" prefWidth="214.0" text="Remover Produto" />
-            <TextField fx:id="txtAdicionaProdutos" prefHeight="31.0" prefWidth="458.0" promptText="Adicione Produtos na sobra" />
-            <ListView fx:id="lvAdicionaProdutos" prefHeight="31.0" prefWidth="292.0" visible="false" />
+            <TextField fx:id="txtAdicionaProdutos" prefHeight="31.0" prefWidth="474.0" promptText="Adicione Produtos na sobra" />
+            <ListView fx:id="lvAdicionaProdutos" prefHeight="32.0" prefWidth="288.0" visible="false" />
          </children>
          <VBox.margin>
             <Insets left="15.0" right="15.0" top="10.0" />

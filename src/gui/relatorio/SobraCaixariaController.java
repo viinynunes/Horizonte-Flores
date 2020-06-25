@@ -104,6 +104,9 @@ public class SobraCaixariaController implements Initializable {
         iniDate = java.sql.Date.valueOf(datePicker1.getValue());
         endDate = java.sql.Date.valueOf(datePicker2.getValue());
 
+        tbvSobraCadastro.setItems(null);
+        tbvSobraFinal.setItems(null);
+
         try {
             ObservableList<Fornecedor> obbList = FXCollections.observableArrayList(fornecedorServico.findByData(iniDate, endDate));
 
@@ -113,6 +116,9 @@ public class SobraCaixariaController implements Initializable {
                 cbbFornecedor.setItems(obbList);
                 cbbFornecedor.getSelectionModel().select(0);
                 fornecedor = cbbFornecedor.getItems().get(0);
+                cbbFornecedor.setVisible(true);
+                btnGerarRelatorio.setVisible(true);
+                btnCarregaProdutosPadrao.setVisible(true);
             }
         } catch (DBException e) {
             Alerts.showAlert("Erro ao encontrar os fornecedores", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -122,12 +128,17 @@ public class SobraCaixariaController implements Initializable {
 
     @FXML
     public void onBtnGerarRelatorioAction() {
+        gerarRelatorio();
+    }
+
+    private void gerarRelatorio(){
         fornecedor = cbbFornecedor.getSelectionModel().getSelectedItem();
 
         if (fornecedor == null) {
             Alerts.showAlert("Selecione um fornecedor", null, "Selecione um fornecedor", Alert.AlertType.INFORMATION);
         } else {
             atualizaTableView();
+            btnRemoverProduto.setVisible(true);
         }
     }
 
@@ -188,6 +199,8 @@ public class SobraCaixariaController implements Initializable {
                     atualizaTableView();
                     gerarfornecedores();
             }
+
+            gerarRelatorio();
 
         } catch (DBException e){
             e.printStackTrace();
@@ -258,6 +271,11 @@ public class SobraCaixariaController implements Initializable {
 
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
+
+        cbbFornecedor.setVisible(false);
+        btnGerarRelatorio.setVisible(false);
+        btnCarregaProdutosPadrao.setVisible(false);
+        btnRemoverProduto.setVisible(false);
     }
 
         public void adicionaProdutoSobra(Event event){
