@@ -217,7 +217,7 @@ public class SobraCaixariaController implements Initializable {
             try {
                 sobraServico.deleteByDataAndProduto(iniDate, endDate, sobra.getProduto().getId());
                 atualizaTableView();
-                gerarfornecedores();
+                //gerarfornecedores();
             } catch (DBException e){
                 Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
             }
@@ -254,14 +254,15 @@ public class SobraCaixariaController implements Initializable {
                 for (Sobra sobra : sobraList){
                     Integer totalPedido = sobra.getTotalPedido();
                     Integer totalSobra = Utils.converterInteiro(txtQuantidadeSobra.getText());
-                    Integer sumSobra = sobra.getSobra();
 
-                    sobra.setTotalPedidoAtualizado(totalPedido+totalSobra);
-                    sobra.setSobra(totalSobra + sumSobra);
-                    sobraServico.insertOrUpdate(sobra, iniDate, endDate);
+                    sobra.setTotalPedido(totalPedido);
+                    sobra.setTotalPedidoAtualizado(Utils.converterInteiro(txtQuantidadeSobra.getText()) + sobra.getTotalPedido());
+                    sobra.setSobra(totalSobra);
+
                     try {
-                        sobraServico.insertOrUpdate(sobra, iniDate, endDate);
-                        atualizaTableView();
+                        sobraServico.insertWithDate(sobra, iniDate, endDate);
+                        tbvSobraCadastro.refresh();
+                        tbvSobraFinal.refresh();
                     } catch (DBException e){
                         Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
                     }

@@ -14,14 +14,28 @@
     -fx-font-size: 15pt;
 }
 
-.text-area {
-    -fx-background-color: #2d445c;
-        -fx-text-fill: white;
-        -fx-font-family: "Segoe UI Light";
-        -fx-font-size: 15pt;
-}
-
 .label {
     -fx-font-size: 18;
-    -fx-font-color: white;
+    -fx-text-fill: white;
 }
+
+.combo-box {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.combo-box .cell {
+    -fx-background-color: #2d445c;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+.text-area {
+    -fx-background: #2d445c;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background ;
+}
+

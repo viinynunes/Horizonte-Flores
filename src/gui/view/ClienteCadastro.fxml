@@ -16,9 +16,9 @@
 
 <VBox fx:id="box" alignment="TOP_CENTER" prefHeight="690.0" style="-fx-background-color: #1d1d1d;" stylesheets="@../css/dialog-cadastros.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.ClienteCadastroController">
    <children>
-      <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" text="Cadastro de Cliente" textAlignment="CENTER">
+      <TitledPane accessibleHelp="Cadastro do Cliente" alignment="CENTER" animated="false" collapsible="false" contentDisplay="CENTER" prefHeight="690.0" style="-fx-background-color: #1d1d1d;" text="Cadastro de Cliente" textAlignment="CENTER">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1511.0" prefWidth="803.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1511.0" prefWidth="803.0" style="-fx-background-color: #1d1d1d;">
                <children>
                   <GridPane fx:id="gpForm" alignment="CENTER_LEFT" layoutX="48.0" layoutY="163.0" prefHeight="456.0" prefWidth="735.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="115.0">
                     <columnConstraints>
