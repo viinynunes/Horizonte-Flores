@@ -293,7 +293,7 @@ public class SobraCaixariaController implements Initializable {
                     sobra.setTotalPedidoAtualizado(0);
                     sobra.setSobra(0);
                     sobraServico.insertOrUpdate(sobra, iniDate, endDate);
-                    gerarfornecedores();
+                    //gerarfornecedores();
                     atualizaTableView();
                 } catch (DBException e){
                     Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
