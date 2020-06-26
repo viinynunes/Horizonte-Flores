@@ -289,6 +289,7 @@ public class SobraCaixariaController implements Initializable {
                     Sobra sobra = new Sobra();
                     sobra.setData(new Date());
                     sobra.setProduto(p);
+
                     sobra.setTotalPedido(0);
                     sobra.setTotalPedidoAtualizado(0);
                     sobra.setSobra(0);
