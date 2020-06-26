@@ -299,7 +299,6 @@ public class SobraCaixariaController implements Initializable {
                     Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
                 }
             }
-
         }
 
     public void updateFormData(){
