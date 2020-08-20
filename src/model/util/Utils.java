@@ -143,11 +143,11 @@ public class Utils {
     public static Sobra createSobra(ResultSet rs, Produto produto) throws SQLException{
         Sobra sobra = new Sobra();
 
-        sobra.setId(rs.getInt("id"));
-        sobra.setData(rs.getDate("data"));
+        sobra.setId(rs.getInt("sobra.id"));
+        sobra.setData(rs.getDate("sobra.data"));
         sobra.setProduto(produto);
-        sobra.setTotalPedido(rs.getInt("sumTotal"));
-        sobra.setTotalPedidoAtualizado(rs.getInt("sumTAtualizado"));
+        sobra.setTotalPedido(rs.getInt("sumTPedido"));
+        sobra.setTotalPedidoAtualizado(rs.getInt("sumTPAtualizado"));
         sobra.setSobra(rs.getInt("calcSobra"));
 
         return sobra;

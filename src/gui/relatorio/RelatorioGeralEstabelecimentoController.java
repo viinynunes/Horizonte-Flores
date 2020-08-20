@@ -86,7 +86,6 @@ public class RelatorioGeralEstabelecimentoController implements Initializable {
         estabelecimento = cbbEstabelecimento.getSelectionModel().getSelectedItem();
 
         try {
-
             sobraList = sobraServico.findByEstabelecimento(estabelecimento, iniDate, endDate);
             ObservableList<Sobra> obbList = FXCollections.observableArrayList(sobraList);
             tbvRelatorio.setItems(obbList);

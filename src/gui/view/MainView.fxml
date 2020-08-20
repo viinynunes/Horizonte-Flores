@@ -50,9 +50,9 @@
                       <Menu mnemonicParsing="false" text="Relatório">
                         <items>
                               <MenuItem fx:id="miRelPedido" mnemonicParsing="false" onAction="#onMiRelPedidosAction" text="Pedidos" />
-                              <MenuItem fx:id="miRelEstabelecimento" mnemonicParsing="false" onAction="#onMiRelEstabelecimentoAction" text="Estabelecimento" />
-                          <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Caixaria" />
-                              <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Geral" />
+                              <MenuItem fx:id="miRelEstabelecimento" mnemonicParsing="false" onAction="#onMiRelEstabelecimentoAction" text="Estabelecimento com sobras" />
+                          <MenuItem fx:id="miRelCaixaria" mnemonicParsing="false" onAction="#onMiRelCaixariaAction" text="Estabelecimento sem sobras" />
+                              <MenuItem fx:id="miRelGeral" mnemonicParsing="false" onAction="#onMiRelGeralAction" text="Fornecedor sem sobras" />
                               <MenuItem fx:id="miRelGeralPorCliente" mnemonicParsing="false" onAction="#onMiRelGeralPorClienteAction" text="Geral por Cliente" />
                         </items>
                       </Menu>

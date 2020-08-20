@@ -63,7 +63,7 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(false);  
 
             st = conn.prepareStatement("delete from sobra where data between ? and ? and produto_id = ?");
 
@@ -346,7 +346,11 @@ public class SobraDaoJDBC implements SobraDao {
 
         try {
 
-            st = conn.prepareStatement("call spSelectSobraEntreDataByFornecedor(?, ?, ?)");
+            if (iniDate.equals(endDate)){
+                st = conn.prepareStatement("call spSelectSobraEntreDataByFornecedor(?, ?, ?)");
+            } else {
+                st = conn.prepareStatement("call spSelectSobraEntreDataByFornecedorDiff(?, ?, ?)");
+            }
 
             st.setInt(1, fornecedor.getId());
             st.setDate(2, iniDate);

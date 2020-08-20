@@ -4,6 +4,9 @@
     <root id="archive" name="Horizonte Flores e Plantas.jar">
       <element id="module-output" name="Horizonte Flores e Plantas" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/poi-3.16.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/commons-codec-1.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/commons-collections4-4.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx-swt.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx.base.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx.controls.jar" path-in-jar="/" />
@@ -12,9 +15,6 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx.media.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx.swing.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Java-Libs/javafx-sdk/lib/javafx.web.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/poi-3.16.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/commons-codec-1.10.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../../../../Intellij-Idea-WS/ExcelReport/lib/commons-collections4-4.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

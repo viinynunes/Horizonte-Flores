@@ -1,10 +1,11 @@
 package gui.relatorio;
 
 import db.DBException;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
-import javafx.application.Platform;
+import gui.view.ProdutoCadastroController;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +14,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,10 +27,7 @@ import model.entities.Fornecedor;
 import model.entities.Produto;
 import model.entities.Sobra;
 import model.entities.SobraProdutoPadrao;
-import model.services.FornecedorServico;
-import model.services.ProdutoServico;
-import model.services.SobraProdutoPadraoServico;
-import model.services.SobraServico;
+import model.services.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +38,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
-public class SobraCaixariaController implements Initializable {
+public class SobraCaixariaController implements Initializable, DataChangeListener {
 
     private ProdutoServico produtoServico;
     private FornecedorServico fornecedorServico;
@@ -52,6 +49,8 @@ public class SobraCaixariaController implements Initializable {
     private FilteredList<Produto> filteredProdutoList;
     private List<Sobra> sobraList;
 
+    @FXML
+    private VBox vBox;
     @FXML
     private ComboBox<Fornecedor> cbbFornecedor;
     @FXML
@@ -89,6 +88,8 @@ public class SobraCaixariaController implements Initializable {
     @FXML
     private Button btnRemoverProduto;
     @FXML
+    private Button btnEditarProduto;
+    @FXML
     private TextField txtAdicionaProdutos;
     @FXML
     private ListView<Produto> lvAdicionaProdutos;
@@ -119,6 +120,7 @@ public class SobraCaixariaController implements Initializable {
                 cbbFornecedor.setVisible(true);
                 btnGerarRelatorio.setVisible(true);
                 btnCarregaProdutosPadrao.setVisible(true);
+                txtQuantidadeSobra.setVisible(true);
             }
         } catch (DBException e) {
             Alerts.showAlert("Erro ao encontrar os fornecedores", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -150,11 +152,6 @@ public class SobraCaixariaController implements Initializable {
                 tbvSobraCadastro.setItems(obbList);
                 tbvSobraCadastro.refresh();
             } else {
-
-                //for (Sobra sobra : obbList){
-                  //  sobraServico.deleteBySobraAndDateLettingOneLine(sobra, iniDate, endDate);
-                //}
-
                 tbvSobraCadastro.setItems(obbList);
                 tbvSobraCadastro.refresh();
                 initTextFieldTotal();
@@ -217,12 +214,31 @@ public class SobraCaixariaController implements Initializable {
             try {
                 sobraServico.deleteByDataAndProduto(iniDate, endDate, sobra.getProduto().getId());
                 atualizaTableView();
-                //gerarfornecedores();
             } catch (DBException e){
                 Alerts.showAlert("Erro", null, e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
+
+    public void onBtnEditarProdutoAction(Event event){
+        editarProdutoAction(event);
+    }
+
+    private void editarProdutoAction(Event event) {
+        Stage parentStage = Utils.atualStage(event);
+        Sobra sobra = tbvSobraCadastro.getSelectionModel().getSelectedItem();
+        Produto produto = sobra.getProduto();
+        carregaDialog(parentStage, "/gui/view/ProdutoCadastro.fxml", (ProdutoCadastroController controller)-> {
+            controller.setProduto(produto);
+            controller.setCategoriaServico(new CategoriaServico());
+            controller.setEstabelecimentoServico(new EstabelecimentoServico());
+            controller.setFornecedorServico(new FornecedorServico());
+            controller.setProdutoServico(new ProdutoServico());
+            controller.subscribeDataChangeListener(this);
+            controller.updateFormData();
+        });
+    }
+
 
     @FXML
     public void onCbbFornecedorAction() {
@@ -251,12 +267,13 @@ public class SobraCaixariaController implements Initializable {
 
         txtQuantidadeSobra.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER){
+                Integer totalSobra = Utils.converterInteiro(txtQuantidadeSobra.getText());
                 for (Sobra sobra : sobraList){
                     Integer totalPedido = sobra.getTotalPedido();
-                    Integer totalSobra = Utils.converterInteiro(txtQuantidadeSobra.getText());
+
 
                     sobra.setTotalPedido(totalPedido);
-                    sobra.setTotalPedidoAtualizado(Utils.converterInteiro(txtQuantidadeSobra.getText()) + sobra.getTotalPedido());
+                    sobra.setTotalPedidoAtualizado(totalSobra + sobra.getTotalPedido());
                     sobra.setSobra(totalSobra);
 
                     try {
@@ -270,6 +287,14 @@ public class SobraCaixariaController implements Initializable {
             }
         });
 
+
+        tbvSobraCadastro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.F11){
+                editarProdutoAction(event);
+            }
+        });
+
+
         datePicker1.setValue(LocalDate.now());
         datePicker2.setValue(LocalDate.now());
 
@@ -277,6 +302,7 @@ public class SobraCaixariaController implements Initializable {
         btnGerarRelatorio.setVisible(false);
         btnCarregaProdutosPadrao.setVisible(false);
         btnRemoverProduto.setVisible(false);
+        txtQuantidadeSobra.setVisible(false);
     }
 
         public void adicionaProdutoSobra(Event event){
@@ -425,5 +451,10 @@ public class SobraCaixariaController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onDataChanged() {
+       atualizaTableView();
     }
 }

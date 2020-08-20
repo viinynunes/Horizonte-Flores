@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="830.0" minHeight="830.0" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #1d1d1d;" stylesheets="@../css/relatorio-dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.SobraCaixariaController">
+<VBox fx:id="vBox" maxHeight="830.0" minHeight="830.0" prefHeight="830.0" prefWidth="1530.0" style="-fx-background-color: #1d1d1d;" stylesheets="@../css/relatorio-dark-theme.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.relatorio.SobraCaixariaController">
    <children>
       <Label stylesheets="@../css/relatorio-dark-theme.css" text="Selecione o fornecedor e cadastre as sobras dos produtos">
          <font>
@@ -27,9 +27,10 @@
          <children>
             <DatePicker fx:id="datePicker1" editable="false" prefWidth="214.0" />
             <DatePicker fx:id="datePicker2" editable="false" prefWidth="214.0" />
-            <Button fx:id="btnGerarFornecedores" mnemonicParsing="false" onAction="#onBtnGerarFornecedoresAction" prefHeight="26.0" prefWidth="214.0" text="Gerar Fornecedores" />
-            <Button fx:id="btnCarregaProdutosPadrao" mnemonicParsing="false" onAction="#onBtnCarregaProdutosPadraoAction" prefWidth="214.0" text="Carregar Produtos Padrão" />
-            <Button fx:id="btnProdutosPadrao" mnemonicParsing="false" onAction="#onBtnProdutosPadraoAction" prefWidth="214.0" text="Produtos Padrão" />
+            <Button fx:id="btnGerarFornecedores" mnemonicParsing="false" onAction="#onBtnGerarFornecedoresAction" prefHeight="31.0" prefWidth="156.0" text="Gerar Fornecedores" />
+            <Button fx:id="btnCarregaProdutosPadrao" mnemonicParsing="false" onAction="#onBtnCarregaProdutosPadraoAction" prefHeight="31.0" prefWidth="198.0" text="Carregar Produtos Padrão" />
+            <Button fx:id="btnEditarProduto" mnemonicParsing="false" onAction="#onBtnEditarProdutoAction" prefHeight="31.0" prefWidth="144.0" text="Editar Produto" />
+            <Button fx:id="btnProdutosPadrao" mnemonicParsing="false" onAction="#onBtnProdutosPadraoAction" prefHeight="31.0" prefWidth="146.0" text="Produtos Padrão" />
             <Label prefHeight="35.0" prefWidth="202.0" text="Quantidade Sobra" />
             <TextField fx:id="txtQuantidadeSobra" prefHeight="31.0" prefWidth="40.0" />
          </children>

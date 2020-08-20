@@ -41,23 +41,31 @@ public class RelatorioCaixariaController implements Initializable {
     private DatePicker datePicker1 = new DatePicker();
     @FXML
     private DatePicker datePicker2 = new DatePicker();
+    @FXML
+    private ComboBox<Estabelecimento> cbbEstabelecimento;
 
-    public void onBtnGerarRelatorioAction(){
-        if (relatorioServico == null){
+    public void onBtnGerarRelatorioAction() {
+        if (relatorioServico == null) {
             throw new IllegalStateException("Servico null");
         }
+
+        estabelecimento = cbbEstabelecimento.getSelectionModel().getSelectedItem();
 
         Date iniDate = Date.valueOf(datePicker1.getValue());
         Date endDate = Date.valueOf(datePicker2.getValue());
 
-        relatorioList = relatorioServico.findByEstabelecimento(estabelecimento, iniDate, endDate);
-        ObservableList<Relatorio> obbList = FXCollections.observableArrayList(relatorioList);
-        tbvListaRelatorio.setItems(obbList);
-        if (obbList.isEmpty()){
-            btnExportar.setVisible(false);
-            Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
-        }else{
-            btnExportar.setVisible(true);
+        if (estabelecimento == null) {
+            Alerts.showAlert("Selecione um estabelecimento", null, "Selecione um estabelecimento", Alert.AlertType.INFORMATION);
+        } else {
+            relatorioList = relatorioServico.findByEstabelecimento(estabelecimento, iniDate, endDate);
+            ObservableList<Relatorio> obbList = FXCollections.observableArrayList(relatorioList);
+            tbvListaRelatorio.setItems(obbList);
+            if (obbList.isEmpty()) {
+                btnExportar.setVisible(false);
+                Alerts.showAlert("Nenhum produto encontrado", null, "Nenhum produto encontrado", Alert.AlertType.INFORMATION);
+            } else {
+                btnExportar.setVisible(true);
+            }
         }
     }
 
@@ -78,7 +86,17 @@ public class RelatorioCaixariaController implements Initializable {
     }
 
     public void updateFormData(){
-        estabelecimento = estabelecimentoServico.findById(4);
+
+        if (estabelecimentoServico == null){
+            throw new IllegalStateException("Estabelecimento servico null");
+        }
+
+        ObservableList<Estabelecimento> obbList = FXCollections.observableArrayList(
+                estabelecimentoServico.findAll()
+        );
+
+        cbbEstabelecimento.setItems(obbList);
+        cbbEstabelecimento.getSelectionModel().select(0);
     }
 
     @Override

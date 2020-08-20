@@ -313,22 +313,12 @@ public class PedidoDaoJDBC implements PedidoDao {
                 }
             }
 
-            for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
-                        "values (?, ?, 0, ?, ?, ?)");
 
-                st.setDate(1, new Date(pedido.getData().getTime()));
-                st.setInt(2, item.getProduto().getId());
-                st.setInt(3, pedido.getId());
-                st.setInt(4, item.getQuantidade());
-                st.setInt(5, item.getQuantidade());
-
-                st.executeUpdate();
-            }
 
             conn.commit();
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new DBException(e.getMessage());
         } finally {
             DB.closeResultSet(rs);
@@ -351,9 +341,6 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st.executeUpdate();
 
-            st = conn.prepareStatement("delete from sobra where pedido_id = ?");
-            st.setInt(1, pedido.getId());
-
             st.executeUpdate();
 
             for (ItemPedido i : pedido.getItemPedidoList()) {
@@ -363,19 +350,6 @@ public class PedidoDaoJDBC implements PedidoDao {
                 st.setInt(1, i.getQuantidade());
                 st.setInt(2, pedido.getId());
                 st.setInt(3, i.getProduto().getId());
-
-                st.executeUpdate();
-            }
-
-            for (ItemPedido item : pedido.getItemPedidoList()){
-                st = conn.prepareStatement("insert into sobra (data, produto_id, sobra, pedido_id, totalPedido, totalPedidoAtualizado) " +
-                        "values (?, ?, 0, ?, ?, ?)");
-
-                st.setDate(1, new Date(pedido.getData().getTime()));
-                st.setInt(2, item.getProduto().getId());
-                st.setInt(3, pedido.getId());
-                st.setInt(4, item.getQuantidade());
-                st.setInt(5, item.getQuantidade());
 
                 st.executeUpdate();
             }
@@ -417,6 +391,7 @@ public class PedidoDaoJDBC implements PedidoDao {
             conn.commit();
 
         } catch (SQLException e){
+            System.out.println(e.getMessage());
             throw new DBException(e.getMessage());
         } finally {
             DB.closeStatement(st);
