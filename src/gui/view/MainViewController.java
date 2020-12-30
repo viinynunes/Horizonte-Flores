@@ -294,8 +294,9 @@ public class MainViewController implements Initializable, PedidoChangeListener {
     }
 
     @FXML
-    public void onMiTransacoes() {
-        carregaView("/gui/view/TransacoesProduto.fxml", (TransacoesProdutoController controller) -> {
+    public void onMiTransacoes(Event event) {
+
+        LoadPage.carregaDialogVBox(parentStage,"/gui/view/TransacoesProduto.fxml", (TransacoesProdutoController controller) -> {
             controller.setProdutoServico(new ProdutoServico());
             controller.setItemPedidoServico(new ItemPedidoServico());
             controller.updateLocalizaProdutoFormData();

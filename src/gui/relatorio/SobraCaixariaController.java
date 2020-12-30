@@ -287,7 +287,6 @@ public class SobraCaixariaController implements Initializable, DataChangeListene
             }
         });
 
-
         tbvSobraCadastro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F11){
                 editarProdutoAction(event);

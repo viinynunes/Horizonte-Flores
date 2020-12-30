@@ -10,19 +10,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="1023.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.TransacoesProdutoController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="836.0" style="-fx-background-color: #000;" stylesheets="@../css/dialog-cadastros-list.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.TransacoesProdutoController">
    <children>
       <Label prefHeight="46.0" prefWidth="631.0" stylesheets="@../css/relatorio-dark-theme.css" text="Insira o nome do produto e localize onde foi pedido" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <HBox prefHeight="27.0" prefWidth="734.0" stylesheets="@../css/relatorio-dark-theme.css">
+      <HBox prefHeight="27.0" prefWidth="734.0">
          <children>
             <TextField fx:id="txtLocalizaProduto" prefHeight="26.0" prefWidth="428.0" />
          </children>
       </HBox>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/table-view-Main.css">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <TableView fx:id="tbvListaPedido" maxWidth="835.0" minWidth="0.0" prefHeight="214.0" prefWidth="835.0">
                <columns>
