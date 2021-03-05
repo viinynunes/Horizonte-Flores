@@ -31,7 +31,7 @@ public class DaoFactory {
     public static RelatorioDao createRelatorioDao() { return new RelatorioDaoJDBC(DB.getConnection()); }
 
     public static SobraDao createSobraDao() {
-        return new SobraDaoJDBC((Connection) DB.getConnection());
+        return new SobraDaoJDBC( (Connection) DB.getConnection());
     }
 
     public static SobraProdutoPadraoDao createSobraPadraoDao(){return new SobraProdutoPadraoDaoJDBC(DB.getConnection());}

@@ -222,7 +222,9 @@ public class ItemPedidoDaoJDBC implements ItemPedidoDao {
                     "on estabelecimento.ENDERECO_ID = endereco.id " +
                     "where cliente.id = ? and pedido.data between ? and ? " +
                     "group by produto.nome " +
-                    "order by cliente.nome");
+                    "order by cliente.nome," +
+                    "categoria.nome," +
+                    "produto.nome");
 
             st.setInt(1, cliente.getId());
             st.setDate(2, iniDate);

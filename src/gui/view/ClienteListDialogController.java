@@ -183,7 +183,7 @@ public class ClienteListDialogController implements Initializable, DataChangeLis
 
                 String lowerCaseFilter = newValue.toLowerCase();
 
-                if (cliente.getNome().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                if (cliente.getNome().toLowerCase().contains(lowerCaseFilter)) {
                     tbvListaCliente.requestFocus();
                     txtProcura.requestFocus();
                     return true;

@@ -17,9 +17,11 @@ public class DB {
                 Properties props = loadProps();
                 String url = props.getProperty("dburl");
 
+                Class.forName("com.mysql.jdbc.Driver");
+
                 conn = DriverManager.getConnection(url, props);
                 return conn;
-            } catch (SQLException e) {
+            } catch (SQLException | ClassNotFoundException e) {
                 throw new DBException(e.getMessage());
             }
         }

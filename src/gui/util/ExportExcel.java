@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import model.entities.*;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -17,7 +18,7 @@ public class ExportExcel {
     private static String fileName = null;
     private static int rowNumb = 0;
     private static int cellAux = 0;
-    private static int maxRow = 60;
+    private static int maxRow = 65;
     private static int cellNumb;
     private static int restaRow = maxRow;
     private static int aux = 0;
@@ -75,10 +76,19 @@ public class ExportExcel {
 
     public static void createExcelPedido(Set<ItemPedido> list, List<Integer> countList, String name) {
 
+        aux = 0;
+
         fileName = "C:/HFP/Pedido" + name + ".xls";
+
+        //sheet.getPrintSetup().setLandscape(true);
+        //sheet.getPrintSetup().setPaperSize(HSSFPrintSetup.A5_PAPERSIZE);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheetRelatorio = workbook.createSheet("Relatorio");
+
+        sheetRelatorio.getPrintSetup().setPaperSize(HSSFPrintSetup.A4_PAPERSIZE);
+
+        sheetRelatorio.setDefaultColumnWidth(35);
 
         HSSFCellStyle styleBorderThin = createBorderThin(workbook);
         HSSFCellStyle styleCellCenterBorderThin = createAlignCenterBorderThin(workbook);
@@ -88,7 +98,7 @@ public class ExportExcel {
         Row row = null;
 
         // cria todas as linhas da pagina com um numero maximo de linhas
-        while (aux < 60) {
+        while (aux < 65) {
             row = sheetRelatorio.createRow(rowNumb++);
             aux++;
         }
@@ -147,7 +157,7 @@ public class ExportExcel {
         //out.close();
         //Alerts.showAlert("Relatório Exportado", null, "Relatório exportado com sucesso", Alert.AlertType.CONFIRMATION);
 
-        aux = 0;
+
         rowNumb = 0;
         list.clear();
 

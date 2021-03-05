@@ -341,7 +341,13 @@ public class PedidoDaoJDBC implements PedidoDao {
 
             st.executeUpdate();
 
+            st = conn.prepareStatement("update pedido set cliente_id = ? where pedido.id = ?");
+
+            st.setInt(1, pedido.getCliente().getId());
+            st.setInt(2, pedido.getId());
+
             st.executeUpdate();
+
 
             for (ItemPedido i : pedido.getItemPedidoList()) {
                 st = conn.prepareStatement("insert into itens_do_pedido (quantidade, pedido_id, produto_id) " +

@@ -22,18 +22,17 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.entities.*;
 import model.services.*;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -47,6 +46,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
     private int quantidadeItens, quantidadePadrao = 1;
+    private LocalDate localDateDataPedido;
 
     @FXML
     private VBox vBox;
@@ -127,6 +127,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             } else if (pedido.getItemPedidoList().isEmpty() || pedido.getItemPedidoList() == null) {
                 Alerts.showAlert("Nenhum produto selecionado", null, "Nenhum produto no pedido", Alert.AlertType.INFORMATION);
             } else {
+
                 pedidoServico.saveOrUpdate(pedido);
                 notifyDataChanged();
                 itemPedidoList.clear();
@@ -158,6 +159,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
             controller.updateDataForm();
         });
         txtQuantidade.requestFocus();
+        setCliente(cliente);
+        pedido.setCliente(cliente);
     }
 
     private void cadastrarProduto(Event event){
@@ -217,6 +220,20 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         this.produtoServico = produtoServico;
     }
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public void setLocalDateDataPedido(LocalDate localDateDataPedido) {
+        this.localDateDataPedido = localDateDataPedido;
+
+        if (localDateDataPedido != null){
+            if (!localDateDataPedido.equals(LocalDate.now())){
+                btnSalvar.setVisible(false);
+            }
+        }
+    }
+
     public void subscribeDataChangeListener(PedidoChangeListener listener) {
         pedidoChangeListeners.add(listener);
     }
@@ -240,6 +257,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         Constraints.setTextFieldInteger(txtQuantidadePadrao);
         Constraints.setTextFieldInteger(txtQuantidade);
         txtQuantidade.setText(String.valueOf(1));
+
+
 
         vBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.F2) {
@@ -294,6 +313,12 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         });
 
         hyperlinkSelecionarCliente.requestFocus();
+    }
+
+    public Date convertToDateViaInstant(LocalDate dateToConvert) {
+        return java.util.Date.from(dateToConvert.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     private void addItemPedido(Produto produto) {
@@ -351,6 +376,8 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
         if (pedido.getCliente() != null) {
             hyperlinkSelecionarCliente.setText(pedido.getCliente().toString());
         }
+
+
 
         obbList = FXCollections.observableArrayList(itemPedidoList);
         tbvItemsPedidoPorduto.setItems(obbList);

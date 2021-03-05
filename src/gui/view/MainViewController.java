@@ -119,7 +119,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         Stage parentStage = Utils.atualStage(event);
         Pedido pedido = new Pedido();
         List<ItemPedido> list = new ArrayList<>();
-        carregaViewPedido(pedido, list, parentStage, "/gui/view/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
+        carregaViewPedido(pedido, list, parentStage, localDateDataPedido,"/gui/view/PedidoCadastro.fxml", (PedidoCadastroController controller) -> {
         });
     }
 
@@ -140,6 +140,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
                 carregaViewPedido(pedido,
                         itemPedidoList,
                         parentStage,
+                        localDateDataPedido,
                         "/gui/view/PedidoCadastro.fxml",
                         (PedidoCadastroController controller) -> {
                         });
@@ -387,7 +388,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
         }
     }
 
-    public synchronized <T> void carregaViewPedido(Pedido pedido, List<ItemPedido> list, Stage parentStage, String caminho, Consumer<T> initConsumer) {
+    public synchronized <T> void carregaViewPedido(Pedido pedido, List<ItemPedido> list, Stage parentStage, LocalDate localDateDataPedido, String caminho, Consumer<T> initConsumer) {
 
         try {
             FXMLLoader load = new FXMLLoader(getClass().getResource(caminho));
@@ -403,6 +404,7 @@ public class MainViewController implements Initializable, PedidoChangeListener {
             controller.setItemPedidoList(itemPedidoList);
             controller.setProdutoServico(new ProdutoServico());
             controller.setPedidoServico(new PedidoServico());
+            controller.setLocalDateDataPedido(localDateDataPedido);
             controller.updateFormLocalizaProduto();
             controller.updateFormProdutosPedido();
             controller.subscribeDataChangeListener(this);
