@@ -16,7 +16,7 @@
     <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="org.apache.poi:poi:3.16" level="project" />
-    <orderEntry type="library" exported="" name="javafx-swt" level="application" />
-    <orderEntry type="library" exported="" name="mysql:mysql-connector-java:5.1.48" level="application" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-5.1.48" level="project" />
+    <orderEntry type="library" name="javafx.media" level="project" />
   </component>
 </module>

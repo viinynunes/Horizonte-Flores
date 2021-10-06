@@ -42,7 +42,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     private ProdutoServico produtoServico;
     private Pedido pedido;
     private FilteredList<Produto> filteredList;
-    private List<ItemPedido> itemPedidoList;
+    private List<ItemPedido> itemPedidoList = new LinkedList<>();
     private Cliente cliente;
     private List<PedidoChangeListener> pedidoChangeListeners = new ArrayList<>();
     private int quantidadeItens, quantidadePadrao = 1;
@@ -346,7 +346,7 @@ public class PedidoCadastroController implements Initializable, ClienteChangeLis
     }
 
     private void ordenaItemPedidoListDesc(){
-        Collections.reverse(itemPedidoList);
+
     }
 
     public void updateFormLocalizaProduto() {

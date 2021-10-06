@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+// VM OPTIONS = --module-path="E:\Libs\javafx-sdk\lib" --add-modules=javafx.controls,javafx.fxml
 public class Main extends Application {
 
 	private static Scene mainScene;
